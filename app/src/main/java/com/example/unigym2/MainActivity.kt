@@ -1,30 +1,43 @@
 package com.example.unigym2
 
-import android.content.Intent
 import android.os.Bundle
-import android.widget.Button
-import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
+import androidx.fragment.app.Fragment
+import com.example.unigym2.databinding.ActivityMainBinding
 
-class MainActivity : AppCompatActivity() {
-    lateinit var entrarBtn: Button
+class MainActivity : AppCompatActivity(){
+
+    lateinit var binding: ActivityMainBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        binding = ActivityMainBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+        replaceFragment(HomeUser())
 
-        entrarBtn = findViewById(R.id.EntrarBtn)
+        binding.bottomNavigationView.setOnItemSelectedListener {
+            when(it.itemId){
+                R.id.home -> replaceFragment(HomeUser())
+                R.id.chat -> replaceFragment(ChatUser())
+                R.id.profile -> replaceFragment(ProfileUser())
+                R.id.calendar -> replaceFragment(CalendarUser())
+                R.id.treinos -> replaceFragment(TreinosUser())
+
+                else -> {
+
+                }
+            }
+
+            true
+        }
+
     }
 
-    override fun onStart() {
-        super.onStart()
+    private fun replaceFragment(fragment: Fragment){
 
-        entrarBtn.setOnClickListener{
-            var intent = Intent(this, MainMenuUser::class.java)
-
-            startActivity(intent)
-        }
+        val fragmentManager = supportFragmentManager
+        val fragmentTransaction = fragmentManager.beginTransaction()
+        fragmentTransaction.replace(R.id.frame_layout, fragment)
+        fragmentTransaction.commit()
     }
 }
