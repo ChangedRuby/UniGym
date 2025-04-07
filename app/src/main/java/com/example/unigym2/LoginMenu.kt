@@ -10,7 +10,7 @@ class LoginMenu : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.login_menu)
+        setContentView(R.layout.activity_login_menu)
 
         entrarBtn = findViewById(R.id.EntrarBtn)
     }
