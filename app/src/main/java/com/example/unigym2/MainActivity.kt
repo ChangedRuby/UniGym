@@ -16,16 +16,37 @@ class MainActivity : AppCompatActivity(){
         setContentView(binding.root)
         replaceFragment(HomeUser())
 
-        binding.bottomNavigationView.setOnItemSelectedListener {
-            when(it.itemId){
-                R.id.home -> replaceFragment(HomeUser())
-                R.id.chat -> replaceFragment(ChatUser())
-                R.id.profile -> replaceFragment(ProfileUser())
-                R.id.calendar -> replaceFragment(CalendarUser())
-                R.id.treinos -> replaceFragment(TreinosUser())
+        var personalMode = false
 
-                else -> {
-                    Log.d("MainActivity", "Fragment not found")
+        if(intent.getStringExtra("personalMode").equals("true")){
+            personalMode = true
+            Log.d("MainActivityDebug", "Login as personal")
+        }
+
+        binding.bottomNavigationView.setOnItemSelectedListener {
+            if(personalMode){
+                when(it.itemId){
+                    R.id.home -> replaceFragment(HomeUser())
+                    R.id.chat -> replaceFragment(ChatUser())
+                    R.id.profile -> replaceFragment(ProfileUser())
+                    R.id.calendar -> replaceFragment(CalendarUser())
+                    R.id.treinos -> replaceFragment(TreinosPersonalTrainer())
+
+                    else -> {
+                        Log.d("MainActivityDebug", "Fragment not found")
+                    }
+                }
+            } else{
+                when(it.itemId){
+                    R.id.home -> replaceFragment(HomeUser())
+                    R.id.chat -> replaceFragment(ChatUser())
+                    R.id.profile -> replaceFragment(ProfileUser())
+                    R.id.calendar -> replaceFragment(CalendarUser())
+                    R.id.treinos -> replaceFragment(TreinosUser())
+
+                    else -> {
+                        Log.d("MainActivityDebug", "Fragment not found")
+                    }
                 }
             }
 

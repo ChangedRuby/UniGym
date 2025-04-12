@@ -5,4 +5,5 @@
     <dimen name="input_corner_radius">12dp</dimen>
     <dimen name="button_corner_radius">20dp</dimen>
     <dimen name="logo_corner_radius">16dp</dimen>
+    <dimen name="big_button_height">100dp</dimen>
 </resources>
