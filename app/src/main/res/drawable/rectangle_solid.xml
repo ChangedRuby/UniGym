@@ -1,0 +1,13 @@
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Gradient border -->
+    <item>
+        <shape android:shape="rectangle">
+            <gradient
+                android:angle="0"
+                android:startColor="#00F0FF"
+                android:endColor="#00B2FF"
+                android:type="linear" />
+            <corners android:radius="50dp" />
+        </shape>
+    </item>
+</layer-list>

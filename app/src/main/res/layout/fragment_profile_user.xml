@@ -1,15 +1,179 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/dark_blue_bg"
     tools:context=".ProfileUser">
 
     <!-- TODO: Update blank fragment layout -->
-    <TextView
+
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:gravity="center"
-        android:text="Hello Profile User" />
+        android:layout_height="match_parent">
+
+        <View
+            android:id="@+id/profileSecondaryColor"
+            android:layout_width="match_parent"
+            android:layout_height="139dp"
+            android:background="#03A9F4"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.0"
+            tools:layout_editor_absoluteX="16dp" />
+
+        <ImageView
+            android:id="@+id/circleImageView"
+            android:layout_width="120dp"
+            android:layout_height="120dp"
+            android:background="@drawable/circle_test"
+            android:scaleType="centerCrop"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.12"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/profileSecondaryColor"
+            app:layout_constraintVertical_bias="0.175" />
+
+        <TextView
+            android:id="@+id/UserProfileUsername"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:text="Username"
+            android:textColor="#FBFBFB"
+            android:textSize="20sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.156"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/circleImageView" />
+
+        <TextView
+            android:id="@+id/textView14"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Treinos"
+            android:textColor="#FBFBFB"
+            android:textSize="12sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.054"
+            app:layout_constraintStart_toEndOf="@+id/imageView5"
+            tools:layout_editor_absoluteY="191dp" />
+
+        <TextView
+            android:id="@+id/CountTreinos"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="XX"
+            android:textColor="#FBFBFB"
+            android:textSize="15sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.1"
+            app:layout_constraintStart_toEndOf="@+id/imageView5"
+            tools:layout_editor_absoluteY="163dp" />
+
+        <ImageView
+            android:id="@+id/imageView5"
+            android:layout_width="0dp"
+            android:layout_height="54dp"
+            android:src="@drawable/vertical_white_separator"
+            tools:layout_editor_absoluteX="184dp"
+            tools:layout_editor_absoluteY="161dp" />
+
+        <TextView
+            android:id="@+id/textView10"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="136dp"
+            android:text="Objetivos:"
+            android:textColor="#FBFBFB"
+            android:textSize="14sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.136"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/circleImageView" />
+
+        <TextView
+            android:id="@+id/textView8"
+            android:layout_width="129dp"
+            android:layout_height="32dp"
+            android:background="@drawable/rectangle_objetivos_teste"
+            android:gravity="center"
+            android:minHeight="48dp"
+            android:paddingStart="32dp"
+            android:paddingEnd="32dp"
+            android:text="Objetivo 2"
+            android:textColor="#FFFFFF"
+            android:textSize="12sp"
+            android:textStyle="bold"
+            tools:layout_editor_absoluteX="178dp"
+            tools:layout_editor_absoluteY="406dp" />
+
+        <TextView
+            android:layout_width="129dp"
+            android:layout_height="32dp"
+            android:background="@drawable/rectangle_objetivos_teste"
+            android:gravity="center"
+            android:minHeight="48dp"
+            android:paddingStart="32dp"
+            android:paddingEnd="32dp"
+            android:text="Objetivo 1"
+            android:textColor="#FFFFFF"
+            android:textSize="12sp"
+            android:textStyle="bold"
+            tools:layout_editor_absoluteX="35dp"
+            tools:layout_editor_absoluteY="406dp" />
+
+        <TextView
+            android:id="@+id/textView11"
+            android:layout_width="129dp"
+            android:layout_height="32dp"
+            android:background="@drawable/rectangle_objetivos_teste"
+            android:gravity="center"
+            android:minHeight="48dp"
+            android:paddingStart="32dp"
+            android:paddingEnd="32dp"
+            android:text="Objetivo 3"
+            android:textColor="#FFFFFF"
+            android:textSize="12sp"
+            android:textStyle="bold"
+            tools:layout_editor_absoluteX="35dp"
+            tools:layout_editor_absoluteY="456dp" />
+
+        <TextView
+            android:id="@+id/UserProfileEmail"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:text="email@example.com"
+            android:textColor="#FBFBFB"
+            android:textSize="12sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.163"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/UserProfileUsername" />
+
+        <ImageView
+            android:id="@+id/imageView6"
+            android:layout_width="105dp"
+            android:layout_height="22dp"
+            android:src="@drawable/rectangle_solid"
+            tools:layout_editor_absoluteX="299dp"
+            tools:layout_editor_absoluteY="185dp" />
+
+        <Button
+            android:id="@+id/UserAcessibilityButton"
+            android:layout_width="126dp"
+            android:layout_height="31dp"
+            android:background="@android:color/transparent"
+            android:text="Acessibilidade"
+            android:textColor="@color/black"
+            android:textSize="10sp"
+            tools:layout_editor_absoluteX="288dp"
+            tools:layout_editor_absoluteY="179dp" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </FrameLayout>
