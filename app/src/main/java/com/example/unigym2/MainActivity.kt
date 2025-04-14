@@ -14,19 +14,21 @@ class MainActivity : AppCompatActivity(){
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        replaceFragment(HomeUser())
 
         var personalMode = false
 
         if(intent.getStringExtra("personalMode").equals("true")){
             personalMode = true
+            replaceFragment(HomePersonalTrainer())
             Log.d("MainActivityDebug", "Login as personal")
+        } else{
+            replaceFragment(HomeUser())
         }
 
         binding.bottomNavigationView.setOnItemSelectedListener {
             if(personalMode){
                 when(it.itemId){
-                    R.id.home -> replaceFragment(HomeUser())
+                    R.id.home -> replaceFragment(HomePersonalTrainer())
                     R.id.chat -> replaceFragment(ChatUser())
                     R.id.profile -> replaceFragment(ProfileUser())
                     R.id.calendar -> replaceFragment(CalendarUser())
