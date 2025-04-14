@@ -6,7 +6,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import com.example.unigym2.databinding.ActivityMainBinding
 
-class MainActivity : AppCompatActivity(){
+class MainActivity : AppCompatActivity(), Communicator{
 
     lateinit var binding: ActivityMainBinding
 
@@ -57,7 +57,7 @@ class MainActivity : AppCompatActivity(){
 
     }
 
-    private fun replaceFragment(fragment: Fragment){
+    override fun replaceFragment(fragment: Fragment){
 
         val fragmentManager = supportFragmentManager
         val fragmentTransaction = fragmentManager.beginTransaction()

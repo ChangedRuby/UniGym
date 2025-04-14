@@ -1,10 +1,14 @@
 package com.example.unigym2
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -21,6 +25,10 @@ class HomePersonalTrainer : Fragment() {
     private var param1: String? = null
     private var param2: String? = null
 
+    lateinit var schedulesBtn: Button
+    private lateinit var communicator: Communicator
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
@@ -34,7 +42,17 @@ class HomePersonalTrainer : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_home_personal_trainer, container, false)
+        var v = inflater.inflate(R.layout.fragment_home_personal_trainer, container, false)
+
+        communicator = activity as Communicator
+        schedulesBtn = v.findViewById(R.id.schedulesBtn)
+        schedulesBtn.setOnClickListener{
+            communicator.replaceFragment(SolicitationsPersonal())
+            Log.d("personalLog", "Clicked")
+            // this.parentFragmentManager.beginTransaction().replace(R.id.frame_layout, HomeUser()).commit()
+        }
+
+        return v
     }
 
     companion object {

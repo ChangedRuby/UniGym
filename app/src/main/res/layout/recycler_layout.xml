@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/cardView"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="210sp"
+        android:gravity="center|top">
+
+        <View
+            android:id="@+id/view"
+            android:layout_width="400sp"
+            android:layout_height="200sp"
+            android:layout_marginLeft="5sp"
+            android:background="@color/dark_blue_bg" />
+
+        <ImageView
+            android:id="@+id/imageProfile"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_marginLeft="20sp"
+            android:layout_marginTop="20sp"
+            tools:srcCompat="@tools:sample/avatars" />
+
+        <TextView
+            android:id="@+id/userName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="80sp"
+            android:layout_marginTop="20sp"
+            android:text="Michael Scott"
+            android:textColor="@color/white" />
+
+        <TextView
+            android:id="@+id/textView9"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="80sp"
+            android:layout_marginTop="50sp"
+            android:text="Quer agendar um treino"
+            android:textColor="@color/hint_grey" />
+
+        <Button
+            android:id="@+id/button6"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="300sp"
+            android:layout_marginTop="20sp"
+            android:text="Aceitar" />
+
+        <Button
+            android:id="@+id/button7"
+            android:layout_width="50sp"
+            android:layout_height="50sp"
+            android:layout_marginLeft="245sp"
+            android:layout_marginTop="20sp"
+            android:paddingLeft="0dp"
+            android:paddingRight="0dp"
+            android:text="X" />
+    </RelativeLayout>
+</androidx.cardview.widget.CardView>
