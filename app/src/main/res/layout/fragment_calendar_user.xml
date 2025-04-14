@@ -24,15 +24,17 @@
             android:textColorLink="#673AB7"
             android:textSize="24sp"
             android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.102"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            tools:ignore="MissingConstraints"
-            tools:layout_editor_absoluteX="16dp" />
+            tools:ignore="MissingConstraints" />
 
         <CalendarView
             android:id="@+id/calendarView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="108dp"
+            android:layout_marginTop="128dp"
             android:background="@drawable/rounded_corners"
             android:backgroundTint="#165DAD"
             android:unfocusedMonthDateColor="@color/white"
