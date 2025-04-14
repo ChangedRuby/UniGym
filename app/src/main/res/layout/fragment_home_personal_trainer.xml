@@ -142,5 +142,17 @@
             app:layout_constraintStart_toStartOf="@+id/imageView10"
             app:layout_constraintTop_toBottomOf="@+id/textView" />
 
+        <Button
+            android:id="@+id/schedulesBtn"
+            android:layout_width="300sp"
+            android:layout_height="100sp"
+            android:background="@android:color/transparent"
+            android:text="botao"
+            app:layout_constraintBottom_toBottomOf="@+id/imageView10"
+            app:layout_constraintEnd_toEndOf="@+id/imageView10"
+            app:layout_constraintStart_toStartOf="@+id/imageView10"
+            app:layout_constraintTop_toTopOf="@+id/imageView10"
+            app:rippleColor="@android:color/black" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 </FrameLayout>
