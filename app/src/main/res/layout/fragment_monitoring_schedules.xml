@@ -16,8 +16,8 @@
 
         <CalendarView
             android:id="@+id/calendarView3"
-            android:layout_width="419dp"
-            android:layout_height="375dp"
+            android:layout_width="386dp"
+            android:layout_height="361dp"
             android:layout_marginTop="128dp"
             android:background="@drawable/rounded_corners"
             android:backgroundTint="#165DAD"
