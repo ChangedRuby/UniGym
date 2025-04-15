@@ -43,6 +43,7 @@ android {
 }
 
 dependencies {
+//    implementation(platform("androidx.compose:compose-bom:2025.01.01"))
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
     implementation(libs.material)
