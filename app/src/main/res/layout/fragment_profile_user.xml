@@ -2,6 +2,7 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/FrameLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/dark_blue_bg"
@@ -23,58 +24,47 @@
             app:layout_constraintVertical_bias="0.0"
             tools:layout_editor_absoluteX="16dp" />
 
-        <ImageView
-            android:id="@+id/circleImageView"
-            android:layout_width="120dp"
-            android:layout_height="120dp"
-            android:background="@drawable/circle_test"
-            android:scaleType="centerCrop"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.12"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/profileSecondaryColor"
-            app:layout_constraintVertical_bias="0.175" />
-
         <TextView
-            android:id="@+id/UserProfileUsername"
+            android:id="@+id/UserProfileName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="252dp"
             android:text="Username"
             android:textColor="#FBFBFB"
             android:textSize="20sp"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.156"
+            app:layout_constraintHorizontal_bias="0.15"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/circleImageView" />
+            app:layout_constraintTop_toTopOf="@+id/profileSecondaryColor" />
 
         <TextView
-            android:id="@+id/textView14"
+            android:id="@+id/treinosTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
             android:text="Treinos"
             android:textColor="#FBFBFB"
             android:textSize="12sp"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.054"
-            app:layout_constraintStart_toEndOf="@+id/imageView5"
-            tools:layout_editor_absoluteY="191dp" />
+            app:layout_constraintHorizontal_bias="0.059"
+            app:layout_constraintStart_toEndOf="@+id/lineImageView"
+            app:layout_constraintTop_toBottomOf="@+id/CountTreinos" />
 
         <TextView
             android:id="@+id/CountTreinos"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="28dp"
             android:text="XX"
             android:textColor="#FBFBFB"
             android:textSize="15sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.1"
-            app:layout_constraintStart_toEndOf="@+id/imageView5"
-            tools:layout_editor_absoluteY="163dp" />
+            app:layout_constraintStart_toEndOf="@+id/lineImageView"
+            app:layout_constraintTop_toBottomOf="@+id/profileSecondaryColor" />
 
         <ImageView
-            android:id="@+id/imageView5"
+            android:id="@+id/lineImageView"
             android:layout_width="0dp"
             android:layout_height="54dp"
             android:src="@drawable/vertical_white_separator"
@@ -82,22 +72,25 @@
             tools:layout_editor_absoluteY="161dp" />
 
         <TextView
-            android:id="@+id/textView10"
+            android:id="@+id/objectivesTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="136dp"
+            android:layout_marginTop="24dp"
             android:text="Objetivos:"
             android:textColor="#FBFBFB"
             android:textSize="14sp"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.136"
+            app:layout_constraintHorizontal_bias="0.1"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/circleImageView" />
+            app:layout_constraintTop_toBottomOf="@+id/lineView" />
 
         <TextView
-            android:id="@+id/textView8"
+            android:id="@+id/objective2"
             android:layout_width="129dp"
             android:layout_height="32dp"
+            android:layout_marginStart="14dp"
+            android:layout_marginTop="76dp"
+            android:layout_marginEnd="104dp"
             android:background="@drawable/rectangle_objetivos_teste"
             android:gravity="center"
             android:minHeight="48dp"
@@ -107,12 +100,17 @@
             android:textColor="#FFFFFF"
             android:textSize="12sp"
             android:textStyle="bold"
-            tools:layout_editor_absoluteX="178dp"
-            tools:layout_editor_absoluteY="406dp" />
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/objective1"
+            app:layout_constraintTop_toBottomOf="@+id/lineView" />
 
         <TextView
+            android:id="@+id/objective1"
             android:layout_width="129dp"
             android:layout_height="32dp"
+            android:layout_marginStart="35dp"
+            android:layout_marginTop="33dp"
+            android:layout_marginEnd="14dp"
             android:background="@drawable/rectangle_objetivos_teste"
             android:gravity="center"
             android:minHeight="48dp"
@@ -122,13 +120,15 @@
             android:textColor="#FFFFFF"
             android:textSize="12sp"
             android:textStyle="bold"
-            tools:layout_editor_absoluteX="35dp"
-            tools:layout_editor_absoluteY="406dp" />
+            app:layout_constraintEnd_toStartOf="@+id/objective2"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/objectivesTextView" />
 
         <TextView
-            android:id="@+id/textView11"
+            android:id="@+id/objective3"
             android:layout_width="129dp"
             android:layout_height="32dp"
+            android:layout_marginTop="16dp"
             android:background="@drawable/rectangle_objetivos_teste"
             android:gravity="center"
             android:minHeight="48dp"
@@ -138,8 +138,10 @@
             android:textColor="#FFFFFF"
             android:textSize="12sp"
             android:textStyle="bold"
-            tools:layout_editor_absoluteX="35dp"
-            tools:layout_editor_absoluteY="456dp" />
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.099"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/objective1" />
 
         <TextView
             android:id="@+id/UserProfileEmail"
@@ -152,26 +154,55 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.163"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/UserProfileUsername" />
+            app:layout_constraintTop_toBottomOf="@+id/UserProfileName" />
 
-        <ImageView
-            android:id="@+id/imageView6"
-            android:layout_width="105dp"
-            android:layout_height="22dp"
-            android:src="@drawable/rectangle_solid"
-            tools:layout_editor_absoluteX="299dp"
-            tools:layout_editor_absoluteY="185dp" />
+        <View
+            android:id="@+id/lineView"
+            android:layout_width="wrap_content"
+            android:layout_height="2sp"
+            android:background="@color/hint_grey"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.45" />
+
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/profileUserImage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="104dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.12"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:shapeAppearanceOverlay="@style/roundedImageView"
+            tools:src="@tools:sample/avatars" />
+
+        <View
+            android:id="@+id/circleImageView"
+            android:layout_width="130sp"
+            android:layout_height="130sp"
+            android:layout_marginTop="104dp"
+            android:background="@drawable/circle_test"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.12"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/profileSecondaryColor" />
 
         <Button
-            android:id="@+id/UserAcessibilityButton"
-            android:layout_width="126dp"
-            android:layout_height="31dp"
-            android:background="@android:color/transparent"
+            android:id="@+id/button10"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="164dp"
+            android:background="@drawable/rectangle_light_gradient"
+            android:paddingStart="20sp"
+            android:paddingEnd="20sp"
             android:text="Acessibilidade"
-            android:textColor="@color/black"
-            android:textSize="10sp"
-            tools:layout_editor_absoluteX="288dp"
-            tools:layout_editor_absoluteY="179dp" />
+            android:textSize="12sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.945"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>
