@@ -5,6 +5,9 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.CalendarView
+import android.widget.LinearLayout
+import android.widget.TextView
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -35,6 +38,25 @@ class CalendarPersonal : Fragment() {
     ): View? {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_calendar_personal, container, false)
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        val calendarView = view.findViewById<CalendarView>(R.id.calendarView4)
+        val programacoesContainer = view.findViewById<LinearLayout>(R.id.programacoes_container)
+        val programacoesConteudo = view.findViewById<TextView>(R.id.programacoes_conteudo)
+
+        calendarView.setOnDateChangeListener{ _,year, month, dayOfMonth ->
+            val dataSelecionada = "$dayOfMonth/${month + 1}/$year"
+
+        programacoesContainer.visibility = View.VISIBLE
+
+        programacoesConteudo.text = when (dataSelecionada) {
+            "11/8/2025" -> "Reunião com cliente às 10h"
+            else -> "Sem agendamentos"
+           }
+        }
     }
 
     companion object {
