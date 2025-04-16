@@ -62,5 +62,54 @@
             android:paddingLeft="0dp"
             android:paddingRight="0dp"
             android:text="X" />
+
+        <TextView
+            android:id="@+id/horarioLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/imageProfile"
+            android:layout_alignStart="@id/imageProfile"
+            android:layout_marginTop="40sp"
+            android:text="Horário:"
+            android:textColor="@color/white"
+            android:textSize="18sp" />
+
+        <TextView
+            android:id="@+id/horarioValue"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBaseline="@id/horarioLabel"
+            android:layout_marginStart="10sp"
+            android:layout_marginLeft="10sp"
+            android:layout_toEndOf="@id/horarioLabel"
+            android:layout_toRightOf="@id/horarioLabel"
+            android:text="12 h 00 min"
+            android:textColor="@color/white"
+            android:textSize="40sp"
+            android:textStyle="bold"
+             tools:text="12 h 00 min" />
+
+        <TextView
+            android:id="@+id/diaLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/horarioValue"
+            android:layout_alignStart="@id/horarioLabel"
+            android:layout_marginTop="15sp"
+            android:text="Dia:"
+            android:textColor="@color/white"
+            android:textSize="18sp" />
+
+        <TextView
+            android:id="@+id/diaValue"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBaseline="@id/diaLabel"
+            android:layout_alignStart="@id/horarioValue"
+            android:text="01/07"
+            android:textColor="@color/white"
+            android:textSize="40sp"
+            android:textStyle="bold"
+            tools:text="01/07" />
     </RelativeLayout>
 </androidx.cardview.widget.CardView>
