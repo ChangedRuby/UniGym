@@ -5,6 +5,12 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
+import android.widget.CalendarView
+import android.widget.EditText
+import android.widget.LinearLayout
+import android.widget.Spinner
+import android.widget.Toast
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -37,6 +43,29 @@ class MonitoringSchedules : Fragment() {
         return inflater.inflate(R.layout.fragment_monitoring_schedules, container, false)
     }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        val calendarView = view.findViewById<CalendarView>(R.id.calendarView3)
+        val blocoNovaSessao = view.findViewById<LinearLayout>(R.id.nova_sessao)
+        val btnAgendar = view.findViewById<Button>(R.id.btnAgendar)
+        val inputHora = view.findViewById<EditText>(R.id.inputHora)
+        val inputMinuto = view.findViewById<EditText>(R.id.inputMinuto)
+        val spinnerServico = view.findViewById<Spinner>(R.id.spinnerServico)
+
+        calendarView.setOnDateChangeListener { _, year, month, dayOfMonth ->
+            blocoNovaSessao.visibility = View.VISIBLE
+        }
+
+        btnAgendar.setOnClickListener {
+            val hora = inputHora.text.toString()
+            val minuto = inputMinuto.text.toString()
+            val servico = spinnerServico.selectedItem.toString()
+
+            Toast.makeText(requireContext(), "Sessão agendada: $hora:$minuto - $servico", Toast.LENGTH_SHORT).show()
+        }
+
+    }
     companion object {
         /**
          * Use this factory method to create a new instance of
