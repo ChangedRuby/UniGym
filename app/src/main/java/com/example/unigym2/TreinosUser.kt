@@ -23,7 +23,7 @@ class TreinosUser : Fragment() {
     private var param1: String? = null
     private var param2: String? = null
 
-    lateinit var button: Button
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -39,10 +39,7 @@ class TreinosUser : Fragment() {
     ): View? {
         // Inflate the layout for this fragment
         var v = inflater.inflate(R.layout.fragment_treinos_user, container, false)
-        button = v.findViewById(R.id.btnViewMaquinas)
-        button.setOnClickListener{
 
-        }
 
         return v
     }
