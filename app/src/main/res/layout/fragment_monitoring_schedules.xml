@@ -12,9 +12,9 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="790dp">
+        android:layout_height="match_parent">
 
-        <CalendarView
+    <CalendarView
             android:id="@+id/calendarView3"
             android:layout_width="386dp"
             android:layout_height="361dp"
@@ -33,17 +33,17 @@
             android:id="@+id/nova_sessao"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
             android:layout_marginStart="16dp"
-            android:layout_marginTop="12dp"
             android:layout_marginEnd="16dp"
-            android:background="@drawable/bg_novasessao"
             android:orientation="vertical"
-            android:padding="16dp"
-            android:visibility="invisible"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="1.0"
+            android:background="@drawable/bg_novasessao"
+            android:padding="24dp"
+            android:elevation="8dp"
+            android:visibility="visible"
+            app:layout_constraintTop_toBottomOf="@id/calendarView3"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/calendarView3">
+            app:layout_constraintEnd_toEndOf="parent">
 
 
             <TextView
@@ -54,44 +54,107 @@
                 android:textSize="18sp"
                 android:textStyle="bold" />
 
+            <!-- Horário -->
             <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:orientation="horizontal">
-
-                <EditText
-                    android:id="@+id/inputHora"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:hint="hh" />
-
-                <EditText
-                    android:id="@+id/inputMinuto"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:hint="mm" />
-            </LinearLayout>
-
-
-            <Spinner
-                android:id="@+id/spinnerServico"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="8dp" />
+                android:orientation="horizontal"
+                android:layout_marginTop="16dp"
+                android:gravity="center_vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Horário:"
+                    android:textColor="@android:color/white"
+                    android:textSize="16sp"
+                    android:layout_marginEnd="8dp" />
+
+                <!-- Tirar a hint  -->
+                <EditText
+                    android:id="@+id/inputHora"
+                    android:layout_width="64dp"
+                    android:layout_height="wrap_content"
+                    android:hint="12"
+                    android:textColor="@android:color/white"
+                    android:inputType="number"
+                    android:textSize="24sp"
+                    android:gravity="center"
+                    android:background="@null" />
+
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="hr"
+                    android:textColor="@android:color/white"
+                    android:textSize="16sp"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginEnd="8dp" />
+
+
+                <!-- Tirar a hint  -->
+                <EditText
+                    android:id="@+id/inputMinuto"
+                    android:layout_width="64dp"
+                    android:layout_height="wrap_content"
+                    android:hint="00"
+                    android:textColor="@android:color/white"
+                    android:inputType="number"
+                    android:textSize="24sp"
+                    android:gravity="center"
+                    android:background="@null" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="min"
+                    android:textColor="@android:color/white"
+                    android:textSize="16sp"
+                    android:layout_marginStart="8dp" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:orientation="horizontal"
+                android:gravity="center_vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Serviço:"
+                    android:textColor="@android:color/white"
+                    android:textSize="16sp"
+                    android:layout_marginEnd="8dp" />
+
+                <Spinner
+                    android:id="@+id/spinnerServico"
+                    android:layout_width="0dp"
+                    android:layout_height="48dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/spinner_background"
+                    android:popupBackground="@android:color/white" />
+            </LinearLayout>
 
             <Button
                 android:id="@+id/btnAgendar"
-                android:layout_width="282dp"
-                android:layout_height="wrap_content"
-                android:background="@drawable/bg_botaoagendar"
-                android:paddingStart="24dp"
-                android:paddingTop="10dp"
-                android:paddingEnd="24dp"
-                android:paddingBottom="10dp"
+                android:layout_width="wrap_content"
+                android:layout_height="48dp"
+                android:layout_gravity="end"
+                android:layout_marginTop="24dp"
+                android:paddingStart="32dp"
+                android:paddingEnd="32dp"
+                android:backgroundTint="#2196F3"
                 android:text="Agendar"
-                android:textColor="#FFFFFF" />
+                android:textColor="#000000"
+                android:textSize="16sp"
+                android:elevation="4dp"  />
+
         </LinearLayout>
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </FrameLayout>
