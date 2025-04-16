@@ -14,16 +14,15 @@
 
         <View
             android:id="@+id/view2"
-            android:layout_width="390dp"
-            android:layout_height="315dp"
+            android:layout_width="397dp"
+            android:layout_height="257dp"
             android:background="@drawable/rectangle_objetivos_teste"
             android:backgroundTint="#4A769E"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.761"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/addMaquinaText"
-            app:layout_constraintVertical_bias="0.25" />
+            app:layout_constraintVertical_bias="0.16" />
 
         <Button
             android:id="@+id/addButton"
@@ -36,22 +35,24 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.874"
             app:layout_constraintStart_toStartOf="parent" />
+
+
         <EditText
             android:id="@+id/editTextNomeMaquina"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="24dp"
+            android:layout_width="352dp"
+            android:layout_height="64dp"
             android:backgroundTint="#C7DCDA"
-            android:hint="Digite o nome da máquina"
+            android:hint="Máquina"
             android:inputType="text"
             android:padding="12dp"
             android:textColor="@android:color/white"
-            android:textColorHint="@android:color/white"
+            android:textColorHint="#908383"
+            app:layout_constraintBottom_toTopOf="@+id/addButton"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintMarginTop="24dp"
-            app:layout_constraintStart_toStartOf="parent" />
-
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/view2"
+            app:layout_constraintVertical_bias="0.647" />
 
         <TextView
             android:id="@+id/addMaquinaText"
@@ -66,6 +67,33 @@
             app:layout_constraintHorizontal_bias="0.495"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/nomeText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Nome da máquina"
+            android:textColor="#FFF9F9"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toTopOf="@+id/editTextNomeMaquina"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.2"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/view2"
+            app:layout_constraintVertical_bias="0.493" />
+
+        <ImageView
+            android:id="@+id/BackViewButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/go_back_button"
+            app:layout_constraintBottom_toTopOf="@+id/addMaquinaText"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.111"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.625" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </FrameLayout>
