@@ -14,7 +14,23 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-    <CalendarView
+        <ImageButton
+            android:id="@+id/btnVoltar"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_margin="16dp"
+            android:background="@android:color/transparent"
+            android:src="@drawable/ic_arrow_back"
+            android:scaleType="center"
+            android:contentDescription="Voltar"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            android:elevation="6dp"
+            android:padding="8dp"
+            android:backgroundTint="#FFFFFF" />
+
+
+        <CalendarView
             android:id="@+id/calendarView3"
             android:layout_width="386dp"
             android:layout_height="361dp"
@@ -28,22 +44,39 @@
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.016" />
 
+        <TextView
+            android:id="@+id/textIndisponivel"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="Horário não disponível"
+            android:textColor="@android:color/white"
+            android:textStyle="bold"
+            android:gravity="center"
+            android:padding="12dp"
+            android:backgroundTint="#3A4C6A"
+            android:background="@drawable/rounded_newcorners"
+            android:visibility="gone"
+            app:layout_constraintTop_toBottomOf="@id/calendarView3"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginTop="16dp"/>
+
 
         <LinearLayout
             android:id="@+id/nova_sessao"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="24dp"
             android:layout_marginStart="16dp"
+            android:layout_marginTop="24dp"
             android:layout_marginEnd="16dp"
-            android:orientation="vertical"
             android:background="@drawable/bg_novasessao"
-            android:padding="24dp"
             android:elevation="8dp"
-            android:visibility="visible"
-            app:layout_constraintTop_toBottomOf="@id/calendarView3"
+            android:orientation="vertical"
+            android:padding="24dp"
+            android:visibility="invisible"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent">
+            app:layout_constraintTop_toBottomOf="@id/calendarView3">
 
 
             <TextView
@@ -58,39 +91,41 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
                 android:layout_marginTop="16dp"
-                android:gravity="center_vertical">
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginEnd="8dp"
                     android:text="Horário:"
                     android:textColor="@android:color/white"
-                    android:textSize="16sp"
-                    android:layout_marginEnd="8dp" />
+                    android:textSize="16sp" />
 
                 <!-- Tirar a hint  -->
                 <EditText
                     android:id="@+id/inputHora"
                     android:layout_width="64dp"
                     android:layout_height="wrap_content"
-                    android:hint="12"
-                    android:textColor="@android:color/white"
-                    android:inputType="number"
-                    android:textSize="24sp"
+                    android:background="@null"
                     android:gravity="center"
-                    android:background="@null" />
+                    android:hint="12"
+                    android:inputType="number"
+                    android:textColor="@android:color/white"
+                    android:textSize="24sp"
+                    android:textStyle="bold" />
 
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginEnd="8dp"
                     android:text="hr"
                     android:textColor="@android:color/white"
                     android:textSize="16sp"
-                    android:layout_marginStart="8dp"
-                    android:layout_marginEnd="8dp" />
+                    android:textStyle="bold" />
 
 
                 <!-- Tirar a hint  -->
@@ -98,20 +133,22 @@
                     android:id="@+id/inputMinuto"
                     android:layout_width="64dp"
                     android:layout_height="wrap_content"
-                    android:hint="00"
-                    android:textColor="@android:color/white"
-                    android:inputType="number"
-                    android:textSize="24sp"
+                    android:background="@null"
                     android:gravity="center"
-                    android:background="@null" />
+                    android:hint="00"
+                    android:inputType="number"
+                    android:textColor="@android:color/white"
+                    android:textSize="24sp"
+                    android:textStyle="bold" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
                     android:text="min"
                     android:textColor="@android:color/white"
                     android:textSize="16sp"
-                    android:layout_marginStart="8dp" />
+                    android:textStyle="bold" />
 
             </LinearLayout>
 
@@ -119,24 +156,40 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
-                android:orientation="horizontal"
-                android:gravity="center_vertical">
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginEnd="8dp"
                     android:text="Serviço:"
                     android:textColor="@android:color/white"
-                    android:textSize="16sp"
-                    android:layout_marginEnd="8dp" />
+                    android:textSize="16sp" />
 
-                <Spinner
-                    android:id="@+id/spinnerServico"
-                    android:layout_width="0dp"
+
+                <RelativeLayout
+                    android:layout_width="240dp"
                     android:layout_height="48dp"
-                    android:layout_weight="1"
                     android:background="@drawable/spinner_background"
-                    android:popupBackground="@android:color/white" />
+                    android:gravity="center_vertical"
+                    android:paddingStart="12dp"
+                    android:paddingEnd="12dp">
+
+                    <AutoCompleteTextView
+                        android:id="@+id/autoCompleteServico"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="@null"
+                        android:drawableEnd="@drawable/baseline_keyboard_arrow_down_24"
+                        android:drawablePadding="12dp"
+                        android:focusable="false"
+                        android:hint="Pesquisar"
+                        android:inputType="none"
+                        android:paddingEnd="36dp"
+                        android:textColor="@android:color/white"
+                        android:textColorHint="#88FFFFFF" />
+                </RelativeLayout>
             </LinearLayout>
 
             <Button
@@ -145,13 +198,13 @@
                 android:layout_height="48dp"
                 android:layout_gravity="end"
                 android:layout_marginTop="24dp"
+                android:backgroundTint="#2196F3"
+                android:elevation="4dp"
                 android:paddingStart="32dp"
                 android:paddingEnd="32dp"
-                android:backgroundTint="#2196F3"
                 android:text="Agendar"
                 android:textColor="#000000"
-                android:textSize="16sp"
-                android:elevation="4dp"  />
+                android:textSize="16sp" />
 
         </LinearLayout>
 

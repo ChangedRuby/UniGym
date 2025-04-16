@@ -4,14 +4,18 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ArrayAdapter
+import android.widget.AutoCompleteTextView
 import android.widget.Button
 import android.widget.CalendarView
 import android.widget.EditText
+import android.widget.ImageButton
 import android.widget.LinearLayout
 import android.widget.Spinner
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.example.unigym2.R
+
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -47,12 +51,30 @@ class MonitoringSchedules : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+
+
         val calendarView = view.findViewById<CalendarView>(R.id.calendarView3)
         val blocoNovaSessao = view.findViewById<LinearLayout>(R.id.nova_sessao)
         val btnAgendar = view.findViewById<Button>(R.id.btnAgendar)
         val inputHora = view.findViewById<EditText>(R.id.inputHora)
         val inputMinuto = view.findViewById<EditText>(R.id.inputMinuto)
-        val spinnerServico = view.findViewById<Spinner>(R.id.spinnerServico)
+
+        val autoServico = view.findViewById<AutoCompleteTextView>(R.id.autoCompleteServico)
+        val servicos = arrayOf("Consulta", "Treino Personal ", "Massagem ", "Avaliação")
+        val textIndisponivel = view.findViewById<android.widget.TextView>(R.id.textIndisponivel)
+
+        val adapter = ArrayAdapter(requireContext(),android.R.layout.simple_dropdown_item_1line, servicos)
+        autoServico.setAdapter(adapter)
+
+        autoServico.setOnClickListener{
+            autoServico.showDropDown()
+        }
+
+        val btnVoltar = view.findViewById<ImageButton>(R.id.btnVoltar)
+        btnVoltar.setOnClickListener {
+            requireActivity().onBackPressedDispatcher.onBackPressed()
+        }
+            // talvez ajeitar essa botao de voltar
 
         calendarView.setOnDateChangeListener { _, year, month, dayOfMonth ->
             blocoNovaSessao.visibility = View.VISIBLE
@@ -61,9 +83,17 @@ class MonitoringSchedules : Fragment() {
         btnAgendar.setOnClickListener {
             val hora = inputHora.text.toString()
             val minuto = inputMinuto.text.toString()
-            val servico = spinnerServico.selectedItem.toString()
+            val servicoSelecionado = autoServico.text.toString()
 
-            Toast.makeText(requireContext(), "Sessão agendada: $hora:$minuto - $servico", Toast.LENGTH_SHORT).show()
+            if (hora == "12" && minuto == "00" && servicoSelecionado == "Personal Trainer"){
+                textIndisponivel.visibility = View.VISIBLE
+            }
+            else {
+                textIndisponivel.visibility = View.GONE
+                Toast.makeText(requireContext(), "Sessão : $hora:$minuto - $servicoSelecionado", Toast.LENGTH_SHORT).show()
+
+            }
+
         }
 
     }
