@@ -16,7 +16,7 @@
             android:layout_width="400sp"
             android:layout_height="200sp"
             android:layout_marginLeft="5sp"
-            android:background="@color/dark_blue_bg" />
+            android:background="@drawable/rectangle_objetivos_teste" />
 
         <ImageView
             android:id="@+id/imageProfile"
