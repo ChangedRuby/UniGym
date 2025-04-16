@@ -335,6 +335,19 @@
             app:layout_constraintHorizontal_bias="0.542"
             app:layout_constraintStart_toStartOf="parent" />
 
+        <Button
+            android:id="@+id/exitButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginBottom="137dp"
+            android:text="sair"
+            app:layout_constraintBottom_toTopOf="@+id/lineView"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/profileSecondaryColor"
+            app:layout_constraintVertical_bias="1.0" />
+
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
