@@ -1,7 +1,6 @@
-package com.example.unigym2
+package com.example.unigym2.Fragments.Calendar
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,6 +10,8 @@ import android.widget.EditText
 import android.widget.LinearLayout
 import android.widget.Spinner
 import android.widget.Toast
+import androidx.fragment.app.Fragment
+import com.example.unigym2.R
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER

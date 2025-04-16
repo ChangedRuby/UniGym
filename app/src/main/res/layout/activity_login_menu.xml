@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/dark_blue_bg"
-    tools:context=".LoginMenu">
+    tools:context=".Activities.LoginMenu">
 
     <Button
         android:id="@+id/createAccountBtn"

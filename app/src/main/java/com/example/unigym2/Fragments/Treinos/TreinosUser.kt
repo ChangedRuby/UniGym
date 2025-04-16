@@ -1,10 +1,11 @@
-package com.example.unigym2
+package com.example.unigym2.Fragments.Treinos
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
+import com.example.unigym2.R
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -13,13 +14,15 @@ private const val ARG_PARAM2 = "param2"
 
 /**
  * A simple [Fragment] subclass.
- * Use the [TreinosVerFichaPersonal.newInstance] factory method to
+ * Use the [TreinosUser.newInstance] factory method to
  * create an instance of this fragment.
  */
-class TreinosVerFichaPersonal : Fragment() {
+class TreinosUser : Fragment() {
     // TODO: Rename and change types of parameters
     private var param1: String? = null
     private var param2: String? = null
+
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -34,7 +37,10 @@ class TreinosVerFichaPersonal : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_treinos_ver_ficha_personal, container, false)
+        var v = inflater.inflate(R.layout.fragment_treinos_user, container, false)
+
+
+        return v
     }
 
     companion object {
@@ -44,12 +50,12 @@ class TreinosVerFichaPersonal : Fragment() {
          *
          * @param param1 Parameter 1.
          * @param param2 Parameter 2.
-         * @return A new instance of fragment TreinosViewFichaPersonal.
+         * @return A new instance of fragment fragment_treinos_user.
          */
         // TODO: Rename and change types and number of parameters
         @JvmStatic
         fun newInstance(param1: String, param2: String) =
-            TreinosVerFichaPersonal().apply {
+            TreinosUser().apply {
                 arguments = Bundle().apply {
                     putString(ARG_PARAM1, param1)
                     putString(ARG_PARAM2, param2)
