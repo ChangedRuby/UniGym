@@ -5,6 +5,10 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
+import android.widget.EditText
+import android.widget.ImageView
+import com.example.unigym2.Activities.Communicator
 import com.example.unigym2.R
 
 // TODO: Rename parameter arguments, choose names that match
@@ -21,6 +25,10 @@ class AdicionarMaquina : Fragment() {
     // TODO: Rename and change types of parameters
     private var param1: String? = null
     private var param2: String? = null
+    lateinit var goBackBtn: ImageView
+    lateinit var maquinaEditText: EditText
+    lateinit var addBtn: Button
+    private lateinit var communicator: Communicator
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -35,8 +43,26 @@ class AdicionarMaquina : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_adicionar_maquina, container, false)
+        var v = inflater.inflate(R.layout.fragment_adicionar_maquina, container, false)
+
+        goBackBtn = v.findViewById(R.id.BackViewButton)
+        goBackBtn.setOnClickListener{
+            communicator = activity as Communicator
+            communicator.replaceFragment(TreinosMaquinas())
+        }
+
+        maquinaEditText = v.findViewById(R.id.editTextNomeMaquina)
+
+        addBtn = v.findViewById(R.id.addButton)
+        addBtn.setOnClickListener{
+            communicator = activity as Communicator
+            communicator.replaceFragment(TreinosMaquinas())
+
+            //Essa parte tem que ser modificada quando for trabalhar com banco de dados, por enquantp, ela so faz o efeito que irá acontecer ao adicionar
+        }
+        return v
     }
+
 
     companion object {
         /**
