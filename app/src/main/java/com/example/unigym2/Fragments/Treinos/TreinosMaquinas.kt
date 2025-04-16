@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.example.unigym2.Activities.Communicator
 import com.example.unigym2.R
@@ -48,8 +49,16 @@ class TreinosMaquinas : Fragment() {
 
         addButton = v.findViewById(R.id.AddMaquinaButton)
         addButton.setOnClickListener{
+            communicator = activity as Communicator
+            communicator.replaceFragment(AdicionarMaquina())
 
+        }
 
+        parentFragmentManager.setFragmentResultListener("maquina_adicionada_key", viewLifecycleOwner) { _, bundle ->
+            val foiAdicionada = bundle.getBoolean("maquina_adicionada", false)
+            if (foiAdicionada) {
+                Toast.makeText(requireContext(), "Máquina adicionada", Toast.LENGTH_SHORT).show()
+            }
         }
 
 

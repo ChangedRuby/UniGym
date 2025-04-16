@@ -53,13 +53,16 @@ class AdicionarMaquina : Fragment() {
 
         maquinaEditText = v.findViewById(R.id.editTextNomeMaquina)
 
-        addBtn = v.findViewById(R.id.addButton)
-        addBtn.setOnClickListener{
+        addBtn.setOnClickListener {
+
+            parentFragmentManager.setFragmentResult("maquina_adicionada_key", Bundle().apply {
+                putBoolean("maquina_adicionada", true)
+            })
+
             communicator = activity as Communicator
             communicator.replaceFragment(TreinosMaquinas())
-
-            //Essa parte tem que ser modificada quando for trabalhar com banco de dados, por enquantp, ela so faz o efeito que irá acontecer ao adicionar
         }
+        //Essa parte tem que ser modificada quando for trabalhar com banco de dados, por enquantp, ela so faz o efeito que irá acontecer ao adicionar
         return v
     }
 
