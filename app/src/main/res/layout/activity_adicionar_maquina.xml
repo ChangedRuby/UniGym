@@ -106,7 +106,11 @@
         android:textColor="@color/transparent"
         app:icon="@drawable/go_back_button"
         app:iconSize="50sp"
-        tools:layout_editor_absoluteX="10dp"
-        tools:layout_editor_absoluteY="35dp" />
+        app:layout_constraintBottom_toTopOf="@+id/AdicionarMaquinaTextView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.049"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.615" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
