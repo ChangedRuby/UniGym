@@ -1,5 +1,6 @@
 package com.example.unigym2
 
+import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
@@ -24,6 +25,8 @@ class TreinosMaquinas : Fragment() {
     // TODO: Rename and change types of parameters
     private var param1: String? = null
     private var param2: String? = null
+    lateinit var addButton: Button
+    private lateinit var communicator: Communicator
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -43,6 +46,18 @@ class TreinosMaquinas : Fragment() {
     ): View? {
         // Inflate the layout for this fragment
         var v = inflater.inflate(R.layout.fragment_treinos_maquinas, container, false)
+
+
+        addButton = v.findViewById(R.id.AddMaquinaButton)
+        addButton.setOnClickListener{
+            var intent = Intent(MainActivity(), AdicionarMaquina::class.java)
+            startActivity(intent)
+
+        }
+
+
+
+
 
         return v
     }

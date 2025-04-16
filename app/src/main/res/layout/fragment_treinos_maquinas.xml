@@ -37,5 +37,18 @@
             app:layout_constraintEnd_toEndOf="parent"
             tools:layout_editor_absoluteY="114dp" />
 
+        <Button
+            android:id="@+id/AddMaquinaButton"
+            android:layout_width="89dp"
+            android:layout_height="69dp"
+            android:background="@color/transparent"
+            android:paddingLeft="0dp"
+            android:paddingRight="0dp"
+            android:text=" "
+            app:icon="@drawable/add_icon"
+            app:iconSize="80dp"
+            tools:layout_editor_absoluteX="330dp"
+            tools:layout_editor_absoluteY="34dp" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 </FrameLayout>
