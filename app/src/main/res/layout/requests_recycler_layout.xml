@@ -18,13 +18,14 @@
             android:layout_marginLeft="5sp"
             android:background="@drawable/rectangle_objetivos_teste" />
 
-        <ImageView
+        <com.google.android.material.imageview.ShapeableImageView
             android:id="@+id/imageProfile"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:layout_marginLeft="20sp"
+            android:layout_width="50sp"
+            android:layout_height="50sp"
             android:layout_marginTop="20sp"
-            tools:srcCompat="@tools:sample/avatars" />
+            android:layout_marginLeft="20sp"
+            app:shapeAppearanceOverlay="@style/roundedImageView"
+            tools:src="@tools:sample/avatars" />
 
         <TextView
             android:id="@+id/userName"

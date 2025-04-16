@@ -10,5 +10,5 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:itemCount="5"
-        tools:listitem="@layout/recycler_layout" />
+        tools:listitem="@layout/requests_recycler_layout" />
 </FrameLayout>

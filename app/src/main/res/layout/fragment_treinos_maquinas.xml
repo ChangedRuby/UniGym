@@ -31,24 +31,29 @@
             android:id="@+id/MaquinasSearchView"
             android:layout_width="393dp"
             android:layout_height="52dp"
+            android:layout_marginStart="10dp"
             android:layout_marginEnd="8dp"
+            android:layout_marginBottom="565dp"
             android:background="#72788C"
-            android:visibility="visible"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            tools:layout_editor_absoluteY="114dp" />
+            app:layout_constraintStart_toStartOf="parent" />
 
         <Button
             android:id="@+id/AddMaquinaButton"
             android:layout_width="89dp"
             android:layout_height="69dp"
+            android:layout_marginStart="141dp"
+            android:layout_marginTop="34dp"
             android:background="@color/transparent"
             android:paddingLeft="0dp"
             android:paddingRight="0dp"
-            android:text=" "
+            android:text="B"
             app:icon="@drawable/add_icon"
             app:iconSize="80dp"
-            tools:layout_editor_absoluteX="330dp"
-            tools:layout_editor_absoluteY="34dp" />
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/MaquinasTextView"
+            app:layout_constraintTop_toTopOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </FrameLayout>
