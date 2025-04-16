@@ -8,37 +8,38 @@
     tools:context=".AdicionarMaquina">
 
     <!-- TÍTULO -->
+
+    <!-- CARDVIEW COM CONTEÚDO INTERNO -->
     <TextView
         android:id="@+id/AdicionarMaquinaTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="64dp"
+        android:layout_marginTop="96dp"
         android:text="Adicionar Máquina"
         android:textColor="#FFFFFF"
         android:textSize="34sp"
         android:textStyle="bold"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5" />
+        app:layout_constraintHorizontal_bias="0.495"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
-    <!-- CARDVIEW COM CONTEÚDO INTERNO -->
     <androidx.cardview.widget.CardView
         android:id="@+id/CardViewMaquina"
         android:layout_width="391dp"
         android:layout_height="241dp"
-        android:layout_marginTop="32dp"
         app:cardBackgroundColor="#2E4D73"
         app:cardCornerRadius="25dp"
         app:cardElevation="8dp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/AdicionarMaquinaTextView">
+        app:layout_constraintTop_toBottomOf="@+id/AdicionarMaquinaTextView">
 
         <!-- Layout interno do card -->
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="238dp"
             android:padding="20dp">
 
             <!-- Botão dentro do card -->
@@ -91,5 +92,21 @@
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.cardview.widget.CardView>
+
+    <Button
+        android:id="@+id/button2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@color/transparent"
+        android:paddingLeft="0dp"
+        android:paddingTop="6dp"
+        android:paddingRight="0dp"
+        android:paddingBottom="6dp"
+        android:text="A"
+        android:textColor="@color/transparent"
+        app:icon="@drawable/go_back_button"
+        app:iconSize="50sp"
+        tools:layout_editor_absoluteX="10dp"
+        tools:layout_editor_absoluteY="35dp" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
