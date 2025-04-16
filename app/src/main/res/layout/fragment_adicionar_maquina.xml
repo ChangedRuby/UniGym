@@ -36,23 +36,21 @@
             app:layout_constraintHorizontal_bias="0.874"
             app:layout_constraintStart_toStartOf="parent" />
 
-
         <EditText
             android:id="@+id/editTextNomeMaquina"
             android:layout_width="352dp"
             android:layout_height="64dp"
+            android:layout_marginTop="280dp"
             android:backgroundTint="#C7DCDA"
             android:hint="Máquina"
             android:inputType="text"
             android:padding="12dp"
             android:textColor="@android:color/white"
             android:textColorHint="#908383"
-            app:layout_constraintBottom_toTopOf="@+id/addButton"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintMarginTop="24dp"
+            app:layout_constraintHorizontal_bias="0.491"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/view2"
-            app:layout_constraintVertical_bias="0.647" />
+            app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/addMaquinaText"
@@ -97,9 +95,3 @@
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </FrameLayout>
-
-
-
-
-    <?xml version="1.0" encoding="utf-8"?>
-
