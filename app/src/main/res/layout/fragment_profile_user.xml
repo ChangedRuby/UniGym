@@ -67,9 +67,11 @@
             android:id="@+id/lineImageView"
             android:layout_width="0dp"
             android:layout_height="54dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="161dp"
             android:src="@drawable/vertical_white_separator"
-            tools:layout_editor_absoluteX="184dp"
-            tools:layout_editor_absoluteY="161dp" />
+            app:layout_constraintStart_toEndOf="@+id/circleImageView"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/objectivesTextView"
@@ -85,7 +87,7 @@
             app:layout_constraintTop_toBottomOf="@+id/lineView" />
 
         <TextView
-            android:id="@+id/objective2"
+            android:id="@+id/especialidade2"
             android:layout_width="129dp"
             android:layout_height="32dp"
             android:layout_marginStart="14dp"
@@ -101,11 +103,11 @@
             android:textSize="12sp"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/objective1"
+            app:layout_constraintStart_toEndOf="@+id/especialidade1"
             app:layout_constraintTop_toBottomOf="@+id/lineView" />
 
         <TextView
-            android:id="@+id/objective1"
+            android:id="@+id/especialidade1"
             android:layout_width="129dp"
             android:layout_height="32dp"
             android:layout_marginStart="35dp"
@@ -120,7 +122,7 @@
             android:textColor="#FFFFFF"
             android:textSize="12sp"
             android:textStyle="bold"
-            app:layout_constraintEnd_toStartOf="@+id/objective2"
+            app:layout_constraintEnd_toStartOf="@+id/especialidade2"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/objectivesTextView" />
 
@@ -141,7 +143,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.099"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/objective1" />
+            app:layout_constraintTop_toBottomOf="@+id/especialidade1" />
 
         <TextView
             android:id="@+id/UserProfileEmail"

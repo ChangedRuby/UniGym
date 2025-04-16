@@ -9,4 +9,5 @@
     <color name="button_blue">#00BFFF</color>
     <color name="hint_grey">#757575</color>
     <color name="transparent">#00000000</color>
+    <color name="light_grey">#828B98</color>
 </resources>
