@@ -57,7 +57,9 @@ class TreinosMaquinas : Fragment() {
         parentFragmentManager.setFragmentResultListener("maquina_adicionada_key", viewLifecycleOwner) { _, bundle ->
             val foiAdicionada = bundle.getBoolean("maquina_adicionada", false)
             if (foiAdicionada) {
-                Toast.makeText(requireContext(), "Máquina adicionada!", Toast.LENGTH_SHORT).show()
+                val maquinaName = bundle.getString("maquina_name")
+
+                Toast.makeText(requireContext(), "Máquina $maquinaName adicionada!", Toast.LENGTH_SHORT).show()
             }
         }
 

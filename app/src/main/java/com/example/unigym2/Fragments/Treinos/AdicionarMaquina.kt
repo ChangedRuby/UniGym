@@ -53,10 +53,12 @@ class AdicionarMaquina : Fragment() {
 
         maquinaEditText = v.findViewById(R.id.editTextNomeMaquina)
 
+        addBtn = v.findViewById(R.id.addButton)
         addBtn.setOnClickListener {
 
             parentFragmentManager.setFragmentResult("maquina_adicionada_key", Bundle().apply {
                 putBoolean("maquina_adicionada", true)
+                putString("maquina_name", maquinaEditText.text.toString())
             })
 
             communicator = activity as Communicator
