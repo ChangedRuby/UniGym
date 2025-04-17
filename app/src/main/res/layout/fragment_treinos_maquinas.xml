@@ -29,8 +29,8 @@
 
         <SearchView
             android:id="@+id/MaquinasSearchView"
-            android:layout_width="393dp"
-            android:layout_height="52dp"
+            android:layout_width="393sp"
+            android:layout_height="52sp"
             android:layout_marginStart="10dp"
             android:layout_marginEnd="8dp"
             android:layout_marginBottom="565dp"
