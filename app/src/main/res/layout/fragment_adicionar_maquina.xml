@@ -17,7 +17,7 @@
             android:layout_width="397dp"
             android:layout_height="257dp"
             android:background="@drawable/rectangle_objetivos_teste"
-            android:backgroundTint="#4A769E"
+            android:backgroundTint="#76345057"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"

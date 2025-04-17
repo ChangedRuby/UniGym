@@ -23,7 +23,7 @@
             android:textStyle="bold"
             app:layout_constraintBottom_toTopOf="@+id/MaquinasSearchView"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.111"
+            app:layout_constraintHorizontal_bias="0.124"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -34,17 +34,19 @@
             android:layout_marginStart="10dp"
             android:layout_marginEnd="8dp"
             android:layout_marginBottom="565dp"
-            android:background="#72788C"
+            android:background="@drawable/rectangle_light_gradient"
+            android:backgroundTint="#8772788C"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/AddMaquinaButton" />
 
         <Button
             android:id="@+id/AddMaquinaButton"
             android:layout_width="89dp"
             android:layout_height="69dp"
             android:layout_marginStart="141dp"
-            android:layout_marginTop="34dp"
+            android:layout_marginTop="32dp"
             android:background="@color/transparent"
             android:paddingLeft="0dp"
             android:paddingRight="0dp"
@@ -52,6 +54,7 @@
             app:icon="@drawable/add_icon"
             app:iconSize="80dp"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.818"
             app:layout_constraintStart_toEndOf="@+id/MaquinasTextView"
             app:layout_constraintTop_toTopOf="parent" />
 
