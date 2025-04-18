@@ -5,6 +5,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import com.example.unigym2.Fragments.Home.RequestsData
+import com.example.unigym2.Fragments.Home.RequestsRecyclerAdapter
 import com.example.unigym2.R
 
 // TODO: Rename parameter arguments, choose names that match
@@ -21,6 +25,12 @@ class TreinosUser : Fragment() {
     // TODO: Rename and change types of parameters
     private var param1: String? = null
     private var param2: String? = null
+
+    private lateinit var adapter : TreinoUserAdapter
+    private lateinit var recyclerView: RecyclerView
+    private lateinit var repeticoesArray: ArrayList<TreinoUserItem>
+
+    private lateinit var repeticoes: Array<String>
 
 
 
@@ -39,6 +49,13 @@ class TreinosUser : Fragment() {
         // Inflate the layout for this fragment
         var v = inflater.inflate(R.layout.fragment_treinos_user, container, false)
 
+        createItems()
+        val layoutManager = LinearLayoutManager(context)
+        recyclerView = v.findViewById(R.id.treinoUserRecyclerview)
+        recyclerView.layoutManager = layoutManager
+        recyclerView.setHasFixedSize(true)
+        adapter = TreinoUserAdapter(repeticoesArray)
+        recyclerView.adapter = adapter
 
         return v
     }
@@ -61,5 +78,25 @@ class TreinosUser : Fragment() {
                     putString(ARG_PARAM2, param2)
                 }
             }
+    }
+
+    private fun createItems(){
+
+        repeticoesArray = arrayListOf()
+
+        repeticoes = arrayOf(
+            "1 x 5",
+            "2 x 4",
+            "3 x 3",
+            "4 x 2",
+            "5 x 1",
+        )
+
+
+        for(i in repeticoes.indices){
+
+            val exercicios = TreinoUserItem(repeticoes[i])
+            repeticoesArray.add(exercicios)
+        }
     }
 }

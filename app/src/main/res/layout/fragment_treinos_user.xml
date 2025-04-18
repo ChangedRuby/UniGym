@@ -48,5 +48,16 @@
                 android:text="Treino B"
                 android:textColor="@color/white" />
         </RadioGroup>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/treinoUserRecyclerview"
+            android:layout_width="409dp"
+            android:layout_height="650dp"
+            android:layout_marginTop="40dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/toggle"
+            tools:itemCount="5"
+            tools:listitem="@layout/treinos_user_recycler_layout" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </FrameLayout>
