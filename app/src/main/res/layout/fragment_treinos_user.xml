@@ -12,19 +12,19 @@
         android:background="@color/dark_blue_bg">
 
         <RadioGroup
-            android:id="@+id/toggle"
+            android:id="@+id/treinoToggle"
             android:layout_width="300dp"
             android:layout_height="48dp"
             android:layout_marginTop="40sp"
             android:background="@drawable/rectangle_objetivos_teste"
-            android:checkedButton="@+id/offer"
+            android:checkedButton="@+id/treinoButtonB"
             android:orientation="horizontal"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
             <RadioButton
-                android:id="@+id/search"
+                android:id="@+id/treinoButtonA"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_marginLeft="0dp"
@@ -38,7 +38,7 @@
                 android:textColor="@color/white" />
 
             <RadioButton
-                android:id="@+id/offer"
+                android:id="@+id/treinoButtonB"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
@@ -56,7 +56,7 @@
             android:layout_marginTop="40dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/toggle"
+            app:layout_constraintTop_toBottomOf="@+id/treinoToggle"
             tools:itemCount="5"
             tools:listitem="@layout/treinos_user_recycler_layout" />
     </androidx.constraintlayout.widget.ConstraintLayout>
