@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -10,5 +11,42 @@
         android:layout_height="match_parent"
         android:background="@color/dark_blue_bg">
 
+        <RadioGroup
+            android:id="@+id/toggle"
+            android:layout_width="300dp"
+            android:layout_height="48dp"
+            android:layout_marginTop="40sp"
+            android:background="@drawable/rectangle_objetivos_teste"
+            android:checkedButton="@+id/offer"
+            android:orientation="horizontal"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <RadioButton
+                android:id="@+id/search"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="0dp"
+                android:layout_marginTop="0dp"
+                android:layout_marginBottom="0dp"
+                android:layout_weight="1"
+                android:background="@drawable/toggle_background"
+                android:button="@null"
+                android:gravity="center"
+                android:text="Treino A"
+                android:textColor="@color/white" />
+
+            <RadioButton
+                android:id="@+id/offer"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@drawable/toggle_background"
+                android:button="@null"
+                android:gravity="center"
+                android:text="Treino B"
+                android:textColor="@color/white" />
+        </RadioGroup>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </FrameLayout>

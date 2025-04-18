@@ -13,7 +13,6 @@ import com.example.unigym2.R
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
 private const val ARG_PARAM1 = "param1"
 private const val ARG_PARAM2 = "param2"
-lateinit var addTreinoBtn: Button
 private lateinit var communicator: Communicator
 /**
  * A simple [Fragment] subclass.
@@ -24,6 +23,8 @@ class VerTreinoPersonal : Fragment() {
     // TODO: Rename and change types of parameters
     private var param1: String? = null
     private var param2: String? = null
+
+    lateinit var addTreinoBtn: Button
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
