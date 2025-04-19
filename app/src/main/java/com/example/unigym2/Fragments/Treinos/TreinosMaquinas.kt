@@ -80,6 +80,13 @@ class TreinosMaquinas : Fragment() {
             }
         }
 
+        parentFragmentManager.setFragmentResultListener("treino_adicionado_key", viewLifecycleOwner) { _, bundle ->
+            val foiAdicionada = bundle.getBoolean("treino_adicionado", false)
+            if (foiAdicionada) {
+                Toast.makeText(requireContext(), "Treino adicionado!", Toast.LENGTH_SHORT).show()
+            }
+        }
+
 
 
         // RECYCLER VIEW
