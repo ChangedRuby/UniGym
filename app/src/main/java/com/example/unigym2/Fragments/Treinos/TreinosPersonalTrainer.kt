@@ -48,7 +48,7 @@ class TreinosPersonalTrainer : Fragment() {
 
         verTreinosBtn.setOnClickListener {
             communicator = activity as Communicator
-            communicator.replaceFragment(TreinosFichaPersonal())
+            communicator.replaceFragment(VerTreinoPersonal())
         }
 
         verMaquinasBtn.setOnClickListener {
