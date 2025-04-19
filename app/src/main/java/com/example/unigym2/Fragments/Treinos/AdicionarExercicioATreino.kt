@@ -95,7 +95,7 @@ class AdicionarExercicioATreino : Fragment() {
             }
         }
         adapter2.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-        maquinasSpinner.adapter = adapter2
+        exerciciosSpinner.adapter = adapter2
 
         addTreinoBtn = v.findViewById(R.id.addTreino)
         addTreinoBtn.setOnClickListener{
