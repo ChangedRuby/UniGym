@@ -175,7 +175,7 @@
             tools:ignore="TouchTargetSizeCheck" />
 
         <Button
-            android:id="@+id/button2"
+            android:id="@+id/saveButton"
             android:layout_width="118.667dp"
             android:layout_height="28.653dp"
             android:layout_marginTop="12dp"
