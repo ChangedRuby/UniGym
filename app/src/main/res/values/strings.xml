@@ -1,7 +1,24 @@
 <resources>
     <string name="app_name">UniGym</string>
+
     <string name="back">Voltar</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+
     <string name="user_name" translatable="false">Rene Winters</string>
+
+    <string-array name="maquinas_array">
+        <item>Selecione uma máquina</item>
+        <item>Leg Press</item>
+        <item>Supino</item>
+        <item>Elevação Pélvica</item>
+    </string-array>
+
+    <string-array name="exercicios_array">
+        <item>Selecione um exercício</item>
+        <item>Leg Press abduzido</item>
+        <item>Panturrilha</item>
+
+    </string-array>
+
 </resources>

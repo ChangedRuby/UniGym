@@ -1,10 +1,17 @@
 package com.example.unigym2.Fragments.Treinos
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.RadioButton
+import android.widget.RadioGroup
 import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import com.example.unigym2.Fragments.Home.RequestsData
+import com.example.unigym2.Fragments.Home.RequestsRecyclerAdapter
 import com.example.unigym2.R
 
 // TODO: Rename parameter arguments, choose names that match
@@ -21,6 +28,15 @@ class TreinosUser : Fragment() {
     // TODO: Rename and change types of parameters
     private var param1: String? = null
     private var param2: String? = null
+
+    lateinit var radioGroupBtn: RadioGroup
+
+    private lateinit var recyclerView: RecyclerView
+    private lateinit var repeticoesArrayA: ArrayList<TreinoUserItem>
+    private lateinit var repeticoesArrayB: ArrayList<TreinoUserItem>
+
+    private lateinit var repeticoesA: Array<String>
+    private lateinit var repeticoesB: Array<String>
 
 
 
@@ -39,6 +55,38 @@ class TreinosUser : Fragment() {
         // Inflate the layout for this fragment
         var v = inflater.inflate(R.layout.fragment_treinos_user, container, false)
 
+        radioGroupBtn = v.findViewById(R.id.treinoToggle)
+
+        radioGroupBtn.setOnCheckedChangeListener { radioGroup, checkedID ->
+            if(checkedID != -1){
+                val checkedRadioBtn = radioGroup.findViewById<RadioButton>(checkedID)
+
+                if(checkedRadioBtn != null){
+                    when(checkedID){
+                        R.id.treinoButtonA -> {
+                            changeAdapter(repeticoesArrayA)
+                            Log.d("TreinoUser", "ButtonA click")
+                        }
+
+                        R.id.treinoButtonB -> {
+                            changeAdapter(repeticoesArrayB)
+                            Log.d("TreinoUser", "ButtonB click")
+                        }
+
+                        else -> {
+                            Log.d("TreinoUser", "Button not found")
+                        }
+                    }
+                }
+            }
+        }
+
+        createItems()
+        val layoutManager = LinearLayoutManager(context)
+        recyclerView = v.findViewById(R.id.treinoUserRecyclerview)
+        recyclerView.layoutManager = layoutManager
+        recyclerView.setHasFixedSize(true)
+        changeAdapter(repeticoesArrayB)
 
         return v
     }
@@ -61,5 +109,45 @@ class TreinosUser : Fragment() {
                     putString(ARG_PARAM2, param2)
                 }
             }
+    }
+
+    private fun changeAdapter(userItemArray: ArrayList<TreinoUserItem>){
+        val adapter = TreinoUserAdapter(userItemArray)
+        recyclerView.adapter = adapter
+    }
+
+    private fun createItems(){
+
+        repeticoesArrayA = arrayListOf()
+        repeticoesArrayB = arrayListOf()
+
+        repeticoesA = arrayOf(
+            "1 x 5",
+            "2 x 4",
+            "3 x 3",
+            "4 x 2",
+            "5 x 1",
+        )
+
+        repeticoesB = arrayOf(
+            "5 x 1",
+            "4 x 2",
+            "3 x 3",
+            "2 x 4",
+            "1 x 5",
+        )
+
+
+        for(i in repeticoesA.indices){
+
+            val exercicios = TreinoUserItem(repeticoesA[i])
+            repeticoesArrayA.add(exercicios)
+        }
+
+        for(i in repeticoesB.indices){
+
+            val exercicios = TreinoUserItem(repeticoesB[i])
+            repeticoesArrayB.add(exercicios)
+        }
     }
 }

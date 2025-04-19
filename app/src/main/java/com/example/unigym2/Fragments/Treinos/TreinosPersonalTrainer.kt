@@ -24,6 +24,7 @@ class TreinosPersonalTrainer : Fragment() {
     private var param1: String? = null
     private var param2: String? = null
 
+    lateinit var verMaquinasBtn: Button
     lateinit var verTreinosBtn: Button
     private lateinit var communicator: Communicator
 
@@ -43,10 +44,16 @@ class TreinosPersonalTrainer : Fragment() {
         var v = inflater.inflate(R.layout.fragment_treinos_personal_trainer, container, false)
 
         verTreinosBtn = v.findViewById(R.id.viewTreinosPersonal)
+        verMaquinasBtn = v.findViewById(R.id.viewMaquinasPersonal)
 
         verTreinosBtn.setOnClickListener {
             communicator = activity as Communicator
             communicator.replaceFragment(TreinosFichaPersonal())
+        }
+
+        verMaquinasBtn.setOnClickListener {
+            communicator = activity as Communicator
+            communicator.replaceFragment(TreinosMaquinas())
         }
 
         return v

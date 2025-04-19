@@ -7,7 +7,12 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.RecyclerView.RecycledViewPool
 import com.example.unigym2.Activities.Communicator
+import com.example.unigym2.Fragments.Home.RequestsData
+import com.example.unigym2.Fragments.Home.RequestsRecyclerAdapter
 import com.example.unigym2.R
 
 // TODO: Rename parameter arguments, choose names that match
@@ -26,6 +31,11 @@ class TreinosMaquinas : Fragment() {
     private var param2: String? = null
     lateinit var addButton: Button
     private lateinit var communicator: Communicator
+
+    private lateinit var adapter : MaquinaOuterAdapter
+    private lateinit var outerRecyclerView: RecyclerView
+    lateinit var viewPool: RecyclerView.RecycledViewPool
+    private lateinit var outerItems: ArrayList<RequestsData>
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -57,7 +67,9 @@ class TreinosMaquinas : Fragment() {
         parentFragmentManager.setFragmentResultListener("maquina_adicionada_key", viewLifecycleOwner) { _, bundle ->
             val foiAdicionada = bundle.getBoolean("maquina_adicionada", false)
             if (foiAdicionada) {
-                Toast.makeText(requireContext(), "Máquina adicionada!", Toast.LENGTH_SHORT).show()
+                val maquinaName = bundle.getString("maquina_name")
+
+                Toast.makeText(requireContext(), "Máquina $maquinaName adicionada!", Toast.LENGTH_SHORT).show()
             }
         }
 
@@ -67,6 +79,29 @@ class TreinosMaquinas : Fragment() {
                 Toast.makeText(requireContext(), "Exercício adicionado!", Toast.LENGTH_SHORT).show()
             }
         }
+
+        parentFragmentManager.setFragmentResultListener("treino_adicionado_key", viewLifecycleOwner) { _, bundle ->
+            val foiAdicionada = bundle.getBoolean("treino_adicionado", false)
+            if (foiAdicionada) {
+                Toast.makeText(requireContext(), "Treino adicionado!", Toast.LENGTH_SHORT).show()
+            }
+        }
+
+
+
+        // RECYCLER VIEW
+
+        val maquinasNames = createOuterItems()
+        val layoutManager = LinearLayoutManager(context)
+
+        viewPool = RecycledViewPool()
+
+        outerRecyclerView = v.findViewById(R.id.maquinasOuterRecyclerview)
+        outerRecyclerView.layoutManager = layoutManager
+        outerRecyclerView.setHasFixedSize(true)
+        outerRecyclerView.setRecycledViewPool(viewPool)
+        adapter = MaquinaOuterAdapter(maquinasNames, viewPool)
+        outerRecyclerView.adapter = adapter
 
 
 
@@ -97,5 +132,13 @@ class TreinosMaquinas : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+    }
+
+    private fun createOuterItems(): List<MaquinaOuterItem> {
+        // Generate sample data
+        val innerItems1 = List(10) { MaquinaInnerItem("Inner Item $it") }
+        val innerItems2 = List(10) { MaquinaInnerItem("Inner Item ${it + 10}") }
+        val innerItems3 = List(10) { MaquinaInnerItem("Inner Item ${it + 10}") }
+        return listOf(MaquinaOuterItem(innerItems1), MaquinaOuterItem(innerItems2), MaquinaOuterItem(innerItems3))
     }
 }

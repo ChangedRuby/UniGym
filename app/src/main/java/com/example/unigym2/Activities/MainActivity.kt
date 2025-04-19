@@ -8,6 +8,7 @@ import com.example.unigym2.Fragments.Calendar.CalendarUser
 import com.example.unigym2.Fragments.Chat.ChatUser
 import com.example.unigym2.Fragments.Home.HomePersonalTrainer
 import com.example.unigym2.Fragments.Home.HomeUser
+import com.example.unigym2.Fragments.Profile.ProfilePersonal
 import com.example.unigym2.Fragments.Profile.ProfileUser
 import com.example.unigym2.Fragments.Treinos.TreinosPersonalTrainer
 import com.example.unigym2.Fragments.Treinos.TreinosUser
@@ -38,7 +39,7 @@ class MainActivity : AppCompatActivity(), Communicator{
                 when(it.itemId){
                     R.id.home -> replaceFragment(HomePersonalTrainer())
                     R.id.chat -> replaceFragment(ChatUser())
-                    R.id.profile -> replaceFragment(ProfileUser())
+                    R.id.profile -> replaceFragment(ProfilePersonal())
                     R.id.calendar -> replaceFragment(CalendarUser())
                     R.id.treinos -> replaceFragment(TreinosPersonalTrainer())
 
