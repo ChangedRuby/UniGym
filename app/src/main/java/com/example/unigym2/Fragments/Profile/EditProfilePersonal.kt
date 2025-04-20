@@ -6,6 +6,7 @@ package com.example.unigym2.Fragments.Profile
     import android.view.View
     import android.view.ViewGroup
     import android.widget.Button
+    import android.widget.TextView
     import androidx.fragment.app.Fragment
     import com.example.unigym2.Activities.Communicator
     import com.example.unigym2.R
@@ -13,7 +14,7 @@ package com.example.unigym2.Fragments.Profile
 
     class EditProfilePersonal : Fragment() {
         private lateinit var communicator: Communicator
-        private lateinit var saveButton: Button
+        private lateinit var saveButton: TextView
         private lateinit var usernameEditText: TextInputEditText
         private lateinit var specialtyET1: TextInputEditText
         private lateinit var specialtyET2: TextInputEditText
@@ -40,10 +41,10 @@ package com.example.unigym2.Fragments.Profile
 
             // Initialize UI elements
             usernameEditText = view.findViewById(R.id.editTextUsername)
-            specialtyET1 = view.findViewById(R.id.editText1)
-            specialtyET2 = view.findViewById(R.id.editText2)
-            specialtyET3 = view.findViewById(R.id.editText3)
-            specialtyET4 = view.findViewById(R.id.editText4)
+            specialtyET1 = view.findViewById(R.id.editEspecialidade1)
+            specialtyET2 = view.findViewById(R.id.editEspecialidade2)
+            specialtyET3 = view.findViewById(R.id.editEspecialidade3)
+            specialtyET4 = view.findViewById(R.id.editEspecialidade4)
             serviceNameET1 = view.findViewById(R.id.editText5)
             serviceNameET2 = view.findViewById(R.id.editText6)
             serviceNameET3 = view.findViewById(R.id.editText7)
@@ -54,7 +55,7 @@ package com.example.unigym2.Fragments.Profile
             servicePriceET4 = view.findViewById(R.id.editText12)
 
             // Add Save Button functionality (you'll need to add this button to your layout)
-            saveButton = view.findViewById(R.id.saveButton)
+            saveButton = view.findViewById(R.id.ConfirmarEditPersonal)
             saveButton.setOnClickListener {
                 saveProfileChanges()
                 communicator.replaceFragment(ProfilePersonal())

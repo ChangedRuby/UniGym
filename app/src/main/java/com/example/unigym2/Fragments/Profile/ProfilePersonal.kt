@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.ImageView
 import androidx.fragment.app.Fragment
 import com.example.unigym2.Activities.Communicator
 import com.example.unigym2.R
@@ -17,7 +18,7 @@ class ProfilePersonal : Fragment() {
     private var param1: String? = null
     private var param2: String? = null
 
-    lateinit var editBtn : Button
+    lateinit var editBtn : ImageView
     private lateinit var communicator : Communicator
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -35,7 +36,7 @@ class ProfilePersonal : Fragment() {
     ): View? {
         var v = inflater.inflate(R.layout.fragment_profile_personal, container, false)
         communicator = activity as Communicator
-        editBtn = v.findViewById(R.id.editButton)
+        editBtn = v.findViewById(R.id.EditProfilePersonal)
         editBtn.setOnClickListener {
             communicator.replaceFragment(EditProfilePersonal())
             Log.d("personalLog", "Clicked")

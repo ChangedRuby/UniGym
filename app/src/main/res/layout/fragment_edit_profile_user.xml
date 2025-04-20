@@ -133,7 +133,7 @@
             app:layout_constraintTop_toTopOf="@+id/profileSecondaryColor" />
 
         <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/editObjetivo3"
+            android:id="@+id/editEspecialidade3"
             android:layout_width="160dp"
             android:layout_height="35dp"
             android:layout_marginTop="96dp"
@@ -148,7 +148,7 @@
             tools:ignore="TouchTargetSizeCheck,SpeakableTextPresentCheck" />
 
         <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/editObjetivo1"
+            android:id="@+id/editEspecialidade1"
             android:layout_width="160dp"
             android:layout_height="35dp"
             android:layout_marginTop="16dp"
@@ -163,7 +163,7 @@
             tools:ignore="TouchTargetSizeCheck" />
 
         <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/editObjetivo2"
+            android:id="@+id/editEspecialidade2"
             android:layout_width="160dp"
             android:layout_height="35dp"
             android:layout_marginTop="56dp"
@@ -178,7 +178,7 @@
             tools:ignore="TouchTargetSizeCheck,SpeakableTextPresentCheck" />
 
         <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/editObjetivo4"
+            android:id="@+id/editEspecialidade4"
             android:layout_width="160dp"
             android:layout_height="35dp"
             android:layout_marginTop="136dp"
@@ -193,7 +193,7 @@
             tools:ignore="TouchTargetSizeCheck,SpeakableTextPresentCheck" />
 
         <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/editUserUsername"
+            android:id="@+id/editTextUsername"
             android:layout_width="100dp"
             android:layout_height="50dp"
             android:layout_marginStart="48dp"
@@ -222,7 +222,7 @@
             app:layout_constraintBottom_toTopOf="@+id/userProfileEmail"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.731"
-            app:layout_constraintStart_toEndOf="@+id/editUserUsername"
+            app:layout_constraintStart_toEndOf="@+id/editTextUsername"
             app:layout_constraintTop_toBottomOf="@+id/profileSecondaryColor"
             app:layout_constraintVertical_bias="0.929" />
 
@@ -243,7 +243,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.498"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/editObjetivo4"
+            app:layout_constraintTop_toBottomOf="@+id/editEspecialidade4"
             app:layout_constraintVertical_bias="0.916" />
 
 
