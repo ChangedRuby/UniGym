@@ -1,0 +1,252 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/FrameLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/dark_blue_bg"
+    tools:context=".Fragments.Profile.ProfileUser">
+
+    <!-- TODO: Update blank fragment layout -->
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <TextView
+            android:id="@+id/textView22"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="236dp"
+            android:fontFamily="@font/roboto"
+            android:text="Objetivo 4:"
+            android:textColor="@color/white"
+            android:textSize="14sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.152"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <TextView
+            android:id="@+id/textView19"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="356dp"
+            android:fontFamily="@font/roboto"
+            android:text="Objetivo 1:"
+            android:textColor="@color/white"
+            android:textSize="14sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.152"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <TextView
+            android:id="@+id/textView20"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="316dp"
+            android:fontFamily="@font/roboto"
+            android:text="Objetivo 2:"
+            android:textColor="@color/white"
+            android:textSize="14sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.152"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <TextView
+            android:id="@+id/textView21"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="276dp"
+            android:fontFamily="@font/roboto"
+            android:text="Objetivo 3:"
+            android:textColor="@color/white"
+            android:textSize="14sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.152"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <View
+            android:id="@+id/profileSecondaryColor"
+            android:layout_width="match_parent"
+            android:layout_height="139dp"
+            android:background="#03A9F4"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.0"
+            tools:layout_editor_absoluteX="16dp" />
+
+
+        <TextView
+            android:id="@+id/userProfileEmail"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Email: treinador@gmail.com"
+            android:textColor="#FBFBFB"
+            android:textSize="12sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.205"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.419" />
+
+        <View
+            android:id="@+id/lineView"
+            android:layout_width="wrap_content"
+            android:layout_height="2sp"
+            android:background="@color/hint_grey"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.45" />
+
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/profileUserImage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="104dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.12"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:shapeAppearanceOverlay="@style/roundedImageView"
+            tools:src="@tools:sample/avatars" />
+
+        <View
+            android:id="@+id/circleImageView"
+            android:layout_width="130sp"
+            android:layout_height="130sp"
+            android:layout_marginTop="104dp"
+            android:background="@drawable/circle_test"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.12"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/profileSecondaryColor" />
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/editObjetivo3"
+            android:layout_width="160dp"
+            android:layout_height="35dp"
+            android:layout_marginTop="96dp"
+            android:backgroundTint="#FFFFFF"
+            android:textColor="@color/white"
+            android:textColorHint="@color/hint_grey"
+            android:textSize="14sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.553"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/lineView"
+            tools:ignore="TouchTargetSizeCheck,SpeakableTextPresentCheck" />
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/editObjetivo1"
+            android:layout_width="160dp"
+            android:layout_height="35dp"
+            android:layout_marginTop="16dp"
+            android:backgroundTint="#FFFFFF"
+            android:textColor="@color/white"
+            android:textColorHint="@color/hint_grey"
+            android:textSize="14sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.553"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/lineView"
+            tools:ignore="TouchTargetSizeCheck" />
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/editObjetivo2"
+            android:layout_width="160dp"
+            android:layout_height="35dp"
+            android:layout_marginTop="56dp"
+            android:backgroundTint="#FFFFFF"
+            android:textColor="@color/white"
+            android:textColorHint="@color/hint_grey"
+            android:textSize="14sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.553"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/lineView"
+            tools:ignore="TouchTargetSizeCheck,SpeakableTextPresentCheck" />
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/editObjetivo4"
+            android:layout_width="160dp"
+            android:layout_height="35dp"
+            android:layout_marginTop="136dp"
+            android:backgroundTint="#FFFFFF"
+            android:textColor="@color/white"
+            android:textColorHint="@color/hint_grey"
+            android:textSize="14sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.553"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/lineView"
+            tools:ignore="TouchTargetSizeCheck,SpeakableTextPresentCheck" />
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/editUserUsername"
+            android:layout_width="100dp"
+            android:layout_height="50dp"
+            android:layout_marginStart="48dp"
+            android:layout_marginTop="8dp"
+            android:backgroundTint="#FFFFFF"
+            android:hint="Username"
+            android:textColor="@color/white"
+            android:textColorHint="@color/white"
+            android:textSize="20sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/profileUserImage" />
+
+        <TextView
+            android:id="@+id/AlterarSenhaEditUser"
+            android:layout_width="140dp"
+            android:layout_height="33dp"
+            android:background="@drawable/rectangle_light_gradient"
+            android:gravity="center"
+            android:minHeight="48dp"
+            android:paddingStart="32dp"
+            android:paddingEnd="32dp"
+            android:text="Alterar Senha"
+            android:textColor="#000000"
+            android:textSize="12sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toTopOf="@+id/userProfileEmail"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.731"
+            app:layout_constraintStart_toEndOf="@+id/editUserUsername"
+            app:layout_constraintTop_toBottomOf="@+id/profileSecondaryColor"
+            app:layout_constraintVertical_bias="0.929" />
+
+        <TextView
+            android:id="@+id/ConfirmarEditUser"
+            android:layout_width="134dp"
+            android:layout_height="38dp"
+            android:background="@drawable/rectangle_light_gradient"
+            android:gravity="center"
+            android:minHeight="48dp"
+            android:paddingStart="32dp"
+            android:paddingEnd="32dp"
+            android:text="Confirmar"
+            android:textColor="#000000"
+            android:textSize="12sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.498"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/editObjetivo4"
+            app:layout_constraintVertical_bias="0.916" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</FrameLayout>

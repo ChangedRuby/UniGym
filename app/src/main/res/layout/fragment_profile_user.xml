@@ -146,6 +146,25 @@
             app:layout_constraintTop_toBottomOf="@+id/especialidade1" />
 
         <TextView
+            android:id="@+id/objective"
+            android:layout_width="129dp"
+            android:layout_height="32dp"
+            android:layout_marginTop="16dp"
+            android:background="@drawable/rectangle_objetivos_teste"
+            android:gravity="center"
+            android:minHeight="48dp"
+            android:paddingStart="32dp"
+            android:paddingEnd="32dp"
+            android:text="Objetivo 4"
+            android:textColor="#FFFFFF"
+            android:textSize="12sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.659"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/especialidade2" />
+
+        <TextView
             android:id="@+id/UserProfileEmail"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -191,20 +210,50 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="@+id/profileSecondaryColor" />
 
-        <Button
-            android:id="@+id/button10"
+        <TextView
+            android:id="@+id/AcessibilidadeUser"
+            android:layout_width="148dp"
+            android:layout_height="31dp"
+            android:layout_marginTop="40dp"
+            android:layout_marginEnd="16dp"
+            android:background="@drawable/rectangle_light_gradient"
+            android:gravity="center"
+            android:minHeight="48dp"
+            android:paddingStart="32dp"
+            android:paddingEnd="32dp"
+            android:text="Acessibilidade"
+            android:textColor="#000000"
+            android:textSize="12sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.512"
+            app:layout_constraintStart_toEndOf="@+id/editUserUsername"
+            app:layout_constraintTop_toBottomOf="@+id/profileSecondaryColor" />
+
+        <ImageView
+            android:id="@+id/EditProfileUser"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="164dp"
-            android:background="@drawable/rectangle_light_gradient"
-            android:paddingStart="20sp"
-            android:paddingEnd="20sp"
-            android:text="Acessibilidade"
-            android:textSize="12sp"
+            android:layout_marginTop="4dp"
+            android:src="@drawable/ic_edit"
+            app:layout_constraintBottom_toTopOf="@+id/AcessibilidadeUser"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.945"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintHorizontal_bias="0.848"
+            app:layout_constraintStart_toEndOf="@+id/profileUserImage"
+            app:layout_constraintTop_toBottomOf="@+id/profileSecondaryColor"
+            app:layout_constraintVertical_bias="0.416" />
+
+        <ImageView
+            android:id="@+id/imageView6"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_logout"
+            app:layout_constraintBottom_toTopOf="@+id/AcessibilidadeUser"
+            app:layout_constraintEnd_toStartOf="@+id/EditProfileUser"
+            app:layout_constraintHorizontal_bias="0.915"
+            app:layout_constraintStart_toEndOf="@+id/circleImageView"
+            app:layout_constraintTop_toBottomOf="@+id/profileSecondaryColor"
+            app:layout_constraintVertical_bias="0.541" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

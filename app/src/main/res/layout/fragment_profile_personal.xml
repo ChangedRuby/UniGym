@@ -16,7 +16,7 @@
 
         <TextView
             android:id="@+id/especialidade4"
-            android:layout_width="129dp"
+            android:layout_width="145dp"
             android:layout_height="32dp"
             android:layout_marginStart="14dp"
             android:layout_marginTop="128dp"
@@ -25,7 +25,7 @@
             android:minHeight="48dp"
             android:paddingStart="32dp"
             android:paddingEnd="32dp"
-            android:text="Especialidade"
+            android:text="Especialidade 4"
             android:textColor="#FFFFFF"
             android:textSize="12sp"
             app:layout_constraintEnd_toEndOf="parent"
@@ -35,7 +35,7 @@
 
         <TextView
             android:id="@+id/especialidade3"
-            android:layout_width="129dp"
+            android:layout_width="145dp"
             android:layout_height="32dp"
             android:layout_marginStart="35dp"
             android:layout_marginTop="84dp"
@@ -45,7 +45,7 @@
             android:minHeight="48dp"
             android:paddingStart="32dp"
             android:paddingEnd="32dp"
-            android:text="Especialidade"
+            android:text="Especialidade 3"
             android:textColor="#FFFFFF"
             android:textSize="12sp"
             app:layout_constraintEnd_toStartOf="@+id/especialidade2"
@@ -104,7 +104,7 @@
 
         <TextView
             android:id="@+id/especialidade2"
-            android:layout_width="129dp"
+            android:layout_width="145dp"
             android:layout_height="32dp"
             android:layout_marginStart="14dp"
             android:layout_marginTop="76dp"
@@ -113,7 +113,7 @@
             android:minHeight="48dp"
             android:paddingStart="32dp"
             android:paddingEnd="32dp"
-            android:text="Especialidade"
+            android:text="Especialidade 2"
             android:textColor="#FFFFFF"
             android:textSize="12sp"
             app:layout_constraintEnd_toEndOf="parent"
@@ -123,7 +123,7 @@
 
         <TextView
             android:id="@+id/especialidade1"
-            android:layout_width="129dp"
+            android:layout_width="145dp"
             android:layout_height="32dp"
             android:layout_marginStart="35dp"
             android:layout_marginTop="32dp"
@@ -141,20 +141,19 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/objectivesTextView" />
 
+
         <TextView
             android:id="@+id/UserProfileEmail"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="12dp"
+            android:layout_marginTop="16dp"
             android:text="CREF: xxxxxx-G/SC"
             android:textColor="#FBFBFB"
             android:textSize="12sp"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.163"
+            app:layout_constraintHorizontal_bias="0.156"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/UserProfileName" />
-
-
 
         <TextView
             android:id="@+id/userProfileEmail"
@@ -168,7 +167,7 @@
             app:layout_constraintHorizontal_bias="0.767"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.406" />
+            app:layout_constraintVertical_bias="0.412" />
 
         <View
             android:id="@+id/lineView"
@@ -202,38 +201,6 @@
             app:layout_constraintHorizontal_bias="0.12"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="@+id/profileSecondaryColor" />
-
-        <Button
-            android:id="@+id/button10"
-            android:layout_width="118.667dp"
-            android:layout_height="28.653dp"
-            android:layout_marginTop="144dp"
-            android:autoSizeTextType="none"
-            android:background="@drawable/rectangle_light_gradient"
-            android:paddingStart="15sp"
-            android:paddingEnd="15sp"
-            android:text="Acessibilidade"
-            android:textAlignment="center"
-            android:textAllCaps="false"
-            android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-            android:textSize="18sp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.606"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:ignore="TouchTargetSizeCheck" />
-
-        <ImageView
-            android:id="@+id/imageView6"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/ellipse_selector"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.423"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.415" />
 
         <TextView
             android:id="@+id/textView3"
@@ -288,7 +255,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="140dp"
-            android:text="R$ 150,00 por treino"
+            android:text="R$ XX,XX por treino"
             android:textColor="@color/white"
             android:textColorLink="@color/white"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -301,7 +268,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="100dp"
-            android:text="R$ 150,00 por treino"
+            android:text="R$ XX,XX por treino"
             android:textColor="@color/white"
             android:textColorLink="@color/white"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -314,7 +281,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="60dp"
-            android:text="R$ 150,00 por treino"
+            android:text="R$ XX,XX por treino"
             android:textColor="@color/white"
             android:textColorLink="@color/white"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -327,7 +294,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="20dp"
-            android:text="R$ 150,00 por treino"
+            android:text="R$ XX,XX por treino"
             android:textColor="@color/white"
             android:textColorLink="@color/white"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -335,30 +302,50 @@
             app:layout_constraintHorizontal_bias="0.542"
             app:layout_constraintStart_toStartOf="parent" />
 
-        <Button
-            android:id="@+id/exitButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="4dp"
+        <TextView
+            android:id="@+id/AcessibilidadePersonal"
+            android:layout_width="148dp"
+            android:layout_height="31dp"
             android:layout_marginEnd="16dp"
-            android:layout_marginBottom="137dp"
-            android:text="sair"
-            app:layout_constraintBottom_toTopOf="@+id/lineView"
+            android:background="@drawable/rectangle_light_gradient"
+            android:gravity="center"
+            android:minHeight="48dp"
+            android:paddingStart="32dp"
+            android:paddingEnd="32dp"
+            android:text="Acessibilidade"
+            android:textColor="#000000"
+            android:textSize="12sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toTopOf="@+id/userProfileEmail"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.512"
+            app:layout_constraintStart_toEndOf="@+id/editUserUsername"
             app:layout_constraintTop_toBottomOf="@+id/profileSecondaryColor"
-            app:layout_constraintVertical_bias="1.0" />
+            app:layout_constraintVertical_bias="0.32" />
 
-        <Button
-            android:id="@+id/editButton"
+        <ImageView
+            android:id="@+id/EditProfilePersonal"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="4dp"
-            android:layout_marginEnd="80dp"
-            android:text="editar"
-            app:layout_constraintBottom_toBottomOf="parent"
+            android:src="@drawable/ic_edit"
+            app:layout_constraintBottom_toTopOf="@+id/AcessibilidadePersonal"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.857"
+            app:layout_constraintStart_toEndOf="@+id/profileUserImage"
             app:layout_constraintTop_toBottomOf="@+id/profileSecondaryColor"
-            app:layout_constraintVertical_bias="0.112" />
+            app:layout_constraintVertical_bias="0.391" />
+
+        <ImageView
+            android:id="@+id/LogoutProfilePersonal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_logout"
+            app:layout_constraintBottom_toTopOf="@+id/AcessibilidadePersonal"
+            app:layout_constraintEnd_toStartOf="@+id/EditProfilePersonal"
+            app:layout_constraintHorizontal_bias="0.891"
+            app:layout_constraintStart_toEndOf="@+id/profileUserImage"
+            app:layout_constraintTop_toBottomOf="@+id/profileSecondaryColor"
+            app:layout_constraintVertical_bias="0.363" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>
