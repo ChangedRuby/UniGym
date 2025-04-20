@@ -19,17 +19,17 @@ import com.example.unigym2.R
 private const val ARG_PARAM1 = "param1"
 private const val ARG_PARAM2 = "param2"
 
-lateinit var backBtn: ImageView
-lateinit var maquinasSpinner: Spinner
-lateinit var exerciciosSpinner: Spinner
-lateinit var seriesEditText: EditText
-lateinit var repeticoesEditText: EditText
-lateinit var addTreinoBtn: Button
-private lateinit var communicator: Communicator
-
 class AdicionarExercicioATreino : Fragment() {
     private var param1: String? = null
     private var param2: String? = null
+
+    lateinit var backBtn: ImageView
+    lateinit var maquinasSpinner: Spinner
+    lateinit var exerciciosSpinner: Spinner
+    lateinit var seriesEditText: EditText
+    lateinit var repeticoesEditText: EditText
+    lateinit var addTreinoBtn: Button
+    private lateinit var communicator: Communicator
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
