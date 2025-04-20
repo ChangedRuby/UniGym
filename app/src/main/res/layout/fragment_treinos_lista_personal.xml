@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".Fragments.Treinos.ListaTreinosPersonal">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/dark_blue_bg">
+
+        <TextView
+            android:id="@+id/títuloDaTela"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="40dp"
+            android:text="Treinos"
+            android:textColor="@color/white"
+            android:textSize="34sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.131"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <SearchView
+            android:id="@+id/treinosSearchView"
+            android:layout_width="393sp"
+            android:layout_height="52sp"
+            android:layout_marginTop="28dp"
+            android:background="@drawable/rectangle_light_gradient"
+            android:backgroundTint="#8772788C"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/títuloDaTela" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/TreinosRecyclerview"
+            android:layout_width="409dp"
+            android:layout_height="563dp"
+            android:layout_marginTop="20dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/treinosSearchView"
+            tools:itemCount="5"
+            tools:listitem="@layout/usuarios_recycler_layout" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</FrameLayout>

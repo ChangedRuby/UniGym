@@ -1,4 +1,4 @@
-package com.example.unigym2.Fragments.Treinos
+package com.example.unigym2.Fragments.Treinos.Recyclerviews
 
 import android.view.LayoutInflater
 import android.view.View

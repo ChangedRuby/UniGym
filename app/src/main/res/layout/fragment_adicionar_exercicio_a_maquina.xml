@@ -93,7 +93,7 @@
             tools:layout_editor_absoluteY="303dp" />
 
         <EditText
-            android:id="@+id/editTextNomeMaquina"
+            android:id="@+id/editTextSeriesExercicio"
             android:layout_width="352dp"
             android:layout_height="64dp"
             android:layout_marginTop="352dp"

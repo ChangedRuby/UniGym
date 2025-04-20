@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/dark_blue_bg"
-    tools:context=".Fragments.Treinos.TreinosPersonalTrainer">
+    tools:context=".Fragments.Treinos.TreinosPersonal">
 
     <!-- TODO: Update blank fragment layout -->
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -30,7 +30,7 @@
             android:layout_height="@dimen/big_button_height"
             android:background="@android:color/transparent"
             android:fontFamily="@font/roboto"
-            android:text="Fazer treinos"
+            android:text="Visualizar treinos"
             android:textColor="@android:color/black"
             android:textSize="24sp"
             android:textStyle="bold"

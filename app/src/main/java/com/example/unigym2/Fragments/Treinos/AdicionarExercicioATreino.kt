@@ -49,7 +49,7 @@ class AdicionarExercicioATreino : Fragment() {
         backBtn.setOnClickListener {
 
             communicator = activity as Communicator
-            communicator.replaceFragment(VerTreinoPersonal())
+            communicator.replaceFragment(TreinoUsuarioPersonal())
         }
 
         maquinasSpinner = v.findViewById(R.id.maquinasSpinner)
@@ -98,6 +98,8 @@ class AdicionarExercicioATreino : Fragment() {
         exerciciosSpinner.adapter = adapter2
 
         addTreinoBtn = v.findViewById(R.id.addTreino)
+        seriesEditText = v.findViewById(R.id.editTextSeriesExercicio)
+        repeticoesEditText = v.findViewById(R.id.editTextRepeticoesExercicio)
         addTreinoBtn.setOnClickListener{
 
 
@@ -118,7 +120,7 @@ class AdicionarExercicioATreino : Fragment() {
                     })
 
                     communicator = activity as Communicator
-                    communicator.replaceFragment(FazerTreino())
+                    communicator.replaceFragment(ListaTreinosPersonal())
 
 
                 } else {

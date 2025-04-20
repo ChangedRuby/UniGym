@@ -9,6 +9,8 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.unigym2.Activities.Communicator
+import com.example.unigym2.Fragments.Home.Recyclerviews.RequestsData
+import com.example.unigym2.Fragments.Home.Recyclerviews.RequestsRecyclerAdapter
 import com.example.unigym2.R
 
 // TODO: Rename parameter arguments, choose names that match

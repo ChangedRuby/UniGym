@@ -10,7 +10,7 @@ import com.example.unigym2.Fragments.Home.HomePersonalTrainer
 import com.example.unigym2.Fragments.Home.HomeUser
 import com.example.unigym2.Fragments.Profile.ProfilePersonal
 import com.example.unigym2.Fragments.Profile.ProfileUser
-import com.example.unigym2.Fragments.Treinos.TreinosPersonalTrainer
+import com.example.unigym2.Fragments.Treinos.TreinosPersonal
 import com.example.unigym2.Fragments.Treinos.TreinosUser
 import com.example.unigym2.R
 import com.example.unigym2.databinding.ActivityMainBinding
@@ -41,7 +41,7 @@ class MainActivity : AppCompatActivity(), Communicator{
                     R.id.chat -> replaceFragment(ChatUser())
                     R.id.profile -> replaceFragment(ProfilePersonal())
                     R.id.calendar -> replaceFragment(CalendarUser())
-                    R.id.treinos -> replaceFragment(TreinosPersonalTrainer())
+                    R.id.treinos -> replaceFragment(TreinosPersonal())
 
                     else -> {
                         Log.d("MainActivityDebug", "Fragment not found")

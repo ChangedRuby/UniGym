@@ -10,8 +10,8 @@ import android.widget.RadioGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.unigym2.Fragments.Home.RequestsData
-import com.example.unigym2.Fragments.Home.RequestsRecyclerAdapter
+import com.example.unigym2.Fragments.Treinos.Recyclerviews.TreinoUserAdapter
+import com.example.unigym2.Fragments.Treinos.Recyclerviews.TreinoUserItem
 import com.example.unigym2.R
 
 // TODO: Rename parameter arguments, choose names that match

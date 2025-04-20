@@ -11,8 +11,10 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.RecycledViewPool
 import com.example.unigym2.Activities.Communicator
-import com.example.unigym2.Fragments.Home.RequestsData
-import com.example.unigym2.Fragments.Home.RequestsRecyclerAdapter
+import com.example.unigym2.Fragments.Home.Recyclerviews.RequestsData
+import com.example.unigym2.Fragments.Treinos.Recyclerviews.MaquinaInnerItem
+import com.example.unigym2.Fragments.Treinos.Recyclerviews.MaquinaOuterAdapter
+import com.example.unigym2.Fragments.Treinos.Recyclerviews.MaquinaOuterItem
 import com.example.unigym2.R
 
 // TODO: Rename parameter arguments, choose names that match
