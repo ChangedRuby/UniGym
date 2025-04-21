@@ -54,6 +54,7 @@ class ListaTreinosPersonal : Fragment(), ListaUsuariosClickListener {
         var v = inflater.inflate(R.layout.fragment_treinos_lista_personal, container, false)
 
         recyclerView = v.findViewById(R.id.TreinosRecyclerview)
+        communicator = activity as Communicator
 
         createItems()
         val layoutManager = LinearLayoutManager(context)
@@ -104,6 +105,10 @@ class ListaTreinosPersonal : Fragment(), ListaUsuariosClickListener {
     }
 
     override fun onItemClick(listaTreinosItem: ListaTreinosItem) {
-        Log.d("listaTreinosPersonal", "Recyclerview clicked")
+        Log.d("listaTreinosPersonal", "Recyclerview ${listaTreinosItem.name} clicked")
+        parentFragmentManager.setFragmentResult("user_info_key", Bundle().apply {
+            putString("name_user", listaTreinosItem.name)
+        })
+        communicator.replaceFragment(TreinoUsuarioPersonal())
     }
 }

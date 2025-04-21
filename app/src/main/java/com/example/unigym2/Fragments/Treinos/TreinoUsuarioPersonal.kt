@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.Toast
 import com.example.unigym2.Activities.Communicator
 import com.example.unigym2.R
 
@@ -44,6 +45,12 @@ class TreinoUsuarioPersonal : Fragment() {
         addTreinoBtn.setOnClickListener{
             communicator = activity as Communicator
             communicator.replaceFragment(AdicionarExercicioATreino())
+        }
+
+        parentFragmentManager.setFragmentResultListener("user_info_key", viewLifecycleOwner) { _, bundle ->
+            val name = bundle.getString("name_user")
+
+            Toast.makeText(requireContext(), "Visualizando treino do usuário $name .", Toast.LENGTH_SHORT).show()
         }
         return v
     }
