@@ -12,6 +12,16 @@
         android:background="@color/dark_blue_bg">
 
         <ImageButton
+            android:id="@+id/imageButton5"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/add_icon"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.912"
+            app:layout_constraintStart_toEndOf="@+id/textView32"
+            tools:layout_editor_absoluteY="518dp" />
+
+        <ImageButton
             android:id="@+id/imageButton2"
             android:layout_width="50dp"
             android:layout_height="wrap_content"
@@ -165,6 +175,7 @@
             app:tabIndicatorFullWidth="true"
             app:tabIndicatorGravity="stretch"
             app:tabRippleColor="@android:color/transparent"
+            app:tabSelectedTextAppearance="@style/TextAppearance.AppCompat.Display1"
             app:tabSelectedTextColor="@color/black"
             app:tabTextColor="@color/white">
 
@@ -222,6 +233,36 @@
             tools:layout_editor_absoluteX="16dp"
             tools:layout_editor_absoluteY="518dp"
             tools:src="@tools:sample/avatars" />
+
+        <ImageButton
+            android:id="@+id/imageButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/add_icon"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.905"
+            app:layout_constraintStart_toEndOf="@+id/textView29"
+            tools:layout_editor_absoluteY="202dp" />
+
+        <ImageButton
+            android:id="@+id/imageButton3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/add_icon"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.904"
+            app:layout_constraintStart_toEndOf="@+id/textView30"
+            tools:layout_editor_absoluteY="306dp" />
+
+        <ImageButton
+            android:id="@+id/imageButton4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/add_icon"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.91"
+            app:layout_constraintStart_toEndOf="@+id/textView31"
+            tools:layout_editor_absoluteY="414dp" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
