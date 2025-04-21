@@ -26,7 +26,7 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <SearchView
-            android:id="@+id/treinosSearchView"
+            android:id="@+id/conversasSearchView"
             android:layout_width="393sp"
             android:layout_height="52sp"
             android:layout_marginTop="28dp"
@@ -43,7 +43,7 @@
             android:layout_marginTop="20dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/treinosSearchView"
+            app:layout_constraintTop_toBottomOf="@id/títuloDaTela"
             tools:itemCount="5"
             tools:listitem="@layout/usuarios_recycler_layout" />
 
