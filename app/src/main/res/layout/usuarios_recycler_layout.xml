@@ -45,7 +45,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <Button
-        android:id="@+id/visualizarTreinoBtn2"
+        android:id="@+id/visualizarTreinoBtn"
         android:layout_width="146dp"
         android:layout_height="49dp"
         android:layout_marginTop="28dp"

@@ -7,7 +7,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.unigym2.R
 
-class ListaTreinosAdapter(private val dataList: ArrayList<ListaTreinosItem>) : RecyclerView.Adapter<ListaTreinosAdapter.MyViewHolder>(){
+class ListaTreinosAdapter(private val dataList: ArrayList<ListaTreinosItem>, private val usuarioClickListener: ListaUsuariosClickListener) : RecyclerView.Adapter<ListaTreinosAdapter.MyViewHolder>(){
 
 
 
@@ -25,6 +25,9 @@ class ListaTreinosAdapter(private val dataList: ArrayList<ListaTreinosItem>) : R
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
         val currentItem = dataList[position]
         holder.nameView.text = currentItem.name
+        holder.itemView.setOnClickListener {
+            usuarioClickListener.onItemClick(currentItem)
+        }
 
     }
 

@@ -1,6 +1,7 @@
 package com.example.unigym2.Fragments.Treinos
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -11,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.unigym2.Activities.Communicator
 import com.example.unigym2.Fragments.Treinos.Recyclerviews.ListaTreinosAdapter
 import com.example.unigym2.Fragments.Treinos.Recyclerviews.ListaTreinosItem
+import com.example.unigym2.Fragments.Treinos.Recyclerviews.ListaUsuariosClickListener
 import com.example.unigym2.Fragments.Treinos.Recyclerviews.TreinoUserItem
 import com.example.unigym2.R
 
@@ -24,7 +26,7 @@ private const val ARG_PARAM2 = "param2"
  * Use the [ListaTreinosPersonal.newInstance] factory method to
  * create an instance of this fragment.
  */
-class ListaTreinosPersonal : Fragment() {
+class ListaTreinosPersonal : Fragment(), ListaUsuariosClickListener {
     // TODO: Rename and change types of parameters
     private var param1: String? = null
     private var param2: String? = null
@@ -34,7 +36,7 @@ class ListaTreinosPersonal : Fragment() {
     private lateinit var recyclerView: RecyclerView
 
     private lateinit var namesArray: Array<String>
-    private lateinit var names: ArrayList<ListaTreinosItem>
+    private lateinit var itemArray: ArrayList<ListaTreinosItem>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -55,7 +57,7 @@ class ListaTreinosPersonal : Fragment() {
 
         createItems()
         val layoutManager = LinearLayoutManager(context)
-        val adapter = ListaTreinosAdapter(names)
+        val adapter = ListaTreinosAdapter(itemArray, this)
         recyclerView.layoutManager = layoutManager
         recyclerView.setHasFixedSize(true)
         recyclerView.adapter = adapter
@@ -85,7 +87,7 @@ class ListaTreinosPersonal : Fragment() {
 
     private fun createItems(){
 
-        names = arrayListOf()
+        itemArray = arrayListOf()
         
         namesArray = arrayOf(
             "Name A",
@@ -97,7 +99,11 @@ class ListaTreinosPersonal : Fragment() {
 
         for(i in namesArray.indices){
             val nameItem = ListaTreinosItem(namesArray[i])
-            names.add(nameItem)
+            itemArray.add(nameItem)
         }
+    }
+
+    override fun onItemClick(listaTreinosItem: ListaTreinosItem) {
+        Log.d("listaTreinosPersonal", "Recyclerview clicked")
     }
 }
