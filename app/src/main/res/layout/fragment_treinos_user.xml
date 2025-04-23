@@ -43,6 +43,7 @@
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:background="@drawable/toggle_background"
+                android:backgroundTint="#4BB4A1"
                 android:button="@null"
                 android:gravity="center"
                 android:text="Treino B"
@@ -51,13 +52,26 @@
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/treinoUserRecyclerview"
-            android:layout_width="409dp"
-            android:layout_height="650dp"
-            android:layout_marginTop="40dp"
+            android:layout_width="406dp"
+            android:layout_height="572dp"
+            android:layout_marginTop="72dp"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.4"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/treinoToggle"
             tools:itemCount="5"
             tools:listitem="@layout/treinos_user_recycler_layout" />
+
+        <Button
+            android:id="@+id/confirmarTreinoButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:backgroundTint="#4BB4A1"
+            android:text="Treino Feito"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.808"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/treinoToggle" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </FrameLayout>
