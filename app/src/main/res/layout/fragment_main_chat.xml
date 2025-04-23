@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+             android:layout_height="match_parent">
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".Fragments.Chat.ChatUser">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/dark_blue_bg">
+
+            <LinearLayout
+                android:id="@+id/linearLayout"
+                android:layout_width="412dp"
+                android:layout_height="118dp"
+                android:background="@color/grey"
+                android:orientation="vertical"
+                android:outlineAmbientShadowColor="@color/grey"
+                android:outlineSpotShadowColor="@color/grey"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <ImageButton
+                    android:id="@+id/imageButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:backgroundTint="@color/grey"
+                    app:srcCompat="@drawable/go_back_button" />
+            </LinearLayout>
+
+            <com.google.android.material.appbar.MaterialToolbar
+                android:id="@+id/materialToolbar2"
+                android:layout_width="485dp"
+                android:layout_height="101dp"
+                android:layout_marginTop="648dp"
+                android:background="#565454"
+                android:minHeight="?attr/actionBarSize"
+                android:theme="?attr/actionBarTheme"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/linearLayout" />
+
+            <TextView
+                android:id="@+id/acessibilidadeUser10"
+                android:layout_width="109dp"
+                android:layout_height="36dp"
+                android:layout_marginEnd="16dp"
+                android:background="@drawable/rectangle_light_gradient"
+                android:gravity="center"
+                android:minHeight="48dp"
+                android:paddingStart="32dp"
+                android:paddingEnd="32dp"
+                android:text="Enviar"
+                android:textColor="#000000"
+                android:textSize="12sp"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.512"
+                app:layout_constraintStart_toEndOf="@+id/editTextUsername"
+                app:layout_constraintTop_toTopOf="@+id/materialToolbar2" />
+
+            <TextView
+                android:id="@+id/textView30"
+                android:layout_width="271dp"
+                android:layout_height="67dp"
+                android:text="Mensagem"
+                android:textColor="#FDFDFD"
+                android:textSize="24sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/materialToolbar2" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </FrameLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>
