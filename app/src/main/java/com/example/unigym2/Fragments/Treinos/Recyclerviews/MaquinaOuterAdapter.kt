@@ -25,11 +25,11 @@ class MaquinaOuterAdapter(private val outerItems: List<MaquinaOuterItem>, privat
 
         // Setup inner RecyclerView
         holder.innerRecyclerView.layoutManager = LinearLayoutManager(
-            holder.itemView.context, LinearLayoutManager.HORIZONTAL, false)
+            holder.itemView.context, LinearLayoutManager.VERTICAL, false)
         holder.innerRecyclerView.adapter = MaquinaInnerAdapter(outerItem.innerItems)
 
         // Para otimizar
-        holder.innerRecyclerView.setRecycledViewPool(viewPool)
+        // holder.innerRecyclerView.setRecycledViewPool(viewPool)
     }
 
     override fun getItemCount(): Int {

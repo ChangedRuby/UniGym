@@ -100,7 +100,7 @@ class TreinosMaquinas : Fragment() {
 
         outerRecyclerView = v.findViewById(R.id.maquinasOuterRecyclerview)
         outerRecyclerView.layoutManager = layoutManager
-        outerRecyclerView.setHasFixedSize(true)
+        // outerRecyclerView.setHasFixedSize(true)
         outerRecyclerView.setRecycledViewPool(viewPool)
         adapter = MaquinaOuterAdapter(maquinasNames, viewPool)
         outerRecyclerView.adapter = adapter
@@ -140,7 +140,7 @@ class TreinosMaquinas : Fragment() {
         // Generate sample data
         val innerItems1 = List(10) { MaquinaInnerItem("Inner Item $it") }
         val innerItems2 = List(10) { MaquinaInnerItem("Inner Item ${it + 10}") }
-        val innerItems3 = List(10) { MaquinaInnerItem("Inner Item ${it + 10}") }
+        val innerItems3 = List(10) { MaquinaInnerItem("Inner Item ${it + 20}") }
         return listOf(MaquinaOuterItem(innerItems1), MaquinaOuterItem(innerItems2), MaquinaOuterItem(innerItems3))
     }
 }

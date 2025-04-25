@@ -9,14 +9,14 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="260sp"
+        android:layout_height="wrap_content"
         android:gravity="center|top">
 
         <View
             android:id="@+id/view"
-            android:layout_width="400sp"
-            android:layout_height="250sp"
-            android:layout_marginLeft="5sp"
+            android:layout_width="390sp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10sp"
             android:background="@drawable/rectangle_objetivos_teste"
             android:backgroundTint="#10FFFBFB"
             android:backgroundTintMode="add" />
@@ -74,11 +74,14 @@
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/inner_recycler_view"
             android:layout_width="match_parent"
-            android:layout_height="100dp"
+            android:layout_height="wrap_content"
             android:layout_below="@id/imageView7"
             android:layout_alignStart="@id/textView23"
             android:layout_alignLeft="@id/imageView7"
+            android:layout_alignParentEnd="true"
             android:layout_marginTop="20sp"
+            android:layout_marginEnd="0dp"
+            android:orientation="vertical"
             tools:itemCount="4"
             tools:listitem="@layout/maquinas_inner_recycler_layout" />
 

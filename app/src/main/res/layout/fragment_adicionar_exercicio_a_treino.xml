@@ -65,12 +65,13 @@
             android:id="@+id/textView25"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="28dp"
-            android:layout_marginTop="60dp"
+            android:layout_marginTop="64dp"
             android:text="Exercício:"
             android:textColor="@color/white"
             android:textSize="16sp"
             android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="@+id/view5"
+            app:layout_constraintHorizontal_bias="0.092"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textView24" />
 
@@ -107,13 +108,15 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="40dp"
+            android:layout_marginBottom="124dp"
             android:text="X"
             android:textColor="@color/white"
             android:textSize="34sp"
             android:textStyle="bold"
-            app:layout_constraintStart_toEndOf="@+id/editTextSeriesExercicio"
-            tools:layout_editor_absoluteY="436dp"
-            />
+            app:layout_constraintBottom_toBottomOf="@+id/view5"
+            app:layout_constraintEnd_toEndOf="@+id/view5"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toEndOf="@+id/editTextSeriesExercicio" />
 
         <EditText
             android:id="@+id/editTextRepeticoesExercicio"
@@ -141,8 +144,11 @@
             android:backgroundTint="#4BB4A1"
             android:text="Adicionar"
             app:layout_constraintBottom_toBottomOf="@+id/view5"
+            app:layout_constraintEnd_toEndOf="@+id/view5"
+            app:layout_constraintHorizontal_bias="0.875"
+            app:layout_constraintStart_toStartOf="@+id/view5"
             app:layout_constraintTop_toBottomOf="@+id/editTextRepeticoesExercicio"
-            tools:layout_editor_absoluteX="268dp" />
+            app:layout_constraintVertical_bias="0.25" />
 
         <Spinner
             android:id="@+id/maquinasSpinner"
@@ -162,12 +168,12 @@
             android:id="@+id/exerciciosSpinner"
             android:layout_width="261dp"
             android:layout_height="41dp"
-            android:layout_marginTop="136dp"
+            android:layout_marginTop="132dp"
             android:background="@drawable/rectangle_objetivos_teste"
             android:backgroundTint="@color/light_grey"
             android:popupBackground="@color/light_grey"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.192"
+            app:layout_constraintHorizontal_bias="0.365"
             app:layout_constraintStart_toEndOf="@+id/textView25"
             app:layout_constraintTop_toTopOf="@+id/view5" />
 
