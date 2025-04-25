@@ -3,7 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-             android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="#FFFFFF">
 
     <FrameLayout
         android:layout_width="match_parent"
@@ -65,18 +66,25 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.512"
                 app:layout_constraintStart_toEndOf="@+id/editTextUsername"
-                app:layout_constraintTop_toTopOf="@+id/materialToolbar2" />
+                app:layout_constraintTop_toTopOf="@+id/materialToolbar2"
+                app:layout_constraintVertical_bias="0.307" />
 
-            <TextView
-                android:id="@+id/textView30"
-                android:layout_width="271dp"
-                android:layout_height="67dp"
-                android:text="Mensagem"
-                android:textColor="#FDFDFD"
-                android:textSize="24sp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/materialToolbar2" />
+            <EditText
+                android:id="@+id/editTextTextMultiLine"
+                android:layout_width="256dp"
+                android:layout_height="66dp"
+                android:backgroundTint="#000000"
+                android:ems="10"
+                android:gravity="start|top"
+                android:hint="Mensagem"
+                android:inputType="textMultiLine"
+                android:textColorHint="#A9A0A0"
+                app:layout_constraintBottom_toBottomOf="@+id/materialToolbar2"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.128"
+                app:layout_constraintStart_toStartOf="@+id/materialToolbar2"
+                app:layout_constraintTop_toTopOf="@+id/materialToolbar2"
+                app:layout_constraintVertical_bias="0.464" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
