@@ -1,11 +1,13 @@
 package com.example.unigym2.Fragments.Profile
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
+import android.widget.TextView
 import androidx.fragment.app.Fragment
 import com.example.unigym2.Activities.Communicator
 import com.example.unigym2.R
@@ -18,6 +20,7 @@ class ProfilePersonal : Fragment() {
     private var param2: String? = null
 
     lateinit var editBtn : ImageView
+    lateinit var accessibilityBtn: TextView
     private lateinit var communicator : Communicator
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -36,10 +39,18 @@ class ProfilePersonal : Fragment() {
         var v = inflater.inflate(R.layout.fragment_profile_personal, container, false)
         communicator = activity as Communicator
         editBtn = v.findViewById(R.id.EditProfilePersonal)
+        accessibilityBtn = v.findViewById(R.id.AcessibilidadePersonal)
         editBtn.setOnClickListener {
             communicator.replaceFragment(EditProfilePersonal())
             Log.d("personalLog", "Clicked")
         }
+
+        accessibilityBtn.setOnClickListener {
+            val intent = Intent("android.settings.ACCESSIBILITY_SETTINGS")
+            startActivity(intent)
+            Log.d("userLog", "Opening Accessibility Settings")
+        }
+
         return v
     }
 }

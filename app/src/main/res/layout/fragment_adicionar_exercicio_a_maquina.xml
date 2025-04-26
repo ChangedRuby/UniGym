@@ -51,18 +51,26 @@
             app:layout_constraintTop_toBottomOf="@+id/addExercicioTextView"
             app:layout_constraintVertical_bias="0.176" />
 
-        <Button
+        <TextView
             android:id="@+id/addExercicioButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:backgroundTint="#4BB4A1"
+            android:layout_width="166.67dp"
+            android:layout_height="41.33dp"
+            android:background="@drawable/light_background"
+            android:clickable="true"
+            android:fontFamily="@font/roboto"
+            android:gravity="center|fill"
             android:text="Adicionar"
+            android:textAlignment="center"
+            android:textColor="@color/black"
+            android:textSize="14sp"
+            android:typeface="normal"
             app:layout_constraintBottom_toBottomOf="@+id/view3"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.884"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="@+id/view3"
-            app:layout_constraintVertical_bias="0.907" />
+            app:layout_constraintVertical_bias="0.907"
+            tools:ignore="TouchTargetSizeCheck" />
 
         <TextView
             android:id="@+id/nomeTextView"
@@ -83,32 +91,31 @@
             android:id="@+id/addExercicioText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="156dp"
             android:text="Nome do exercício:"
             android:textColor="@color/white"
             android:textSize="22sp"
             android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="@+id/view3"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.154"
-            app:layout_constraintStart_toStartOf="parent"
-            tools:layout_editor_absoluteY="303dp" />
+            app:layout_constraintStart_toStartOf="parent" />
 
         <EditText
             android:id="@+id/editTextSeriesExercicio"
             android:layout_width="352dp"
             android:layout_height="64dp"
-            android:layout_marginTop="352dp"
+            android:layout_marginTop="40dp"
             android:backgroundTint="#C7DCDA"
             android:hint="Exercício"
             android:inputType="text"
             android:padding="12dp"
             android:textColor="@android:color/white"
             android:textColorHint="#908383"
-            app:layout_constraintBottom_toTopOf="@+id/addExercicioButton"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.576"
+            app:layout_constraintHorizontal_bias="0.406"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/addExercicioText"
-            app:layout_constraintVertical_bias="1.0" />
+            app:layout_constraintTop_toTopOf="@+id/addExercicioText" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </FrameLayout>

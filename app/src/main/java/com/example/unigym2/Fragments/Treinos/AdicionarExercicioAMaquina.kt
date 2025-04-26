@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.ImageView
+import android.widget.TextView
 import com.example.unigym2.Activities.Communicator
 import com.example.unigym2.R
 
@@ -25,7 +26,7 @@ class AdicionarExercicioAMaquina : Fragment() {
     private var param1: String? = null
     private var param2: String? = null
     lateinit var goBackBtn: ImageView
-    lateinit var addBtn: Button
+    lateinit var addBtn: TextView
     private lateinit var communicator: Communicator
 
     override fun onCreate(savedInstanceState: Bundle?) {

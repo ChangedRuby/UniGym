@@ -35,7 +35,7 @@
                 android:button="@null"
                 android:gravity="center"
                 android:text="Treino A"
-                android:textColor="@color/white" />
+                android:textColor="@drawable/toggle_text_color" />
 
             <RadioButton
                 android:id="@+id/treinoButtonB"
@@ -43,11 +43,10 @@
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:background="@drawable/toggle_background"
-                android:backgroundTint="#4BB4A1"
                 android:button="@null"
                 android:gravity="center"
                 android:text="Treino B"
-                android:textColor="@color/white" />
+                android:textColor="@drawable/toggle_text_color" />
         </RadioGroup>
 
         <androidx.recyclerview.widget.RecyclerView
@@ -62,15 +61,18 @@
             tools:itemCount="5"
             tools:listitem="@layout/treinos_user_recycler_layout" />
 
-        <Button
+        <TextView
             android:id="@+id/confirmarTreinoButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:backgroundTint="#4BB4A1"
+            android:layout_width="160dp"
+            android:layout_height="30dp"
+            android:layout_marginTop="20dp"
+            android:background="@drawable/bg_botaoagendar"
+            android:gravity="center|fill"
             android:text="Treino Feito"
+            android:textAlignment="center"
+            android:textColor="@color/black"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.808"
+            app:layout_constraintHorizontal_bias="0.78"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/treinoToggle" />
     </androidx.constraintlayout.widget.ConstraintLayout>

@@ -162,22 +162,23 @@
             android:text="Email: treinador@gmail.com"
             android:textColor="#FBFBFB"
             android:textSize="12sp"
-            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintBottom_toTopOf="@+id/lineView"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.767"
+            app:layout_constraintHorizontal_bias="0.728"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.412" />
+            app:layout_constraintVertical_bias="0.945" />
 
         <View
             android:id="@+id/lineView"
             android:layout_width="wrap_content"
             android:layout_height="2sp"
+            android:layout_marginTop="328dp"
             android:background="@color/hint_grey"
-            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.45" />
+            app:layout_constraintTop_toTopOf="parent" />
 
         <com.google.android.material.imageview.ShapeableImageView
             android:id="@+id/profileUserImage"
@@ -316,12 +317,12 @@
             android:textColor="#000000"
             android:textSize="12sp"
             android:textStyle="bold"
-            app:layout_constraintBottom_toTopOf="@+id/userProfileEmail"
+            app:layout_constraintBottom_toTopOf="@+id/lineView"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.512"
             app:layout_constraintStart_toEndOf="@+id/editTextUsername"
             app:layout_constraintTop_toBottomOf="@+id/profileSecondaryColor"
-            app:layout_constraintVertical_bias="0.32" />
+            app:layout_constraintVertical_bias="0.215" />
 
         <ImageView
             android:id="@+id/EditProfilePersonal"

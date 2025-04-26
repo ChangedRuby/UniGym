@@ -180,17 +180,26 @@
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent" />
 
-        <Button
+        <TextView
             android:id="@+id/createAccPersonal"
-            android:layout_width="wrap_content"
-            android:layout_height="50dp"
+            android:layout_width="269.33dp"
+            android:layout_height="41.33dp"
+            android:background="@drawable/rectangle_light_gradient"
+            android:clickable="true"
+            android:fontFamily="@font/plus_jakarta_sans_semibold"
+            android:gravity="fill"
             android:text="Entrando como treinador?"
+            android:textAlignment="center"
+            android:textColor="#000000"
+            android:textSize="18sp"
+            android:textStyle="bold"
             app:layout_constraintBottom_toTopOf="@+id/concludeButton"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.858"
+            app:layout_constraintHorizontal_bias="0.887"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/confirmPasswordInputLayout"
-            app:layout_constraintVertical_bias="0.0" /> <!-- Push to bottom -->
+            app:layout_constraintVertical_bias="0.153"
+            tools:ignore="TouchTargetSizeCheck" /> <!-- Push to bottom -->
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

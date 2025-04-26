@@ -39,7 +39,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:tabIndicator="@drawable/rectangle_light_gradient"
-            app:tabIndicatorColor="#03A9F4"
+            app:tabIndicatorColor="@android:color/transparent"
             app:tabIndicatorFullWidth="true"
             app:tabIndicatorGravity="stretch"
             app:tabRippleColor="@android:color/transparent"
