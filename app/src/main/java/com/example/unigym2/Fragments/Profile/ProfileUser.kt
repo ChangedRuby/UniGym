@@ -1,11 +1,13 @@
 package com.example.unigym2.Fragments.Profile
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
+import android.widget.TextView
 import androidx.fragment.app.Fragment
 import com.example.unigym2.Activities.Communicator
 import com.example.unigym2.R
@@ -18,6 +20,7 @@ class ProfileUser : Fragment() {
     private var param2: String? = null
 
     lateinit var userEditBtn : ImageView
+    lateinit var accessibilityBtn: TextView
     private lateinit var comunicator : Communicator
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -36,10 +39,18 @@ class ProfileUser : Fragment() {
         var v = inflater.inflate(R.layout.fragment_profile_user, container, false)
         comunicator = activity as Communicator
         userEditBtn = v.findViewById(R.id.EditProfileUser)
+        accessibilityBtn = v.findViewById(R.id.AcessibilidadeUser)
         userEditBtn.setOnClickListener {
             comunicator.replaceFragment(EditProfileUser())
             Log.d("userLog", "Clicked")
         }
+
+        accessibilityBtn.setOnClickListener {
+            val intent = Intent("com.android.settings.TTS_SETTINGS")
+            startActivity(intent)
+            Log.d("userLog", "Opening TTS Settings")
+        }
+
         return v
     }
 }
