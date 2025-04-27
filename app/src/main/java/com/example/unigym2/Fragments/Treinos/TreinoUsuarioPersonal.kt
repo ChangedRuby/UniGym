@@ -7,7 +7,13 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.Toast
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.example.unigym2.Activities.Communicator
+import com.example.unigym2.Fragments.Treinos.Recyclerviews.TreinoUserAdapter
+import com.example.unigym2.Fragments.Treinos.Recyclerviews.TreinoUserItem
+import com.example.unigym2.Fragments.Treinos.Recyclerviews.TreinoUserPersonalAdapter
+import com.example.unigym2.Fragments.Treinos.Recyclerviews.TreinoUserPersonalItem
 import com.example.unigym2.R
 
 // TODO: Rename parameter arguments, choose names that match
@@ -24,6 +30,13 @@ class TreinoUsuarioPersonal : Fragment() {
     // TODO: Rename and change types of parameters
     private var param1: String? = null
     private var param2: String? = null
+
+    private lateinit var recyclerView: RecyclerView
+    private lateinit var repeticoesArrayA: ArrayList<TreinoUserPersonalItem>
+    private lateinit var repeticoesArrayB: ArrayList<TreinoUserPersonalItem>
+
+    private lateinit var repeticoesA: Array<String>
+    private lateinit var repeticoesB: Array<String>
 
     lateinit var addTreinoBtn: Button
 
@@ -46,6 +59,13 @@ class TreinoUsuarioPersonal : Fragment() {
             communicator = activity as Communicator
             communicator.replaceFragment(AdicionarExercicioATreino())
         }
+
+        createItems()
+        val layoutManager = LinearLayoutManager(context)
+        recyclerView = v.findViewById(R.id.treinoUsuarioPersonalRecycler)
+        recyclerView.layoutManager = layoutManager
+        recyclerView.setHasFixedSize(true)
+        changeAdapter(repeticoesArrayA)
 
         parentFragmentManager.setFragmentResultListener("user_info_key", viewLifecycleOwner) { _, bundle ->
             val name = bundle.getString("name_user")
@@ -73,5 +93,44 @@ class TreinoUsuarioPersonal : Fragment() {
                     putString(ARG_PARAM2, param2)
                 }
             }
+    }
+    private fun changeAdapter(userItemArray: ArrayList<TreinoUserPersonalItem>){
+        val adapter = TreinoUserPersonalAdapter(userItemArray)
+        recyclerView.adapter = adapter
+    }
+
+    private fun createItems(){
+
+        repeticoesArrayA = arrayListOf()
+        repeticoesArrayB = arrayListOf()
+
+        repeticoesA = arrayOf(
+            "1 x 5",
+            "2 x 4",
+            "3 x 3",
+            "4 x 2",
+            "5 x 1",
+        )
+
+        repeticoesB = arrayOf(
+            "5 x 1",
+            "4 x 2",
+            "3 x 3",
+            "2 x 4",
+            "1 x 5",
+        )
+
+
+        for(i in repeticoesA.indices){
+
+            val exercicios = TreinoUserPersonalItem(repeticoesA[i])
+            repeticoesArrayA.add(exercicios)
+        }
+
+        for(i in repeticoesB.indices){
+
+            val exercicios = TreinoUserPersonalItem(repeticoesB[i])
+            repeticoesArrayB.add(exercicios)
+        }
     }
 }

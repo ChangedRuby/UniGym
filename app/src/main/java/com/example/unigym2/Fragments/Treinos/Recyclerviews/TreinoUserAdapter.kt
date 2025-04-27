@@ -13,7 +13,7 @@ class TreinoUserAdapter(private val dataList: ArrayList<TreinoUserItem>) : Recyc
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
         val itemView = LayoutInflater.from(parent.context).inflate(
-            R.layout.treinos_user_recycler_layout,
+            R.layout.treinos_usuario_recycler_layout,
             parent, false)
         return MyViewHolder(itemView)
     }

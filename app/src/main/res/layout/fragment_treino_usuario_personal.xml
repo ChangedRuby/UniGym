@@ -25,7 +25,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:tabIndicator="@drawable/rectangle_light_gradient"
-            app:tabIndicatorColor="#45BDA2"
+            app:tabIndicatorColor="@android:color/transparent"
             app:tabIndicatorFullWidth="true"
             app:tabIndicatorGravity="stretch"
             app:tabRippleColor="@android:color/transparent"
@@ -58,6 +58,17 @@
             app:layout_constraintHorizontal_bias="0.866"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tabLayout" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/treinoUsuarioPersonalRecycler"
+            android:layout_width="409dp"
+            android:layout_height="569dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tabLayout"
+            app:layout_constraintVertical_bias="0.975"
+            tools:itemCount="4"
+            tools:listitem="@layout/treinos_usuario_personal_recycler_layout" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

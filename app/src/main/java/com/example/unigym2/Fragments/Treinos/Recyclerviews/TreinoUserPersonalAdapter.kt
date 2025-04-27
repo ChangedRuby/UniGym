@@ -3,18 +3,17 @@ package com.example.unigym2.Fragments.Treinos.Recyclerviews
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.unigym2.R
 
-class ListaTreinosAdapter(private val dataList: ArrayList<ListaTreinosItem>, private val usuarioClickListener: ListaUsuariosClickListener) : RecyclerView.Adapter<ListaTreinosAdapter.MyViewHolder>(){
+class TreinoUserPersonalAdapter(private val dataList: ArrayList<TreinoUserPersonalItem>) : RecyclerView.Adapter<TreinoUserPersonalAdapter.MyViewHolder>(){
 
 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
         val itemView = LayoutInflater.from(parent.context).inflate(
-            R.layout.usuarios_recycler_layout,
+            R.layout.treinos_usuario_personal_recycler_layout,
             parent, false)
         return MyViewHolder(itemView)
     }
@@ -25,16 +24,12 @@ class ListaTreinosAdapter(private val dataList: ArrayList<ListaTreinosItem>, pri
 
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
         val currentItem = dataList[position]
-        holder.nameView.text = currentItem.name
-        holder.visualizarTreinoButton.setOnClickListener {
-            usuarioClickListener.onItemClick(currentItem)
-        }
+        holder.repeticoesView.text = currentItem.repeticoes
 
     }
 
     class MyViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView){
 
-        val nameView : TextView = itemView.findViewById(R.id.textViewUsername)
-        val visualizarTreinoButton: Button = itemView.findViewById(R.id.visualizarTreinoBtn)
+        val repeticoesView : TextView = itemView.findViewById(R.id.repeticoesText)
     }
 }

@@ -30,6 +30,7 @@ class AdicionarExercicioAMaquina : Fragment() {
     private var param2: String? = null
     lateinit var goBackBtn: ImageView
     lateinit var addBtn: TextView
+    lateinit var maquinaTitle: TextView
     lateinit var editTextExercicioAMaquina: EditText
     private lateinit var communicator: Communicator
 
@@ -54,6 +55,7 @@ class AdicionarExercicioAMaquina : Fragment() {
         }
 
         editTextExercicioAMaquina = v.findViewById(R.id.editTextExercicioAMaquina)
+        maquinaTitle = v.findViewById(R.id.nomeTextView)
 
         addBtn = v.findViewById(R.id.addExercicioButton)
         addBtn.setOnClickListener{
@@ -76,6 +78,7 @@ class AdicionarExercicioAMaquina : Fragment() {
 
         parentFragmentManager.setFragmentResultListener("maquina_info_key", viewLifecycleOwner) { _, bundle ->
             val name = bundle.getString("maquina_name")
+            maquinaTitle.text = name
 
             Toast.makeText(requireContext(), "Visualizando maquina $name .", Toast.LENGTH_SHORT).show()
         }
