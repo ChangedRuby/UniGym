@@ -1,20 +1,25 @@
 package com.example.unigym2.Fragments.Treinos.Recyclerviews
 
+import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
+import androidx.fragment.app.FragmentManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.unigym2.Activities.Communicator
 import com.example.unigym2.Fragments.Treinos.AdicionarExercicioAMaquina
 import com.example.unigym2.R
 
-class MaquinaOuterAdapter(private val outerItems: List<MaquinaOuterItem>, private val viewPool: RecyclerView.RecycledViewPool, private val communicator: Communicator) :
+class MaquinaOuterAdapter(private val outerItems: List<MaquinaOuterItem>, private val viewPool: RecyclerView.RecycledViewPool, private val communicator: Communicator, private val fragmentManager: FragmentManager) :
     RecyclerView.Adapter<MaquinaOuterAdapter.OuterViewHolder>() {
 
     class OuterViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val innerRecyclerView: RecyclerView = itemView.findViewById(R.id.inner_recycler_view)
         val addExercicioAMaquinaBtn: View = itemView.findViewById(R.id.addExerciciosAMaquinaButton)
+        val maquinaTitle: TextView = itemView.findViewById(R.id.maquinaName)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): OuterViewHolder {
@@ -30,8 +35,13 @@ class MaquinaOuterAdapter(private val outerItems: List<MaquinaOuterItem>, privat
         holder.innerRecyclerView.layoutManager = LinearLayoutManager(
             holder.itemView.context, LinearLayoutManager.VERTICAL, false)
         holder.innerRecyclerView.adapter = MaquinaInnerAdapter(outerItem.innerItems)
+        holder.maquinaTitle.text = outerItem.title
 
         holder.addExercicioAMaquinaBtn.setOnClickListener{
+            fragmentManager.setFragmentResult("maquina_info_key", Bundle().apply {
+                putString("maquina_name", holder.maquinaTitle.text.toString())
+            })
+
             communicator.replaceFragment(AdicionarExercicioAMaquina())
         }
 

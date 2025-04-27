@@ -73,6 +73,12 @@ class AdicionarExercicioAMaquina : Fragment() {
             //Essa parte tem que ser modificada quando for trabalhar com banco de dados, por enquantp, ela so faz o efeito que irá acontecer ao adicionar
 
         }
+
+        parentFragmentManager.setFragmentResultListener("maquina_info_key", viewLifecycleOwner) { _, bundle ->
+            val name = bundle.getString("maquina_name")
+
+            Toast.makeText(requireContext(), "Visualizando maquina $name .", Toast.LENGTH_SHORT).show()
+        }
         return v
     }
 

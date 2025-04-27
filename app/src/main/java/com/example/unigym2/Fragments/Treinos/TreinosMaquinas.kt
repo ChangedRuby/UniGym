@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.RecycledViewPool
 import com.example.unigym2.Activities.Communicator
 import com.example.unigym2.Fragments.Home.Recyclerviews.RequestsData
+import com.example.unigym2.Fragments.Treinos.Recyclerviews.ListaTreinosItem
 import com.example.unigym2.Fragments.Treinos.Recyclerviews.MaquinaInnerItem
 import com.example.unigym2.Fragments.Treinos.Recyclerviews.MaquinaOuterAdapter
 import com.example.unigym2.Fragments.Treinos.Recyclerviews.MaquinaOuterItem
@@ -58,10 +59,10 @@ class TreinosMaquinas : Fragment() {
         // Inflate the layout for this fragment
         var v = inflater.inflate(R.layout.fragment_treinos_maquinas, container, false)
 
+        communicator = activity as Communicator
 
         addButton = v.findViewById(R.id.AddMaquinaButton)
         addButton.setOnClickListener{
-            communicator = activity as Communicator
             communicator.replaceFragment(AdicionarMaquina())
 
         }
@@ -102,7 +103,7 @@ class TreinosMaquinas : Fragment() {
         outerRecyclerView.layoutManager = layoutManager
         // outerRecyclerView.setHasFixedSize(true)
         outerRecyclerView.setRecycledViewPool(viewPool)
-        adapter = MaquinaOuterAdapter(maquinasNames, viewPool)
+        adapter = MaquinaOuterAdapter(maquinasNames, viewPool, communicator, parentFragmentManager)
         outerRecyclerView.adapter = adapter
 
 
@@ -138,9 +139,15 @@ class TreinosMaquinas : Fragment() {
 
     private fun createOuterItems(): List<MaquinaOuterItem> {
         // Generate sample data
+        val outerItems = arrayOf(
+            "Leg press Horizontal 1",
+            "Leg press Horizontal 2",
+            "Leg press Horizontal 3",
+        )
+
         val innerItems1 = List(10) { MaquinaInnerItem("Inner Item $it") }
         val innerItems2 = List(10) { MaquinaInnerItem("Inner Item ${it + 10}") }
         val innerItems3 = List(10) { MaquinaInnerItem("Inner Item ${it + 20}") }
-        return listOf(MaquinaOuterItem(innerItems1), MaquinaOuterItem(innerItems2), MaquinaOuterItem(innerItems3))
+        return listOf(MaquinaOuterItem(innerItems1, outerItems[0]), MaquinaOuterItem(innerItems2, outerItems[1]), MaquinaOuterItem(innerItems3, outerItems[2]))
     }
 }
