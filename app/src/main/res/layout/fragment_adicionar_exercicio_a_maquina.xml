@@ -102,7 +102,7 @@
             app:layout_constraintStart_toStartOf="parent" />
 
         <EditText
-            android:id="@+id/editTextSeriesExercicio"
+            android:id="@+id/editTextExercicioAMaquina"
             android:layout_width="352dp"
             android:layout_height="64dp"
             android:layout_marginTop="40dp"

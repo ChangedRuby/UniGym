@@ -98,7 +98,7 @@ class AdicionarExercicioATreino : Fragment() {
         exerciciosSpinner.adapter = adapter2
 
         addTreinoBtn = v.findViewById(R.id.addTreino)
-        seriesEditText = v.findViewById(R.id.editTextSeriesExercicio)
+        seriesEditText = v.findViewById(R.id.editTextExercicioAMaquina)
         repeticoesEditText = v.findViewById(R.id.editTextRepeticoesExercicio)
         addTreinoBtn.setOnClickListener{
 

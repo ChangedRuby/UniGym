@@ -6,10 +6,13 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.EditText
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
 import com.example.unigym2.Activities.Communicator
 import com.example.unigym2.R
+import org.w3c.dom.Text
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -27,6 +30,7 @@ class AdicionarExercicioAMaquina : Fragment() {
     private var param2: String? = null
     lateinit var goBackBtn: ImageView
     lateinit var addBtn: TextView
+    lateinit var editTextExercicioAMaquina: EditText
     private lateinit var communicator: Communicator
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -49,14 +53,23 @@ class AdicionarExercicioAMaquina : Fragment() {
             communicator.replaceFragment(TreinosMaquinas())
         }
 
+        editTextExercicioAMaquina = v.findViewById(R.id.editTextExercicioAMaquina)
+
         addBtn = v.findViewById(R.id.addExercicioButton)
         addBtn.setOnClickListener{
-            parentFragmentManager.setFragmentResult("exercicio_adicionado_key", Bundle().apply {
-                putBoolean("exercicio_adicionado", true)
-            })
+            val exercicio = editTextExercicioAMaquina.text.toString().trim()
+            if(exercicio.isNotEmpty()) {
+                parentFragmentManager.setFragmentResult("exercicio_adicionado_key", Bundle().apply {
+                    putBoolean("exercicio_adicionado", true)
+                })
+                communicator = activity as Communicator
+                communicator.replaceFragment(TreinosMaquinas())
 
-            communicator = activity as Communicator
-            communicator.replaceFragment(TreinosMaquinas())
+            } else{
+                Toast.makeText(requireContext(), "Preencha o campo de exercício", Toast.LENGTH_SHORT).show()
+            }
+
+
             //Essa parte tem que ser modificada quando for trabalhar com banco de dados, por enquantp, ela so faz o efeito que irá acontecer ao adicionar
 
         }

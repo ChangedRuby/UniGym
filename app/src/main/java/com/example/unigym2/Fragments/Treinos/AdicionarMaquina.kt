@@ -51,7 +51,7 @@ class AdicionarMaquina : Fragment() {
             communicator.replaceFragment(TreinosMaquinas())
         }
 
-        maquinaEditText = v.findViewById(R.id.editTextSeriesExercicio)
+        maquinaEditText = v.findViewById(R.id.editTextExercicioAMaquina)
 
         addBtn = v.findViewById(R.id.addButton)
         addBtn.setOnClickListener {
