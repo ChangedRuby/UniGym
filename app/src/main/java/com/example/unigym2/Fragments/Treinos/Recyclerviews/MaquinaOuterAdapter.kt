@@ -5,13 +5,16 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.unigym2.Activities.Communicator
+import com.example.unigym2.Fragments.Treinos.AdicionarExercicioAMaquina
 import com.example.unigym2.R
 
-class MaquinaOuterAdapter(private val outerItems: List<MaquinaOuterItem>, private val viewPool: RecyclerView.RecycledViewPool) :
+class MaquinaOuterAdapter(private val outerItems: List<MaquinaOuterItem>, private val viewPool: RecyclerView.RecycledViewPool, private val communicator: Communicator) :
     RecyclerView.Adapter<MaquinaOuterAdapter.OuterViewHolder>() {
 
     class OuterViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val innerRecyclerView: RecyclerView = itemView.findViewById(R.id.inner_recycler_view)
+        val addExercicioAMaquinaBtn: View = itemView.findViewById(R.id.addExerciciosAMaquinaButton)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): OuterViewHolder {
@@ -27,6 +30,11 @@ class MaquinaOuterAdapter(private val outerItems: List<MaquinaOuterItem>, privat
         holder.innerRecyclerView.layoutManager = LinearLayoutManager(
             holder.itemView.context, LinearLayoutManager.VERTICAL, false)
         holder.innerRecyclerView.adapter = MaquinaInnerAdapter(outerItem.innerItems)
+
+        holder.addExercicioAMaquinaBtn.setOnClickListener{
+            communicator.replaceFragment(AdicionarExercicioAMaquina())
+        }
+
 
         // Para otimizar
         // holder.innerRecyclerView.setRecycledViewPool(viewPool)

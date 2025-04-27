@@ -53,7 +53,7 @@
             app:tint="#FFFFFF" />
 
         <ImageView
-            android:id="@+id/addExerciciosMaquina"
+            android:id="@+id/addExerciciosAMaquinaButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignTop="@id/textView23"
