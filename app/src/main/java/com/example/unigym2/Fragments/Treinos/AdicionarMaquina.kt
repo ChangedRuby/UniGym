@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageView
+import android.widget.Toast
 import com.example.unigym2.Activities.Communicator
 import com.example.unigym2.R
 
@@ -55,14 +56,19 @@ class AdicionarMaquina : Fragment() {
 
         addBtn = v.findViewById(R.id.addButton)
         addBtn.setOnClickListener {
+            val maquina = maquinaEditText.text.toString().trim()
+            if(maquina.isNotEmpty()) {
 
-            parentFragmentManager.setFragmentResult("maquina_adicionada_key", Bundle().apply {
-                putBoolean("maquina_adicionada", true)
-                putString("maquina_name", maquinaEditText.text.toString())
-            })
+                parentFragmentManager.setFragmentResult("maquina_adicionada_key", Bundle().apply {
+                    putBoolean("maquina_adicionada", true)
+                    putString("maquina_name", maquinaEditText.text.toString())
+                })
 
-            communicator = activity as Communicator
-            communicator.replaceFragment(TreinosMaquinas())
+                communicator = activity as Communicator
+                communicator.replaceFragment(TreinosMaquinas())
+            } else{
+                Toast.makeText(requireContext(), "Preencha o campo de máquina", Toast.LENGTH_SHORT).show()
+            }
         }
         //Essa parte tem que ser modificada quando for trabalhar com banco de dados, por enquantp, ela so faz o efeito que irá acontecer ao adicionar
         return v
