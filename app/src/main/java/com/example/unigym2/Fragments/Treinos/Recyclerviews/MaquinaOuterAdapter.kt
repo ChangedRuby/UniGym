@@ -19,6 +19,7 @@ class MaquinaOuterAdapter(private val outerItems: List<MaquinaOuterItem>, privat
     class OuterViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val innerRecyclerView: RecyclerView = itemView.findViewById(R.id.inner_recycler_view)
         val addExercicioAMaquinaBtn: View = itemView.findViewById(R.id.addExerciciosAMaquinaButton)
+        val deleteMaquinaButton: View = itemView.findViewById(R.id.deleteMaquinaBtn)
         val maquinaTitle: TextView = itemView.findViewById(R.id.maquinaName)
     }
 

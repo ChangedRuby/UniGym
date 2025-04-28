@@ -177,7 +177,7 @@
             android:layout_width="300dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="36dp"
-            android:progress="25"
+            android:progress="10"
             android:progressBackgroundTint="#DE000000"
             android:progressTint="#FFFFFF"
             app:layout_constraintEnd_toEndOf="@+id/imageView10"
