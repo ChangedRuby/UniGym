@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="120sp"
+    android:layout_gravity="center|top">
+
+    <View
+        android:id="@+id/clienteView2"
+        android:layout_width="397sp"
+        android:layout_height="94sp"
+        android:layout_marginTop="10sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/profilePic2"
+        android:layout_width="56dp"
+        android:layout_height="46dp"
+        app:layout_constraintBottom_toBottomOf="@+id/clienteView2"
+        app:layout_constraintEnd_toStartOf="@+id/textViewUsername"
+        app:layout_constraintHorizontal_bias="0.045"
+        app:layout_constraintStart_toStartOf="@+id/clienteView2"
+        app:layout_constraintTop_toTopOf="@+id/clienteView2"
+        app:layout_constraintVertical_bias="0.479"
+        tools:src="@drawable/profile_icon" />
+
+    <TextView
+        android:id="@+id/textViewUsername"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:text="Renee Winters"
+        android:textColor="@color/white"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="@+id/clienteView2"
+        app:layout_constraintHorizontal_bias="0.301"
+        app:layout_constraintStart_toStartOf="@+id/clienteView2"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/textView28"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:text="Treino com personal"
+        app:layout_constraintEnd_toEndOf="@+id/clienteView2"
+        app:layout_constraintHorizontal_bias="0.142"
+        app:layout_constraintStart_toEndOf="@+id/profilePic2"
+        app:layout_constraintTop_toBottomOf="@+id/textViewUsername" />
+
+    <ImageView
+        android:id="@+id/imageView6"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:tint="@android:color/white"
+        app:layout_constraintBottom_toBottomOf="@+id/clienteView2"
+        app:layout_constraintEnd_toEndOf="@+id/clienteView2"
+        app:layout_constraintHorizontal_bias="0.937"
+        app:layout_constraintStart_toEndOf="@+id/profilePic2"
+        app:layout_constraintTop_toTopOf="@+id/clienteView2"
+        app:layout_constraintVertical_bias="0.568"
+        app:srcCompat="@drawable/open_more_icon" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
