@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import android.widget.Button
 import androidx.fragment.app.Fragment
 import com.example.unigym2.Activities.Communicator
+import com.example.unigym2.Fragments.Calendar.MonitoringSchedules
 import com.example.unigym2.R
 
 // TODO: Rename parameter arguments, choose names that match
@@ -24,6 +25,8 @@ class HomePersonalTrainer : Fragment() {
     // TODO: Rename and change types of parameters
     private var param1: String? = null
     private var param2: String? = null
+
+
 
     lateinit var schedulesBtn: Button
     private lateinit var communicator: Communicator
@@ -43,6 +46,7 @@ class HomePersonalTrainer : Fragment() {
     ): View? {
         // Inflate the layout for this fragment
         var v = inflater.inflate(R.layout.fragment_home_personal_trainer, container, false)
+
 
         communicator = activity as Communicator
         schedulesBtn = v.findViewById(R.id.schedulesBtn)

@@ -13,7 +13,7 @@ import com.example.unigym2.Activities.Communicator
 import com.example.unigym2.Fragments.Treinos.AdicionarExercicioAMaquina
 import com.example.unigym2.R
 
-class MaquinaOuterAdapter(private val outerItems: List<MaquinaOuterItem>, private val viewPool: RecyclerView.RecycledViewPool, private val communicator: Communicator, private val fragmentManager: FragmentManager) :
+class MaquinaOuterAdapter(private val outerItems: MutableList<MaquinaOuterItem>, private val viewPool: RecyclerView.RecycledViewPool, private val communicator: Communicator, private val fragmentManager: FragmentManager) :
     RecyclerView.Adapter<MaquinaOuterAdapter.OuterViewHolder>() {
 
     class OuterViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -44,6 +44,13 @@ class MaquinaOuterAdapter(private val outerItems: List<MaquinaOuterItem>, privat
             })
 
             communicator.replaceFragment(AdicionarExercicioAMaquina())
+        }
+
+        holder.deleteMaquinaButton.setOnClickListener {
+            outerItems.removeAt(position)
+            notifyItemRemoved(position)
+            notifyItemRangeChanged(position, outerItems.size)
+
         }
 
 
