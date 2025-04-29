@@ -137,7 +137,7 @@ class TreinosMaquinas : Fragment() {
         super.onViewCreated(view, savedInstanceState)
     }
 
-    private fun createOuterItems(): List<MaquinaOuterItem> {
+    private fun createOuterItems(): MutableList<MaquinaOuterItem> {
         // Generate sample data
         val outerItems = arrayOf(
             "Leg press Horizontal 1",
@@ -148,6 +148,6 @@ class TreinosMaquinas : Fragment() {
         val innerItems1 = List(10) { MaquinaInnerItem("Inner Item $it") }
         val innerItems2 = List(10) { MaquinaInnerItem("Inner Item ${it + 10}") }
         val innerItems3 = List(10) { MaquinaInnerItem("Inner Item ${it + 20}") }
-        return listOf(MaquinaOuterItem(innerItems1, outerItems[0]), MaquinaOuterItem(innerItems2, outerItems[1]), MaquinaOuterItem(innerItems3, outerItems[2]))
+        return mutableListOf(MaquinaOuterItem(innerItems1, outerItems[0]), MaquinaOuterItem(innerItems2, outerItems[1]), MaquinaOuterItem(innerItems3, outerItems[2]))
     }
 }
