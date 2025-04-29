@@ -8,8 +8,10 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import com.example.unigym2.Activities.Communicator
+import com.example.unigym2.Activities.ResetPassword
 import com.example.unigym2.R
 import com.google.android.material.textfield.TextInputEditText
+import android.content.Intent
 
 class EditProfileUser : Fragment() {
     private lateinit var comunicator : Communicator
@@ -19,6 +21,8 @@ class EditProfileUser : Fragment() {
     private lateinit var objetivo2 : TextInputEditText
     private lateinit var objetivo3 : TextInputEditText
     private lateinit var objetivo4 : TextInputEditText
+
+    private lateinit var alterarSenha: TextView
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -39,6 +43,12 @@ class EditProfileUser : Fragment() {
             saveProfileChanges()
             comunicator.replaceFragment(ProfileUser())
             Log.d("userlog", "Profile Saved")
+        }
+
+        alterarSenha = view.findViewById(R.id.AlterarSenhaEditUser)
+        alterarSenha.setOnClickListener {
+            var intent = Intent(requireContext(), ResetPassword::class.java)
+            startActivity(intent)
         }
 
         return view
