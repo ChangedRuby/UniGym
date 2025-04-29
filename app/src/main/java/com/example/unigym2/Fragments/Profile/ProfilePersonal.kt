@@ -20,6 +20,7 @@ class ProfilePersonal : Fragment() {
     private var param2: String? = null
 
     lateinit var editBtn : ImageView
+    lateinit var exitBtn : ImageView
     lateinit var accessibilityBtn: TextView
     private lateinit var communicator : Communicator
 
@@ -39,6 +40,7 @@ class ProfilePersonal : Fragment() {
         var v = inflater.inflate(R.layout.fragment_profile_personal, container, false)
         communicator = activity as Communicator
         editBtn = v.findViewById(R.id.EditProfilePersonal)
+        exitBtn = v.findViewById(R.id.LogoutProfilePersonal)
         accessibilityBtn = v.findViewById(R.id.AcessibilidadePersonal)
         editBtn.setOnClickListener {
             communicator.replaceFragment(EditProfilePersonal())
@@ -49,6 +51,13 @@ class ProfilePersonal : Fragment() {
             val intent = Intent("android.settings.ACCESSIBILITY_SETTINGS")
             startActivity(intent)
             Log.d("userLog", "Opening Accessibility Settings")
+        }
+
+        exitBtn.setOnClickListener {
+            requireActivity().supportFragmentManager.beginTransaction()
+                .add(android.R.id.content, ProfileLogout())
+                .addToBackStack(null)
+                .commit()
         }
 
         return v

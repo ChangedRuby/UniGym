@@ -18,7 +18,7 @@
             android:id="@+id/textView22"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="236dp"
+            android:layout_marginBottom="248dp"
             android:fontFamily="@font/roboto"
             android:text="Especialidade 4:"
             android:textColor="@color/white"
@@ -48,7 +48,7 @@
             android:id="@+id/textView20"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="316dp"
+            android:layout_marginBottom="320dp"
             android:fontFamily="@font/roboto"
             android:text="Especialidade 2:"
             android:textColor="@color/white"
@@ -63,7 +63,7 @@
             android:id="@+id/textView21"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="276dp"
+            android:layout_marginBottom="284dp"
             android:fontFamily="@font/roboto"
             android:text="Especialidade 3:"
             android:textColor="@color/white"
@@ -84,6 +84,7 @@
             app:layout_constraintVertical_bias="0.0"
             tools:layout_editor_absoluteX="16dp" />
 
+
         <TextView
             android:id="@+id/UserProfileEmail"
             android:layout_width="wrap_content"
@@ -95,11 +96,11 @@
             android:textSize="12sp"
             app:layout_constraintBottom_toTopOf="@+id/lineView"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.163"
+            app:layout_constraintHorizontal_bias="0.099"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/editTextUsername"
+            app:layout_constraintVertical_bias="0.142"
             tools:ignore="TouchTargetSizeCheck" />
-
 
         <TextView
             android:id="@+id/userProfileEmail"
@@ -110,10 +111,10 @@
             android:textSize="12sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.767"
+            app:layout_constraintHorizontal_bias="0.79"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.42" />
+            app:layout_constraintVertical_bias="0.419" />
 
         <View
             android:id="@+id/lineView"
@@ -165,128 +166,128 @@
             android:id="@+id/editText5"
             android:layout_width="160dp"
             android:layout_height="35dp"
-            android:layout_marginTop="188dp"
+            android:layout_marginBottom="172dp"
             android:backgroundTint="#FFFFFF"
             android:hint="Serviço"
             android:textColor="@color/white"
             android:textColorHint="@color/hint_grey"
             android:textSize="14sp"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.362"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/lineView"
             tools:ignore="TouchTargetSizeCheck,SpeakableTextPresentCheck" />
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/editText9"
             android:layout_width="80dp"
             android:layout_height="35dp"
-            android:layout_marginTop="188dp"
+            android:layout_marginBottom="172dp"
             android:backgroundTint="#FFFFFF"
             android:hint="Preço"
             android:textColor="@color/white"
             android:textColorHint="@color/hint_grey"
             android:textSize="14sp"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.779"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/lineView"
             tools:ignore="TouchTargetSizeCheck" />
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/editText10"
             android:layout_width="80dp"
             android:layout_height="35dp"
-            android:layout_marginTop="228dp"
+            android:layout_marginBottom="136dp"
             android:backgroundTint="#FFFFFF"
             android:hint="Preço"
             android:textColor="@color/white"
             android:textColorHint="@color/hint_grey"
             android:textSize="14sp"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.779"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/lineView"
             tools:ignore="TouchTargetSizeCheck,SpeakableTextPresentCheck" />
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/editText11"
             android:layout_width="80dp"
             android:layout_height="35dp"
-            android:layout_marginTop="268dp"
+            android:layout_marginBottom="96dp"
             android:backgroundTint="#FFFFFF"
             android:hint="Preço"
             android:textColor="@color/white"
             android:textColorHint="@color/hint_grey"
             android:textSize="14sp"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.779"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/lineView"
             tools:ignore="TouchTargetSizeCheck,SpeakableTextPresentCheck" />
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/editText12"
             android:layout_width="80dp"
             android:layout_height="35dp"
-            android:layout_marginTop="308dp"
+            android:layout_marginBottom="56dp"
             android:backgroundTint="#FFFFFF"
             android:hint="Preço"
             android:textColor="@color/white"
             android:textColorHint="@color/hint_grey"
             android:textSize="14sp"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.779"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/lineView"
             tools:ignore="TouchTargetSizeCheck,SpeakableTextPresentCheck" />
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/editText6"
             android:layout_width="160dp"
             android:layout_height="35dp"
-            android:layout_marginTop="228dp"
+            android:layout_marginBottom="136dp"
             android:backgroundTint="#FFFFFF"
             android:hint="Serviço"
             android:textColor="@color/white"
             android:textColorHint="@color/hint_grey"
             android:textSize="14sp"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.362"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/lineView"
             tools:ignore="TouchTargetSizeCheck,SpeakableTextPresentCheck" />
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/editText8"
             android:layout_width="160dp"
             android:layout_height="35dp"
-            android:layout_marginTop="308dp"
+            android:layout_marginBottom="56dp"
             android:backgroundTint="#FFFFFF"
             android:hint="Serviço"
             android:textColor="@color/white"
             android:textColorHint="@color/hint_grey"
             android:textSize="14sp"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.362"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/lineView"
             tools:ignore="TouchTargetSizeCheck,SpeakableTextPresentCheck" />
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/editText7"
             android:layout_width="160dp"
             android:layout_height="35dp"
-            android:layout_marginTop="268dp"
+            android:layout_marginBottom="96dp"
             android:backgroundTint="#FFFFFF"
             android:hint="Serviço"
             android:textColor="@color/white"
             android:textColorHint="@color/hint_grey"
             android:textSize="14sp"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.362"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/lineView"
             tools:ignore="TouchTargetSizeCheck,SpeakableTextPresentCheck" />
 
         <TextView
@@ -332,71 +333,71 @@
             android:id="@+id/editEspecialidade1"
             android:layout_width="160dp"
             android:layout_height="35dp"
-            android:layout_marginTop="12dp"
+            android:layout_marginBottom="348dp"
             android:backgroundTint="#FFFFFF"
             android:hint="Especialidade"
             android:textColor="@color/white"
             android:textColorHint="@color/hint_grey"
             android:textSize="14sp"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.653"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/lineView"
             tools:ignore="TouchTargetSizeCheck" />
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/editEspecialidade2"
             android:layout_width="160dp"
             android:layout_height="35dp"
-            android:layout_marginTop="52dp"
+            android:layout_marginBottom="312dp"
             android:backgroundTint="#FFFFFF"
             android:hint="Especialidade"
             android:textColor="@color/white"
             android:textColorHint="@color/hint_grey"
             android:textSize="14sp"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.653"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/lineView"
             tools:ignore="TouchTargetSizeCheck,SpeakableTextPresentCheck" />
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/editEspecialidade3"
             android:layout_width="160dp"
             android:layout_height="35dp"
-            android:layout_marginTop="92dp"
+            android:layout_marginBottom="276dp"
             android:backgroundTint="#FFFFFF"
             android:hint="Especialidade"
             android:textColor="@color/white"
             android:textColorHint="@color/hint_grey"
             android:textSize="14sp"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.653"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/lineView"
             tools:ignore="TouchTargetSizeCheck,SpeakableTextPresentCheck" />
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/editEspecialidade4"
             android:layout_width="160dp"
             android:layout_height="35dp"
-            android:layout_marginTop="132dp"
+            android:layout_marginBottom="240dp"
             android:backgroundTint="#FFFFFF"
             android:hint="Especialidade"
             android:textColor="@color/white"
             android:textColorHint="@color/hint_grey"
             android:textSize="14sp"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.653"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/lineView"
             tools:ignore="TouchTargetSizeCheck,SpeakableTextPresentCheck" />
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/editTextUsername"
             android:layout_width="100dp"
             android:layout_height="50dp"
-            android:layout_marginTop="16dp"
+            android:layout_marginTop="248dp"
             android:backgroundTint="#FFFFFF"
             android:hint="Username"
             android:textColor="@color/white"
@@ -405,7 +406,7 @@
             app:layout_constraintEnd_toEndOf="@+id/lineView"
             app:layout_constraintHorizontal_bias="0.109"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/profileUserImage" />
+            app:layout_constraintTop_toTopOf="@+id/profileSecondaryColor" />
 
         <TextView
             android:id="@+id/AlterarSenhaEditPersonal"
@@ -442,8 +443,10 @@
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.498"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/editText8" />
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.991" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

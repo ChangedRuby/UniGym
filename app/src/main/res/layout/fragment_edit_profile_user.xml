@@ -18,7 +18,7 @@
             android:id="@+id/textView22"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="236dp"
+            android:layout_marginBottom="240dp"
             android:fontFamily="@font/roboto"
             android:text="Objetivo 4:"
             android:textColor="@color/white"
@@ -26,7 +26,7 @@
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.152"
+            app:layout_constraintHorizontal_bias="0.153"
             app:layout_constraintStart_toStartOf="parent" />
 
         <TextView
@@ -41,14 +41,14 @@
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.152"
+            app:layout_constraintHorizontal_bias="0.153"
             app:layout_constraintStart_toStartOf="parent" />
 
         <TextView
             android:id="@+id/textView20"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="316dp"
+            android:layout_marginBottom="320dp"
             android:fontFamily="@font/roboto"
             android:text="Objetivo 2:"
             android:textColor="@color/white"
@@ -56,14 +56,14 @@
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.152"
+            app:layout_constraintHorizontal_bias="0.153"
             app:layout_constraintStart_toStartOf="parent" />
 
         <TextView
             android:id="@+id/textView21"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="276dp"
+            android:layout_marginBottom="284dp"
             android:fontFamily="@font/roboto"
             android:text="Objetivo 3:"
             android:textColor="@color/white"
@@ -71,7 +71,7 @@
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.152"
+            app:layout_constraintHorizontal_bias="0.153"
             app:layout_constraintStart_toStartOf="parent" />
 
         <View
@@ -92,12 +92,12 @@
             android:text="Email: treinador@gmail.com"
             android:textColor="#FBFBFB"
             android:textSize="12sp"
-            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintBottom_toTopOf="@+id/lineView"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.205"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.419" />
+            app:layout_constraintVertical_bias="0.964" />
 
         <View
             android:id="@+id/lineView"
@@ -114,10 +114,12 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="104dp"
+            app:layout_constraintBottom_toTopOf="@+id/lineView"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.12"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.083"
             app:shapeAppearanceOverlay="@style/roundedImageView"
             tools:src="@tools:sample/avatars" />
 
@@ -127,84 +129,89 @@
             android:layout_height="130sp"
             android:layout_marginTop="104dp"
             android:background="@drawable/circle_test"
+            app:layout_constraintBottom_toTopOf="@+id/lineView"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.12"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/profileSecondaryColor" />
+            app:layout_constraintTop_toTopOf="@+id/profileSecondaryColor"
+            app:layout_constraintVertical_bias="0.085" />
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/editObjetivo1"
             android:layout_width="160dp"
             android:layout_height="35dp"
-            android:layout_marginTop="16dp"
+            android:layout_marginStart="124dp"
+            android:layout_marginEnd="127dp"
+            android:layout_marginBottom="348dp"
             android:backgroundTint="#FFFFFF"
             android:textColor="@color/white"
             android:textColorHint="@color/hint_grey"
             android:textSize="14sp"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.549"
+            app:layout_constraintHorizontal_bias="1.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/lineView"
             tools:ignore="TouchTargetSizeCheck,SpeakableTextPresentCheck" />
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/editObjetivo4"
             android:layout_width="160dp"
             android:layout_height="35dp"
-            android:layout_marginTop="136dp"
+            android:layout_marginBottom="236dp"
             android:backgroundTint="#FFFFFF"
             android:textColor="@color/white"
             android:textColorHint="@color/hint_grey"
             android:textSize="14sp"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.549"
+            app:layout_constraintHorizontal_bias="0.498"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/lineView"
             tools:ignore="TouchTargetSizeCheck,SpeakableTextPresentCheck" />
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/editObjetivo3"
             android:layout_width="160dp"
             android:layout_height="35dp"
-            android:layout_marginTop="100dp"
+            android:layout_marginBottom="276dp"
             android:backgroundTint="#FFFFFF"
             android:textColor="@color/white"
             android:textColorHint="@color/hint_grey"
             android:textSize="14sp"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.549"
+            app:layout_constraintHorizontal_bias="0.498"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/lineView"
             tools:ignore="TouchTargetSizeCheck,SpeakableTextPresentCheck" />
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/editObjetivo2"
             android:layout_width="160dp"
             android:layout_height="35dp"
-            android:layout_marginTop="56dp"
+            android:layout_marginBottom="312dp"
             android:backgroundTint="#FFFFFF"
             android:textColor="@color/white"
             android:textColorHint="@color/hint_grey"
             android:textSize="14sp"
+            app:layout_constraintBottom_toBottomOf="@+id/ConfirmarEditUser"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.549"
+            app:layout_constraintHorizontal_bias="0.498"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/lineView"
             tools:ignore="TouchTargetSizeCheck,SpeakableTextPresentCheck" />
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/editTextUsername"
             android:layout_width="100dp"
             android:layout_height="50dp"
-            android:layout_marginStart="48dp"
-            android:layout_marginTop="8dp"
+            android:layout_marginStart="44dp"
             android:backgroundTint="#FFFFFF"
             android:hint="Username"
             android:textColor="@color/white"
             android:textColorHint="@color/white"
             android:textSize="20sp"
+            app:layout_constraintBottom_toBottomOf="@+id/ConfirmarEditUser"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/profileUserImage" />
+            app:layout_constraintTop_toTopOf="@+id/profileSecondaryColor"
+            app:layout_constraintVertical_bias="0.355" />
 
         <TextView
             android:id="@+id/AlterarSenhaEditUser"
@@ -219,7 +226,7 @@
             android:textColor="#000000"
             android:textSize="12sp"
             android:textStyle="bold"
-            app:layout_constraintBottom_toTopOf="@+id/userProfileEmail"
+            app:layout_constraintBottom_toTopOf="@+id/lineView"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.731"
             app:layout_constraintStart_toEndOf="@+id/editTextUsername"

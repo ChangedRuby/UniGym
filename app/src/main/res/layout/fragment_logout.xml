@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#80000000">
+
+        <ImageView
+            android:id="@+id/imageView5"
+            android:layout_width="323dp"
+            android:layout_height="172dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/rectangle_objetivos_teste" />
+
+        <TextView
+            android:id="@+id/ButtonConfirma"
+            android:layout_width="119dp"
+            android:layout_height="35dp"
+            android:layout_marginStart="36dp"
+            android:background="@drawable/rectangle_light_gradient"
+            android:gravity="center"
+            android:text="Sim"
+            android:textColor="#040000"
+            app:layout_constraintBottom_toBottomOf="@+id/imageView5"
+            app:layout_constraintStart_toStartOf="@+id/imageView5"
+            app:layout_constraintTop_toTopOf="@+id/imageView5"
+            app:layout_constraintVertical_bias="0.756" />
+
+        <TextView
+            android:id="@+id/ButtonNega"
+            android:layout_width="119dp"
+            android:layout_height="35dp"
+            android:layout_marginEnd="36dp"
+            android:background="@drawable/rectangle_light_gradient"
+            android:gravity="center"
+            android:text="Não"
+            android:textColor="#040000"
+            app:layout_constraintBottom_toBottomOf="@+id/imageView5"
+            app:layout_constraintEnd_toEndOf="@+id/imageView5"
+            app:layout_constraintTop_toTopOf="@+id/imageView5"
+            app:layout_constraintVertical_bias="0.756" />
+
+        <TextView
+            android:id="@+id/textView34"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Tem certeza?"
+            android:textColor="#FFFDFD"
+            android:textSize="22sp"
+            app:layout_constraintBottom_toBottomOf="@+id/imageView5"
+            app:layout_constraintEnd_toEndOf="@+id/imageView5"
+            app:layout_constraintHorizontal_bias="0.496"
+            app:layout_constraintStart_toStartOf="@+id/imageView5"
+            app:layout_constraintTop_toTopOf="@+id/imageView5"
+            app:layout_constraintVertical_bias="0.174" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</FrameLayout>

@@ -53,6 +53,13 @@ class ProfileUser : Fragment() {
             Log.d("userLog", "Opening Accessibility Settings")
         }
 
+        exitBtn.setOnClickListener {
+            requireActivity().supportFragmentManager.beginTransaction()
+                .add(android.R.id.content, ProfileLogout())
+                .addToBackStack(null)
+                .commit()
+        }
+
         return v
     }
 }
