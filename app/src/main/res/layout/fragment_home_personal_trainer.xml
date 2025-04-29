@@ -22,7 +22,7 @@
             android:textSize="32sp"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.076"
+            app:layout_constraintHorizontal_bias="0.083"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -30,13 +30,14 @@
             android:id="@+id/nameTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
+            android:layout_marginTop="4dp"
             android:fontFamily="@font/roboto"
             android:text="@string/user_name"
             android:textColor="@android:color/white"
+            android:textSize="24sp"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.083"
+            app:layout_constraintHorizontal_bias="0.111"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textView13" />
 
@@ -68,7 +69,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
             android:fontFamily="@font/roboto"
-            android:text="Próxima seção ás"
+            android:text="Próxima sessão às"
             android:textColor="@color/white"
             app:layout_constraintEnd_toEndOf="@+id/imageView9"
             app:layout_constraintHorizontal_bias="0.054"
@@ -103,30 +104,31 @@
 
         <TextView
             android:id="@+id/nextSessionProfessional"
-            app:layout_constraintEnd_toEndOf="@+id/imageView9"
-            app:layout_constraintHorizontal_bias="0.832"
-            app:layout_constraintStart_toStartOf="@+id/imageView9"
-            app:layout_constraintTop_toBottomOf="@+id/textView16"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
-            android:text="Datne Quintana"
+            android:text="Dante Quintana"
             android:textColor="@android:color/white"
-            android:textSize="24sp" />
+            android:textSize="24sp"
+            app:layout_constraintEnd_toEndOf="@+id/imageView9"
+            app:layout_constraintHorizontal_bias="0.832"
+            app:layout_constraintStart_toStartOf="@+id/imageView9"
+            app:layout_constraintTop_toBottomOf="@+id/textView16" />
 
         <TextView
             android:id="@+id/textView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="12dp"
+            android:fontFamily="@font/roboto"
             android:text="3 novas solicitações"
             android:textColor="@android:color/black"
             android:textSize="24sp"
+            android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="@+id/imageView10"
             app:layout_constraintHorizontal_bias="0.488"
             app:layout_constraintStart_toStartOf="@+id/imageView10"
-            app:layout_constraintTop_toTopOf="@+id/imageView10"
-            android:fontFamily="@font/roboto" />
+            app:layout_constraintTop_toTopOf="@+id/imageView10" />
 
         <TextView
             android:id="@+id/textView4"
@@ -134,9 +136,10 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
             android:fontFamily="@font/roboto"
-            android:text="Não deixe seus clientes em potêncial esperando!"
+            android:text="Não deixe seus clientes esperando!"
             android:textColor="@android:color/black"
             android:textSize="12sp"
+            android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="@+id/imageView10"
             app:layout_constraintHorizontal_bias="0.487"
             app:layout_constraintStart_toStartOf="@+id/imageView10"
@@ -144,8 +147,8 @@
 
         <Button
             android:id="@+id/schedulesBtn"
-            android:layout_width="300sp"
-            android:layout_height="100sp"
+            android:layout_width="329dp"
+            android:layout_height="112dp"
             android:background="@android:color/transparent"
             android:text="botao"
             android:textColor="@color/transparent"
