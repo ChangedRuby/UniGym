@@ -200,8 +200,8 @@
         <!-- Conclude Button -->
         <com.google.android.material.button.MaterialButton
             android:id="@+id/concludeButton"
-            android:layout_width="400dp"
-            android:layout_height="wrap_content"
+            android:layout_width="369dp"
+            android:layout_height="58dp"
             android:background="@drawable/rounded_corners"
             android:backgroundTint="@android:color/white"
             android:paddingTop="12dp"

@@ -3,6 +3,7 @@ package com.example.unigym2.Activities
 import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.unigym2.R
 
@@ -16,10 +17,15 @@ class LoginMenu : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login_menu)
 
-        entrarBtn = findViewById(R.id.EntrarBtn)
+        entrarBtn = findViewById(R.id.confirmNewPasswordButton)
         entrarBtnPersonal = findViewById(R.id.entrarBtnPersonal)
         createAccount = findViewById(R.id.createAccountBtn)
         recuperarSenhaBtn = findViewById(R.id.recuperarSenha)
+
+        val senhaAlterada = intent.getBooleanExtra("senha_alterada", false)
+        if(senhaAlterada){
+            Toast.makeText(this, "Senha alterada com sucesso!", Toast.LENGTH_SHORT).show()
+        }
     }
 
     override fun onStart() {

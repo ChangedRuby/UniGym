@@ -1,16 +1,33 @@
 package com.example.unigym2.Activities
 
+import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.unigym2.R
 
 class ResetPassword : AppCompatActivity() {
 
-    lateinit var continuarBtn: Button
+    lateinit var newPasswordButton: Button
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_reset_password)
+
+        newPasswordButton = findViewById(R.id.confirmNewPasswordButton)
+
+    }
+
+    override fun onStart() {
+        super.onStart()
+
+        newPasswordButton.setOnClickListener {
+
+            var intent = Intent(this, LoginMenu::class.java)
+            intent.putExtra("senha_alterada", true)
+            startActivity(intent)
+        }
+
     }
 }
