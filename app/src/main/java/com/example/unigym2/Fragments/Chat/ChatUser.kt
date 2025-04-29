@@ -5,6 +5,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import com.example.unigym2.Fragments.Chat.Recyclerviews.ListaPersonaisAdapter
+import com.example.unigym2.Fragments.Chat.Recyclerviews.ListaPersonaisItem
+import com.example.unigym2.Fragments.Treinos.Recyclerviews.ListaTreinosAdapter
+import com.example.unigym2.Fragments.Treinos.Recyclerviews.ListaTreinosItem
 import com.example.unigym2.R
 
 // TODO: Rename parameter arguments, choose names that match
@@ -22,6 +28,11 @@ class ChatUser : Fragment() {
     private var param1: String? = null
     private var param2: String? = null
 
+    private lateinit var recyclerView: RecyclerView
+
+    private lateinit var namesArray: Array<String>
+    private lateinit var itemArray: MutableList<ListaPersonaisItem>
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
@@ -35,7 +46,17 @@ class ChatUser : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_chat_user, container, false)
+        var v = inflater.inflate(R.layout.fragment_chat_user, container, false)
+
+        recyclerView = v.findViewById(R.id.listaPersonaisRecyclerview)
+
+        createItems()
+        val layoutManager = LinearLayoutManager(context)
+        val adapter = ListaPersonaisAdapter(itemArray)
+        recyclerView.layoutManager = layoutManager
+        recyclerView.adapter = adapter
+
+        return v
     }
 
     companion object {
@@ -56,5 +77,23 @@ class ChatUser : Fragment() {
                     putString(ARG_PARAM2, param2)
                 }
             }
+    }
+
+    private fun createItems(){
+
+        itemArray = arrayListOf()
+
+        namesArray = arrayOf(
+            "Name A",
+            "Name B",
+            "Name C",
+            "Name D",
+            "Name E",
+        )
+
+        for(i in namesArray.indices){
+            val nameItem = ListaPersonaisItem(namesArray[i])
+            itemArray.add(nameItem)
+        }
     }
 }
