@@ -40,6 +40,11 @@ class ListaUsuariosAdapter(private val dataList: MutableList<ListaPersonaisItem>
 
         }
 
+        if(position == 0){
+            holder.visualizarPerfilBtn.visibility = View.GONE
+            holder.descriptionView.text = "Converse com um agente de IA."
+        }
+
         holder.visualizarPerfilBtn.setOnClickListener {
             fragmentManager.setFragmentResult("user_info_key", Bundle().apply {
                 putString("user_name", holder.nameView.text.toString())
@@ -52,5 +57,6 @@ class ListaUsuariosAdapter(private val dataList: MutableList<ListaPersonaisItem>
     class MyViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView){
         val visualizarPerfilBtn : AppCompatImageView = itemView.findViewById(R.id.visualizarPerfilBtn)
         val nameView : TextView = itemView.findViewById(R.id.textViewUsername)
+        val descriptionView: TextView = itemView.findViewById(R.id.userDescription)
     }
 }

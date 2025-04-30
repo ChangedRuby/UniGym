@@ -32,6 +32,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="32dp"
+        android:gravity="left"
         android:text="Renee Winters"
         android:textColor="@color/white"
         android:textSize="16sp"
@@ -42,10 +43,11 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/textView28"
+        android:id="@+id/userDescription"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="4dp"
+        android:gravity="left"
         android:text="Treino com personal"
         app:layout_constraintEnd_toEndOf="@+id/clienteView2"
         app:layout_constraintHorizontal_bias="0.142"
