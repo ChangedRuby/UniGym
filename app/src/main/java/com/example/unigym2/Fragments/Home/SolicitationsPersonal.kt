@@ -1,6 +1,7 @@
 package com.example.unigym2.Fragments.Home
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,6 +14,11 @@ import com.example.unigym2.Activities.Communicator
 import com.example.unigym2.Fragments.Home.Recyclerviews.RequestsData
 import com.example.unigym2.Fragments.Home.Recyclerviews.RequestsRecyclerAdapter
 import com.example.unigym2.R
+import com.google.firebase.firestore.DocumentChange
+import com.google.firebase.firestore.EventListener
+import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.FirebaseFirestoreException
+import com.google.firebase.firestore.QuerySnapshot
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -28,6 +34,8 @@ class SolicitationsPersonal : Fragment() {
     // TODO: Rename and change types of parameters
     private var param1: String? = null
     private var param2: String? = null
+
+    lateinit var db: FirebaseFirestore
 
     lateinit var schedulesBtn: Button
     lateinit var exitBtn : ImageView
@@ -53,6 +61,7 @@ class SolicitationsPersonal : Fragment() {
                               savedInstanceState: Bundle?): View? {
         // Inflate the layout for this fragment
         var v = inflater.inflate(R.layout.fragment_solicitations_personal, container, false)
+
 
         dataInitialize()
         val layoutManager = LinearLayoutManager(context)
@@ -107,11 +116,38 @@ class SolicitationsPersonal : Fragment() {
             "11",
         )
 
+        db = FirebaseFirestore.getInstance()
 
-        for(i in names.indices){
+        db.collection("Usuarios")
+            .addSnapshotListener(object : EventListener<QuerySnapshot>{
+                override fun onEvent(
+                    value: QuerySnapshot?,
+                    error: FirebaseFirestoreException?
+                ) {
 
-            val requests = RequestsData(names[i])
-            requestsArrayList.add(requests)
-        }
+
+                    if(error != null){
+                        Log.e("Firestore error", error.message.toString())
+                        return
+                    }
+
+                    for(dc : DocumentChange in value?.documentChanges!!){
+
+                        if(dc.type == DocumentChange.Type.ADDED){
+
+                            requestsArrayList.add(dc.document.toObject(RequestsData::class.java))
+                        }
+                    }
+
+                    adapter.notifyDataSetChanged()
+                }
+
+            })
+
+//        for(i in names.indices){
+//
+//            val requests = RequestsData(names[i])
+//            requestsArrayList.add(requests)
+//        }
     }
 }

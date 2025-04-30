@@ -1,11 +1,16 @@
 package com.example.unigym2.Fragments.Home
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import com.example.unigym2.Fragments.Chat.Recyclerviews.ListaPersonaisItem
 import com.example.unigym2.R
+import com.google.firebase.Firebase
+import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.firestore
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -22,6 +27,8 @@ class HomeUser : Fragment() {
     private var param1: String? = null
     private var param2: String? = null
 
+    val db = FirebaseFirestore.getInstance()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
@@ -35,7 +42,20 @@ class HomeUser : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_home_user, container, false)
+        var v = inflater.inflate(R.layout.fragment_home_user, container, false)
+
+        db.collection("Usuarios")
+            .get()
+            .addOnSuccessListener { result ->
+                for (document in result) {
+                    Log.d("firestore", "${document.id} => ${document.data}")
+                }
+            }
+            .addOnFailureListener { exception ->
+                Log.w("firestore", "Error getting documents.", exception)
+            }
+
+        return v
     }
 
     companion object {
