@@ -120,7 +120,7 @@ class AdicionarExercicioATreino : Fragment() {
                     })
 
                     communicator = activity as Communicator
-                    communicator.replaceFragment(ListaTreinosPersonal())
+                    communicator.replaceFragment(TreinoUsuarioPersonal())
 
 
                 } else {

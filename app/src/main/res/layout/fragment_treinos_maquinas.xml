@@ -53,6 +53,7 @@
             android:text="B"
             app:icon="@drawable/add_icon"
             app:iconSize="80dp"
+            app:iconTint="@android:color/white"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.818"
             app:layout_constraintStart_toEndOf="@+id/MaquinasTextView"

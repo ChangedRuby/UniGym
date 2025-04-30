@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.unigym2.Activities.Communicator
 import com.example.unigym2.Fragments.Chat.Recyclerviews.ListaPersonaisAdapter
 import com.example.unigym2.Fragments.Chat.Recyclerviews.ListaPersonaisItem
+import com.example.unigym2.Fragments.Chat.Recyclerviews.ListaUsuariosAdapter
 import com.example.unigym2.R
 
 // TODO: Rename parameter arguments, choose names that match
@@ -53,7 +54,7 @@ class ChatPersonal : Fragment() {
 
         createItems()
         val layoutManager = LinearLayoutManager(context)
-        val adapter = ListaPersonaisAdapter(itemArray, communicator, parentFragmentManager)
+        val adapter = ListaUsuariosAdapter(itemArray, communicator, parentFragmentManager)
         recyclerView.layoutManager = layoutManager
         recyclerView.adapter = adapter
 

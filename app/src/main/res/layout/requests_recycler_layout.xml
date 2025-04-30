@@ -61,7 +61,7 @@
             android:textAllCaps="false" />
 
         <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/button7"
+            android:id="@+id/removeRequestButton"
             android:layout_width="50sp"
             android:layout_height="50sp"
             android:layout_marginLeft="245sp"

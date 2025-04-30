@@ -10,6 +10,7 @@ import android.widget.TextView
 import androidx.fragment.app.Fragment
 import com.example.unigym2.Activities.Communicator
 import com.example.unigym2.Fragments.Calendar.MonitoringSchedules
+import com.example.unigym2.Fragments.Chat.ChatPersonal
 import com.example.unigym2.Fragments.Chat.ChatUser
 import com.example.unigym2.R
 
@@ -48,7 +49,7 @@ class VisualizarPerfilPersonal : Fragment() {
         }
 
         backBtn.setOnClickListener() {
-            communicator.replaceFragment(ChatUser())
+            communicator.replaceFragment(if (communicator.getMode()) ChatPersonal() else ChatUser())
         }
         return v
     }
