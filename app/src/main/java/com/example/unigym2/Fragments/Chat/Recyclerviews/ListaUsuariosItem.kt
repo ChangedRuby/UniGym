@@ -1,3 +1,3 @@
 package com.example.unigym2.Fragments.Chat.Recyclerviews
 
-data class ListausuariosItem(val name: String)
+data class ListaUsuariosItem(val name: String)
