@@ -86,7 +86,7 @@ class ChatUser : Fragment() {
         itemArray = arrayListOf()
 
         namesArray = arrayOf(
-            "Name A",
+            "Brok",
             "Name B",
             "Name C",
             "Name D",
