@@ -54,7 +54,7 @@ class ChatMain : Fragment() {
         backBtn = v.findViewById(R.id.goBackBtn)
         communicator = activity as Communicator
         backBtn.setOnClickListener {
-            communicator.replaceFragment(if (communicator.getPersonalMode()) ChatPersonal() else ChatUser())
+            communicator.replaceFragment(if (communicator.getMode()) ChatPersonal() else ChatUser())
         }
 
         return v

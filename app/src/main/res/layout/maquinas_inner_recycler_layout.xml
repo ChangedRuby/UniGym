@@ -18,7 +18,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <Button
-        android:id="@+id/button4"
+        android:id="@+id/removeExercicioBtn"
         android:layout_width="30sp"
         android:layout_height="30sp"
         android:layout_marginLeft="40sp"

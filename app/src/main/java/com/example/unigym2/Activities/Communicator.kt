@@ -4,5 +4,5 @@ import androidx.fragment.app.Fragment
 
 interface Communicator {
     fun replaceFragment(fragment: Fragment)
-    fun getPersonalMode(): Boolean
+    fun getMode(): Boolean
 }

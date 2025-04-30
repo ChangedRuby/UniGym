@@ -145,9 +145,9 @@ class TreinosMaquinas : Fragment() {
             "Leg press Horizontal 3",
         )
 
-        val innerItems1 = List(10) { MaquinaInnerItem("Inner Item $it") }
-        val innerItems2 = List(10) { MaquinaInnerItem("Inner Item ${it + 10}") }
-        val innerItems3 = List(10) { MaquinaInnerItem("Inner Item ${it + 20}") }
+        val innerItems1 = MutableList(10) { MaquinaInnerItem("Inner Item $it") }
+        val innerItems2 = MutableList(10) { MaquinaInnerItem("Inner Item ${it + 10}") }
+        val innerItems3 = MutableList(10) { MaquinaInnerItem("Inner Item ${it + 20}") }
         return mutableListOf(MaquinaOuterItem(innerItems1, outerItems[0]), MaquinaOuterItem(innerItems2, outerItems[1]), MaquinaOuterItem(innerItems3, outerItems[2]))
     }
 }

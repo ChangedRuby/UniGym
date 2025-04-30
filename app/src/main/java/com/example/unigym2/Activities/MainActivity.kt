@@ -74,7 +74,7 @@ class MainActivity : AppCompatActivity(), Communicator{
         fragmentTransaction.commit()
     }
 
-    override fun getPersonalMode(): Boolean {
+    override fun getMode(): Boolean {
         return personalMode
     }
 }
