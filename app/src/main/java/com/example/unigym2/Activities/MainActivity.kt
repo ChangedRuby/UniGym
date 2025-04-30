@@ -18,15 +18,13 @@ import com.example.unigym2.R
 import com.example.unigym2.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity(), Communicator{
-
+    var personalMode : Boolean = false
     lateinit var binding: ActivityMainBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
-        var personalMode = false
 
         if(intent.getStringExtra("personalMode").equals("true")){
             personalMode = true
@@ -74,5 +72,9 @@ class MainActivity : AppCompatActivity(), Communicator{
         val fragmentTransaction = fragmentManager.beginTransaction()
         fragmentTransaction.replace(R.id.frame_layout, fragment)
         fragmentTransaction.commit()
+    }
+
+    override fun getPersonalMode(): Boolean {
+        return personalMode
     }
 }

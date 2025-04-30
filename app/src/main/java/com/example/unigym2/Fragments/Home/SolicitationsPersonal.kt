@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.ImageView
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -29,7 +30,8 @@ class SolicitationsPersonal : Fragment() {
     private var param2: String? = null
 
     lateinit var schedulesBtn: Button
-    private lateinit var communicator: Communicator
+    lateinit var exitBtn : ImageView
+    private lateinit var communicator : Communicator
 
     private lateinit var adapter : RequestsRecyclerAdapter
     private lateinit var recyclerView: RecyclerView
@@ -59,6 +61,12 @@ class SolicitationsPersonal : Fragment() {
         recyclerView.setHasFixedSize(true)
         adapter = RequestsRecyclerAdapter(requestsArrayList)
         recyclerView.adapter = adapter
+        communicator = activity as Communicator
+        exitBtn = v.findViewById(R.id.closeScreen)
+
+        exitBtn.setOnClickListener {
+            communicator.replaceFragment(HomePersonalTrainer())
+        }
 
         return v
     }

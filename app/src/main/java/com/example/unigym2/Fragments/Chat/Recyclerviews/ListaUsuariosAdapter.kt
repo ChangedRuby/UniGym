@@ -1,5 +1,6 @@
 package com.example.unigym2.Fragments.Chat.Recyclerviews
 
+import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -8,6 +9,8 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.unigym2.Activities.Communicator
 import com.example.unigym2.Fragments.Chat.ChatMain
+import com.example.unigym2.Fragments.Profile.VisualizarPerfilPersonal
+import com.example.unigym2.Fragments.Profile.VisualizarPerfilUser
 import com.example.unigym2.Fragments.Treinos.Recyclerviews.ListaTreinosItem
 import com.example.unigym2.Fragments.Treinos.Recyclerviews.ListaUsuariosClickListener
 import com.example.unigym2.R
@@ -35,10 +38,17 @@ class ListaUsuariosAdapter(private val dataList: MutableList<ListaPersonaisItem>
 
         }
 
+        holder.visualizarPerfilBtn.setOnClickListener {
+//            fragmentManager.setFragmentResult("user_info_key", Bundle().apply {
+//                putString("user_name", holder.nameView.text.toString())
+//            })
+            communicator.replaceFragment(VisualizarPerfilUser())
+        }
+
     }
 
     class MyViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView){
-
+        val visualizarPerfilBtn : Button = itemView.findViewById(R.id.visualizarPerfilBtn)
         val nameView : TextView = itemView.findViewById(R.id.textViewUsername)
     }
 }

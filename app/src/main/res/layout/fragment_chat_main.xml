@@ -54,7 +54,7 @@
                 app:layout_constraintTop_toTopOf="@+id/materialToolbar2" />
 
             <ImageView
-                android:id="@+id/goBackButn"
+                android:id="@+id/goBackBtn"
                 android:layout_width="31dp"
                 android:layout_height="37dp"
                 android:layout_marginStart="20dp"

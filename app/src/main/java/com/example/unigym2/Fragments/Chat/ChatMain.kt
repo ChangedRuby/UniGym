@@ -4,9 +4,11 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.unigym2.Activities.Communicator
 import com.example.unigym2.Fragments.Chat.Recyclerviews.ListaPersonaisAdapter
 import com.example.unigym2.Fragments.Chat.Recyclerviews.ListaPersonaisItem
 import com.example.unigym2.Fragments.Treinos.Recyclerviews.ListaTreinosAdapter
@@ -28,7 +30,9 @@ class ChatMain : Fragment() {
     private var param1: String? = null
     private var param2: String? = null
 
+    private lateinit var communicator: Communicator
     private lateinit var recyclerView: RecyclerView
+    private lateinit var backBtn : ImageView
 
     private lateinit var namesArray: Array<String>
     private lateinit var itemArray: MutableList<ListaPersonaisItem>
@@ -47,7 +51,11 @@ class ChatMain : Fragment() {
     ): View? {
         // Inflate the layout for this fragment
         var v = inflater.inflate(R.layout.fragment_chat_main, container, false)
-
+        backBtn = v.findViewById(R.id.goBackBtn)
+        communicator = activity as Communicator
+        backBtn.setOnClickListener {
+            communicator.replaceFragment(if (communicator.getPersonalMode()) ChatPersonal() else ChatUser())
+        }
 
         return v
     }
