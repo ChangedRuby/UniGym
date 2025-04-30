@@ -22,7 +22,7 @@ private const val ARG_PARAM2 = "param2"
  * Use the [ChatUser.newInstance] factory method to
  * create an instance of this fragment.
  */
-class ChatUser : Fragment() {
+class ChatPersonal : Fragment() {
     // TODO: Rename and change types of parameters
     private var param1: String? = null
     private var param2: String? = null
@@ -46,7 +46,7 @@ class ChatUser : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        var v = inflater.inflate(R.layout.fragment_chat_user, container, false)
+        var v = inflater.inflate(R.layout.fragment_chat_trainer, container, false)
 
         recyclerView = v.findViewById(R.id.listaUsuariosRecyclerview)
         communicator = activity as Communicator

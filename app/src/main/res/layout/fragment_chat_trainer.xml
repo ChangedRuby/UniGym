@@ -77,6 +77,17 @@
                 app:layout_constraintVertical_bias="0.288"
                 app:srcCompat="@drawable/bg_novasessao" />
 
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/listaUsuariosRecyclerview"
+                android:layout_width="409dp"
+                android:layout_height="550dp"
+                android:layout_marginTop="44dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/conversasSearchView"
+                tools:itemCount="5"
+                tools:listitem="@layout/usuarios_chat_recycler_layout" />
+
         </androidx.constraintlayout.widget.ConstraintLayout>
 
     </FrameLayout>

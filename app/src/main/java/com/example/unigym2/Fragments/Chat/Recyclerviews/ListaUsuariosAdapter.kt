@@ -12,7 +12,7 @@ import com.example.unigym2.Fragments.Treinos.Recyclerviews.ListaTreinosItem
 import com.example.unigym2.Fragments.Treinos.Recyclerviews.ListaUsuariosClickListener
 import com.example.unigym2.R
 
-class ListaPersonaisAdapter(private val dataList: MutableList<ListaPersonaisItem>, var communicator: Communicator) : RecyclerView.Adapter<ListaPersonaisAdapter.MyViewHolder>(){
+class ListaUsuariosAdapter(private val dataList: MutableList<ListaPersonaisItem>, var communicator: Communicator) : RecyclerView.Adapter<ListaUsuariosAdapter.MyViewHolder>(){
 
 
 

@@ -54,8 +54,8 @@
 
     <ImageView
         android:id="@+id/imageView6"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
+        android:layout_width="25dp"
+        android:layout_height="25dp"
         android:tint="@android:color/white"
         app:layout_constraintBottom_toBottomOf="@+id/clienteView2"
         app:layout_constraintEnd_toEndOf="@+id/clienteView2"

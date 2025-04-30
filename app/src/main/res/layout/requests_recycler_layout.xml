@@ -67,6 +67,8 @@
             android:layout_marginLeft="245sp"
             android:layout_marginTop="20sp"
             android:background="@drawable/rectangle_light_gradient"
+            android:backgroundTint="#2B000000"
+            android:backgroundTintMode="src_over"
             android:paddingLeft="0dp"
             android:paddingRight="0dp"
             android:text="X"

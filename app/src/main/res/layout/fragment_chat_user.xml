@@ -74,9 +74,9 @@
             app:srcCompat="@drawable/bg_novasessao" />
 
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/listaPersonaisRecyclerview"
+            android:id="@+id/listaUsuariosRecyclerview"
             android:layout_width="409dp"
-            android:layout_height="513dp"
+            android:layout_height="550dp"
             android:layout_marginTop="44dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"

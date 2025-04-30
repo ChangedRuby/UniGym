@@ -7,9 +7,10 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.unigym2.Activities.Communicator
 import com.example.unigym2.Fragments.Chat.Recyclerviews.ListaPersonaisAdapter
 import com.example.unigym2.Fragments.Chat.Recyclerviews.ListaPersonaisItem
+import com.example.unigym2.Fragments.Treinos.Recyclerviews.ListaTreinosAdapter
+import com.example.unigym2.Fragments.Treinos.Recyclerviews.ListaTreinosItem
 import com.example.unigym2.R
 
 // TODO: Rename parameter arguments, choose names that match
@@ -22,12 +23,11 @@ private const val ARG_PARAM2 = "param2"
  * Use the [ChatUser.newInstance] factory method to
  * create an instance of this fragment.
  */
-class ChatUser : Fragment() {
+class ChatMain : Fragment() {
     // TODO: Rename and change types of parameters
     private var param1: String? = null
     private var param2: String? = null
 
-    lateinit var communicator: Communicator
     private lateinit var recyclerView: RecyclerView
 
     private lateinit var namesArray: Array<String>
@@ -46,16 +46,8 @@ class ChatUser : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        var v = inflater.inflate(R.layout.fragment_chat_user, container, false)
+        var v = inflater.inflate(R.layout.fragment_chat_main, container, false)
 
-        recyclerView = v.findViewById(R.id.listaUsuariosRecyclerview)
-        communicator = activity as Communicator
-
-        createItems()
-        val layoutManager = LinearLayoutManager(context)
-        val adapter = ListaPersonaisAdapter(itemArray, communicator)
-        recyclerView.layoutManager = layoutManager
-        recyclerView.adapter = adapter
 
         return v
     }
