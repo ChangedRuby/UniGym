@@ -3,13 +3,14 @@ package com.example.unigym2.Activities
 import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
+import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import com.example.unigym2.R
 import com.google.android.material.button.MaterialButton
 
 class CreateAccountUser : AppCompatActivity() {
     lateinit var createBtn: MaterialButton
-    lateinit var personalBtn: Button
+    lateinit var personalBtn: TextView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
