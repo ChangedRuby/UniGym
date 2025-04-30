@@ -40,6 +40,7 @@ class ProfilePersonal : Fragment() {
         var v = inflater.inflate(R.layout.fragment_profile_personal, container, false)
         communicator = activity as Communicator
         editBtn = v.findViewById(R.id.EditProfilePersonal)
+        exitBtn = v.findViewById(R.id.SairPersonal)
         accessibilityBtn = v.findViewById(R.id.AcessibilidadePersonal)
         editBtn.setOnClickListener {
             communicator.replaceFragment(EditProfilePersonal())

@@ -1,18 +1,16 @@
 package com.example.unigym2.Fragments.Profile
 
-import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import com.example.unigym2.Activities.Communicator
-import com.example.unigym2.Fragments.Calendar.CalendarUser
 import com.example.unigym2.Fragments.Calendar.MonitoringSchedules
+import com.example.unigym2.Fragments.Chat.ChatUser
 import com.example.unigym2.R
 
 private const val ARG_PARAM1 = "param1"
@@ -42,10 +40,15 @@ class VisualizarPerfilPersonal : Fragment() {
         var v = inflater.inflate(R.layout.fragment_visualizar_profile_personal, container, false)
         communicator = activity as Communicator
         agendamentoTreinoBtn = v.findViewById(R.id.agendarTreino)
-        backBtn = v.findViewById(R.id.voltar)
+        backBtn = v.findViewById(R.id.SairPersonal)
+
         agendamentoTreinoBtn.setOnClickListener {
             communicator.replaceFragment(MonitoringSchedules())
             Log.d("personalLog", "Clicked")
+        }
+
+        backBtn.setOnClickListener() {
+            communicator.replaceFragment(ChatUser())
         }
         return v
     }
