@@ -80,21 +80,21 @@ class ChatMain : Fragment() {
             }
     }
 
-    private fun createItems(){
-
-        itemArray = arrayListOf()
-
-        namesArray = arrayOf(
-            "Name A",
-            "Name B",
-            "Name C",
-            "Name D",
-            "Name E",
-        )
-
-        for(i in namesArray.indices){
-            val nameItem = ListaPersonaisItem(namesArray[i])
-            itemArray.add(nameItem)
-        }
-    }
+//    private fun createItems(){
+//
+//        itemArray = arrayListOf()
+//
+//        namesArray = arrayOf(
+//            "Name A",
+//            "Name B",
+//            "Name C",
+//            "Name D",
+//            "Name E",
+//        )
+//
+//        for(i in namesArray.indices){
+//            val nameItem = ListaPersonaisItem(namesArray[i])
+//            itemArray.add(nameItem)
+//        }
+//    }
 }
