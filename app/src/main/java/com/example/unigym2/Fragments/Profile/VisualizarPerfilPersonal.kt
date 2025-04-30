@@ -6,23 +6,25 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import com.example.unigym2.Activities.Communicator
+import com.example.unigym2.Fragments.Calendar.CalendarUser
+import com.example.unigym2.Fragments.Calendar.MonitoringSchedules
 import com.example.unigym2.R
 
 private const val ARG_PARAM1 = "param1"
 private const val ARG_PARAM2 = "param2"
 
-class ProfilePersonal : Fragment() {
+class VisualizarPerfilPersonal : Fragment() {
     private var param1: String? = null
     private var param2: String? = null
 
-    lateinit var editBtn : ImageView
-    lateinit var exitBtn : ImageView
-    lateinit var accessibilityBtn: TextView
     private lateinit var communicator : Communicator
+    private lateinit var agendamentoTreinoBtn : TextView
+    private lateinit var backBtn : ImageView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -37,28 +39,14 @@ class ProfilePersonal : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        var v = inflater.inflate(R.layout.fragment_profile_personal, container, false)
+        var v = inflater.inflate(R.layout.fragment_visualizar_profile_personal, container, false)
         communicator = activity as Communicator
-        editBtn = v.findViewById(R.id.EditProfilePersonal)
-        accessibilityBtn = v.findViewById(R.id.AcessibilidadePersonal)
-        editBtn.setOnClickListener {
-            communicator.replaceFragment(EditProfilePersonal())
+        agendamentoTreinoBtn = v.findViewById(R.id.agendarTreino)
+        backBtn = v.findViewById(R.id.voltar)
+        agendamentoTreinoBtn.setOnClickListener {
+            communicator.replaceFragment(MonitoringSchedules())
             Log.d("personalLog", "Clicked")
         }
-
-        accessibilityBtn.setOnClickListener {
-            val intent = Intent("android.settings.ACCESSIBILITY_SETTINGS")
-            startActivity(intent)
-            Log.d("userLog", "Opening Accessibility Settings")
-        }
-
-        exitBtn.setOnClickListener {
-            requireActivity().supportFragmentManager.beginTransaction()
-                .add(android.R.id.content, ProfileLogout())
-                .addToBackStack(null)
-                .commit()
-        }
-
         return v
     }
 }

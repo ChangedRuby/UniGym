@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.unigym2.Activities.Communicator
@@ -53,7 +54,7 @@ class ChatUser : Fragment() {
 
         createItems()
         val layoutManager = LinearLayoutManager(context)
-        val adapter = ListaPersonaisAdapter(itemArray, communicator)
+        val adapter = ListaPersonaisAdapter(itemArray, communicator, parentFragmentManager)
         recyclerView.layoutManager = layoutManager
         recyclerView.adapter = adapter
 

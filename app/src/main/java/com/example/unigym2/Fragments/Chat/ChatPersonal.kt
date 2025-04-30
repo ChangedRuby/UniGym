@@ -53,7 +53,7 @@ class ChatPersonal : Fragment() {
 
         createItems()
         val layoutManager = LinearLayoutManager(context)
-        val adapter = ListaPersonaisAdapter(itemArray, communicator)
+        val adapter = ListaPersonaisAdapter(itemArray, communicator, parentFragmentManager)
         recyclerView.layoutManager = layoutManager
         recyclerView.adapter = adapter
 

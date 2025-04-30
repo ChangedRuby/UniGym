@@ -304,16 +304,16 @@
             app:layout_constraintStart_toStartOf="parent" />
 
         <TextView
-            android:id="@+id/AcessibilidadePersonal"
-            android:layout_width="148dp"
-            android:layout_height="31dp"
+            android:id="@+id/agendarTreino"
+            android:layout_width="200dp"
+            android:layout_height="48dp"
             android:layout_marginEnd="16dp"
             android:background="@drawable/rectangle_light_gradient"
             android:gravity="center"
             android:minHeight="48dp"
             android:paddingStart="32dp"
             android:paddingEnd="32dp"
-            android:text="Acessibilidade"
+            android:text="Agendar Treinamento"
             android:textColor="#000000"
             android:textSize="12sp"
             android:textStyle="bold"
@@ -322,31 +322,19 @@
             app:layout_constraintHorizontal_bias="0.512"
             app:layout_constraintStart_toEndOf="@+id/editTextUsername"
             app:layout_constraintTop_toBottomOf="@+id/profileSecondaryColor"
-            app:layout_constraintVertical_bias="0.215" />
-
-        <ImageView
-            android:id="@+id/EditProfilePersonal"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/ic_edit"
-            app:layout_constraintBottom_toTopOf="@+id/AcessibilidadePersonal"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.857"
-            app:layout_constraintStart_toEndOf="@+id/profileUserImage"
-            app:layout_constraintTop_toBottomOf="@+id/profileSecondaryColor"
-            app:layout_constraintVertical_bias="0.391" />
+            app:layout_constraintVertical_bias="0.255" />
 
         <ImageView
             android:id="@+id/voltar"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/ic_logout"
-            app:layout_constraintBottom_toTopOf="@+id/AcessibilidadePersonal"
-            app:layout_constraintEnd_toStartOf="@+id/EditProfilePersonal"
-            app:layout_constraintHorizontal_bias="0.891"
+            android:src="@drawable/ic_arrow_back"
+            app:layout_constraintBottom_toTopOf="@+id/lineView"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.928"
             app:layout_constraintStart_toEndOf="@+id/profileUserImage"
             app:layout_constraintTop_toBottomOf="@+id/profileSecondaryColor"
-            app:layout_constraintVertical_bias="0.363" />
+            app:layout_constraintVertical_bias="0.0" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

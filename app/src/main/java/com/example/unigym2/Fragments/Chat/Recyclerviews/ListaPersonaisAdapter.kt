@@ -1,18 +1,22 @@
 package com.example.unigym2.Fragments.Chat.Recyclerviews
 
+import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.ImageView
 import android.widget.TextView
+import androidx.fragment.app.FragmentManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.unigym2.Activities.Communicator
 import com.example.unigym2.Fragments.Chat.ChatMain
+import com.example.unigym2.Fragments.Profile.VisualizarPerfilPersonal
 import com.example.unigym2.Fragments.Treinos.Recyclerviews.ListaTreinosItem
 import com.example.unigym2.Fragments.Treinos.Recyclerviews.ListaUsuariosClickListener
 import com.example.unigym2.R
 
-class ListaPersonaisAdapter(private val dataList: MutableList<ListaPersonaisItem>, var communicator: Communicator) : RecyclerView.Adapter<ListaPersonaisAdapter.MyViewHolder>(){
+class ListaPersonaisAdapter(private val dataList : MutableList<ListaPersonaisItem>, var communicator : Communicator, val fragmentManager : FragmentManager) : RecyclerView.Adapter<ListaPersonaisAdapter.MyViewHolder>(){
 
 
 
@@ -35,10 +39,17 @@ class ListaPersonaisAdapter(private val dataList: MutableList<ListaPersonaisItem
 
         }
 
+        holder.visualizarPerfilBtn.setOnClickListener {
+            fragmentManager.setFragmentResult("personal_info_key", Bundle().apply {
+                putString("personal_name", holder.nameView.text.toString())
+            })
+            communicator.replaceFragment(VisualizarPerfilPersonal())
+        }
+
     }
 
     class MyViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView){
-
+        val visualizarPerfilBtn : ImageView = itemView.findViewById(R.id.visualizarPerfilBtn)
         val nameView : TextView = itemView.findViewById(R.id.textViewUsername)
     }
 }

@@ -40,10 +40,8 @@ package com.example.unigym2.Fragments.Profile
         ): View? {
             val view = inflater.inflate(R.layout.fragment_edit_profile_personal, container, false)
 
-            // Initialize communicator
             communicator = activity as Communicator
 
-            // Initialize UI elements
             usernameEditText = view.findViewById(R.id.editTextUsername)
             specialtyET1 = view.findViewById(R.id.editEspecialidade1)
             specialtyET2 = view.findViewById(R.id.editEspecialidade2)
@@ -58,7 +56,6 @@ package com.example.unigym2.Fragments.Profile
             servicePriceET3 = view.findViewById(R.id.editText11)
             servicePriceET4 = view.findViewById(R.id.editText12)
 
-            // Add Save Button functionality (you'll need to add this button to your layout)
             saveButton = view.findViewById(R.id.ConfirmarEditPersonal)
             saveButton.setOnClickListener {
                 saveProfileChanges()
@@ -76,7 +73,6 @@ package com.example.unigym2.Fragments.Profile
         }
 
         private fun saveProfileChanges() {
-            // Get values from edit texts
             val username = usernameEditText.text.toString()
             val specialty1 = specialtyET1.text.toString()
             val specialty2 = specialtyET2.text.toString()
