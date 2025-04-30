@@ -14,6 +14,8 @@ import android.widget.LinearLayout
 import android.widget.Spinner
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import com.example.unigym2.Activities.Communicator
+import com.example.unigym2.Fragments.Profile.VisualizarPerfilPersonal
 import com.example.unigym2.R
 
 
@@ -28,6 +30,7 @@ private const val ARG_PARAM2 = "param2"
  * create an instance of this fragment.
  */
 class MonitoringSchedules : Fragment() {
+    lateinit var communicator: Communicator
     // TODO: Rename and change types of parameters
     private var param1: String? = null
     private var param2: String? = null
@@ -71,8 +74,9 @@ class MonitoringSchedules : Fragment() {
         }
 
         val btnVoltar = view.findViewById<ImageButton>(R.id.btnVoltar)
+        communicator = activity as Communicator
         btnVoltar.setOnClickListener {
-            requireActivity().onBackPressedDispatcher.onBackPressed()
+            communicator.replaceFragment(VisualizarPerfilPersonal())
         }
             // talvez ajeitar essa botao de voltar
 
