@@ -30,12 +30,12 @@ class MaquinaOuterAdapter(private val outerItems: MutableList<MaquinaOuterItem>,
     }
 
     override fun onBindViewHolder(holder: OuterViewHolder, position: Int) {
-        val outerItem = outerItems[position]
+        var outerItem = outerItems[position]
 
         // Setup inner RecyclerView
         holder.innerRecyclerView.layoutManager = LinearLayoutManager(
             holder.itemView.context, LinearLayoutManager.VERTICAL, false)
-        holder.innerRecyclerView.adapter = MaquinaInnerAdapter(outerItem.innerItems)
+        holder.innerRecyclerView.adapter = MaquinaInnerAdapter(outerItem.innerItems ?: mutableListOf()) // retorna mutableList vazia se null
         holder.maquinaTitle.text = outerItem.title
 
         holder.addExercicioAMaquinaBtn.setOnClickListener{
