@@ -2,22 +2,25 @@ package com.example.unigym2.Activities
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.widget.Button
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.unigym2.R
+import com.google.firebase.auth.FirebaseAuth
 
 class LoginMenu : AppCompatActivity() {
     lateinit var entrarBtn: Button
     lateinit var entrarBtnPersonal: Button
     lateinit var createAccount: Button
     lateinit var recuperarSenhaBtn: Button
+    lateinit var auth: FirebaseAuth
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login_menu)
 
-        entrarBtn = findViewById(R.id.confirmNewPasswordButton)
+        entrarBtn = findViewById(R.id.entrarBtnUser)
         entrarBtnPersonal = findViewById(R.id.entrarBtnPersonal)
         createAccount = findViewById(R.id.createAccountBtn)
         recuperarSenhaBtn = findViewById(R.id.recuperarSenha)
@@ -32,9 +35,33 @@ class LoginMenu : AppCompatActivity() {
         super.onStart()
 
         entrarBtn.setOnClickListener{
-            var intent = Intent(this, MainActivity::class.java)
-            intent.putExtra("personalMode", "false")
-            startActivity(intent)
+
+            auth = FirebaseAuth.getInstance()
+
+            auth.signInWithEmailAndPassword("gugasboy7@gmail.com", "123456")
+                .addOnCompleteListener(this) { task ->
+                    if (task.isSuccessful) {
+                        // Sign in success, update UI with the signed-in user's information
+                        Log.d("login_activity", "signInWithEmail:success")
+                        val user = auth.currentUser
+
+                        var intent = Intent(this, MainActivity::class.java)
+                        intent.putExtra("personalMode", "false")
+                        intent.putExtra("userId", user!!.uid)
+                        startActivity(intent)
+
+                    } else {
+                        // If sign in fails, display a message to the user.
+                        Log.w("login_activity", "signInWithEmail:failure", task.exception)
+                        Toast.makeText(
+                            baseContext,
+                            "Authentication failed.",
+                            Toast.LENGTH_SHORT,
+                        ).show()
+
+                    }
+                }
+
         }
 
         entrarBtnPersonal.setOnClickListener {

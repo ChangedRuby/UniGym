@@ -16,10 +16,12 @@ import com.example.unigym2.Fragments.Treinos.TreinosPersonal
 import com.example.unigym2.Fragments.Treinos.TreinosUser
 import com.example.unigym2.R
 import com.example.unigym2.databinding.ActivityMainBinding
+import com.google.firebase.auth.FirebaseUser
 
 class MainActivity : AppCompatActivity(), Communicator{
     var personalMode : Boolean = false
     lateinit var binding: ActivityMainBinding
+    lateinit var userId: String
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -33,6 +35,9 @@ class MainActivity : AppCompatActivity(), Communicator{
         } else{
             replaceFragment(HomeUser())
         }
+
+        userId = intent.getStringExtra("userId").toString()
+        Log.d("MainActivityDebug", userId)
 
         binding.bottomNavigationView.setOnItemSelectedListener {
             if(personalMode){
@@ -76,5 +81,13 @@ class MainActivity : AppCompatActivity(), Communicator{
 
     override fun getMode(): Boolean {
         return personalMode
+    }
+
+    override fun setAuthUser(userId: String) {
+        this.userId = userId
+    }
+
+    override fun getAuthUser(): String {
+        return userId
     }
 }

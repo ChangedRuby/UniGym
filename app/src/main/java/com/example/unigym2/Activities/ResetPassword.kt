@@ -3,7 +3,6 @@ package com.example.unigym2.Activities
 import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.unigym2.R
 
@@ -15,7 +14,7 @@ class ResetPassword : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_reset_password)
 
-        newPasswordButton = findViewById(R.id.confirmNewPasswordButton)
+        newPasswordButton = findViewById(R.id.entrarBtnUser)
 
     }
 

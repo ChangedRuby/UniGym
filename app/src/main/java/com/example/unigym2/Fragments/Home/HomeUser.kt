@@ -5,7 +5,9 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import androidx.fragment.app.Fragment
+import com.example.unigym2.Activities.Communicator
 import com.example.unigym2.Fragments.Chat.Recyclerviews.ListaPersonaisItem
 import com.example.unigym2.R
 import com.google.firebase.Firebase
@@ -26,6 +28,8 @@ class HomeUser : Fragment() {
     // TODO: Rename and change types of parameters
     private var param1: String? = null
     private var param2: String? = null
+    lateinit var titleView: TextView
+    lateinit var communicator: Communicator
 
     val db = FirebaseFirestore.getInstance()
 
@@ -44,15 +48,16 @@ class HomeUser : Fragment() {
         // Inflate the layout for this fragment
         var v = inflater.inflate(R.layout.fragment_home_user, container, false)
 
-        db.collection("Usuarios")
+        titleView = v.findViewById(R.id.nameTitle)
+        communicator = activity as Communicator
+
+        db.collection("Usuarios").document(communicator.getAuthUser())
             .get()
             .addOnSuccessListener { result ->
-                for (document in result) {
-                    Log.d("firestore", "${document.id} => ${document.data}")
-                }
-            }
-            .addOnFailureListener { exception ->
-                Log.w("firestore", "Error getting documents.", exception)
+                titleView.text = result.data?.get("name").toString()
+                Log.d("firestore", "${result.id} => ${result.data}")
+            }.addOnFailureListener { exception ->
+                Log.w("firestore", "Error getting document.", exception)
             }
 
         return v

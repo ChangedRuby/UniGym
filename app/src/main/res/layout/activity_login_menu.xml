@@ -88,7 +88,7 @@
     </com.google.android.material.textfield.TextInputLayout>
 
     <Button
-        android:id="@+id/confirmNewPasswordButton"
+        android:id="@+id/entrarBtnUser"
         android:layout_width="300dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="128dp"
@@ -111,7 +111,7 @@
         android:text="Entrar Personal"
         android:textColor="@android:color/black"
         app:cornerRadius="12dp"
-        app:layout_constraintBottom_toTopOf="@+id/confirmNewPasswordButton"
+        app:layout_constraintBottom_toTopOf="@+id/entrarBtnUser"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.495"
         app:layout_constraintStart_toStartOf="parent"
