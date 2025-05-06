@@ -7,6 +7,7 @@ import android.widget.Button
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.unigym2.R
+import com.google.android.material.textfield.TextInputEditText
 import com.google.firebase.auth.FirebaseAuth
 
 class LoginMenu : AppCompatActivity() {
@@ -14,6 +15,8 @@ class LoginMenu : AppCompatActivity() {
     lateinit var entrarBtnPersonal: Button
     lateinit var createAccount: Button
     lateinit var recuperarSenhaBtn: Button
+    lateinit var emailInput: TextInputEditText
+    lateinit var passwordView: TextInputEditText
     lateinit var auth: FirebaseAuth
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -34,11 +37,14 @@ class LoginMenu : AppCompatActivity() {
     override fun onStart() {
         super.onStart()
 
+        emailInput = findViewById(R.id.emailView)
+        passwordView = findViewById(R.id.passwordView)
+
+        auth = FirebaseAuth.getInstance()
+
         entrarBtn.setOnClickListener{
 
-            auth = FirebaseAuth.getInstance()
-
-            auth.signInWithEmailAndPassword("gugasboy7@gmail.com", "123456")
+            auth.signInWithEmailAndPassword(emailInput.text.toString(), passwordView.text.toString())
                 .addOnCompleteListener(this) { task ->
                     if (task.isSuccessful) {
                         // Sign in success, update UI with the signed-in user's information
