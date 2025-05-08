@@ -120,8 +120,27 @@ class TreinosMaquinas : Fragment() {
             viewLifecycleOwner
         ) { _, bundle ->
             val foiAdicionada = bundle.getBoolean("exercicio_adicionado", false)
+            val exercicioName = bundle.getString("exercicio_name")
             if (foiAdicionada) {
-                Toast.makeText(requireContext(), "Exercício adicionado!", Toast.LENGTH_SHORT).show()
+                val document = db.collection("Maquinas").document(bundle.getString("maquina_id").toString())
+                var exercisesArray: ArrayList<String>
+
+                document.get().addOnSuccessListener { result ->
+                    exercisesArray = result.data?.get("exercises") as ArrayList<String>
+                    exercisesArray.add(exercicioName.toString())
+
+                    document.update(
+                        hashMapOf<String, Any>(
+                            "exercises" to exercisesArray
+                        ),
+                    ).addOnSuccessListener { result ->
+                        Log.d("treinosMaquinas", "Exercise $exercicioName added.")
+                    }
+
+                }
+
+                Log.d("treinosMaquinas", bundle.getString("maquina_id").toString())
+                Toast.makeText(requireContext(), "Exercício $exercicioName adicionado!", Toast.LENGTH_SHORT).show()
             }
         }
 
@@ -199,9 +218,51 @@ class TreinosMaquinas : Fragment() {
 
                     for (dc: DocumentChange in value?.documentChanges!!) {
 
-                        if (dc.type == DocumentChange.Type.ADDED) {
+                        val document = dc.document
+                        val docId = document.id
+                        val title = document.getString("title") ?: "Titulo indisponivel"
 
-                            outerItemsArray.add(dc.document.toObject(MaquinaOuterItem::class.java))
+                        val exercisesFromFirestore = document.get("exercises")
+                        val currentInnerItems = mutableListOf<MaquinaInnerItem>()
+
+                        if(exercisesFromFirestore is List<*>){
+                            exercisesFromFirestore.forEach { item ->
+                                if(item is String){
+                                    currentInnerItems.add(MaquinaInnerItem(text = item, maquinaId = docId))
+                                } else{
+                                    Log.w("maquinas_data", "Item is not a String $item for document $docId")
+                                }
+                            }
+                        } else if(exercisesFromFirestore != null){
+                            Log.w("maquinas_data", "exercisesFromFirestore is not a List for document $docId")
+                        }
+
+                        when (dc.type) {
+                            DocumentChange.Type.ADDED -> {
+                                val outerItem = MaquinaOuterItem(
+                                    innerItems = currentInnerItems,
+                                    title = title,
+                                    id = docId,
+                                )
+                                outerItemsArray.add(outerItem)
+                            }
+
+                            DocumentChange.Type.MODIFIED -> {
+                                val index = outerItemsArray.indexOfFirst { it.title == title }
+
+                                if(index != -1){
+                                    outerItemsArray[index] = MaquinaOuterItem(
+                                        innerItems = currentInnerItems,
+                                        title = title,
+                                        id = docId,
+                                    )
+                                    Log.d("maquinas_data", "Modified ${outerItemsArray[index].title}")
+                                }
+                            }
+
+                            DocumentChange.Type.REMOVED -> {
+                                outerItemsArray.removeAll { it.title == title }
+                            }
                         }
                     }
 

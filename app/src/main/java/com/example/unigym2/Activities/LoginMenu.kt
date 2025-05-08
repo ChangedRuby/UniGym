@@ -44,29 +44,35 @@ class LoginMenu : AppCompatActivity() {
 
         entrarBtn.setOnClickListener{
 
-            auth.signInWithEmailAndPassword(emailInput.text.toString(), passwordView.text.toString())
-                .addOnCompleteListener(this) { task ->
-                    if (task.isSuccessful) {
-                        // Sign in success, update UI with the signed-in user's information
-                        Log.d("login_activity", "signInWithEmail:success")
-                        val user = auth.currentUser
+            if(!emailInput.text.toString().isEmpty() && !passwordView.text.toString().isEmpty()){
+                auth.signInWithEmailAndPassword(emailInput.text.toString().trim(), passwordView.text.toString().trim())
+                    .addOnCompleteListener(this) { task ->
+                        if (task.isSuccessful) {
+                            // Sign in success, update UI with the signed-in user's information
+                            Log.d("login_activity", "signInWithEmail:success")
+                            val user = auth.currentUser
 
-                        var intent = Intent(this, MainActivity::class.java)
-                        intent.putExtra("personalMode", "false")
-                        intent.putExtra("userId", user!!.uid)
-                        startActivity(intent)
+                            var intent = Intent(this, MainActivity::class.java)
+                            intent.putExtra("personalMode", "false")
+                            intent.putExtra("userId", user!!.uid)
+                            startActivity(intent)
 
-                    } else {
-                        // If sign in fails, display a message to the user.
-                        Log.w("login_activity", "signInWithEmail:failure", task.exception)
-                        Toast.makeText(
-                            baseContext,
-                            "Authentication failed.",
-                            Toast.LENGTH_SHORT,
-                        ).show()
+                        } else {
+                            // If sign in fails, display a message to the user.
+                            Log.w("login_activity", "signInWithEmail:failure", task.exception)
+                            Toast.makeText(
+                                baseContext,
+                                "Authentication failed.",
+                                Toast.LENGTH_SHORT,
+                            ).show()
 
+                        }
                     }
-                }
+
+            } else{
+                Toast.makeText(this, "Preencha todos os campos!", Toast.LENGTH_SHORT).show()
+            }
+
 
         }
 

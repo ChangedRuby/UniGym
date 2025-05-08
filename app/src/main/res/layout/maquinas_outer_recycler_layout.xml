@@ -81,6 +81,7 @@
             android:layout_alignParentEnd="true"
             android:layout_marginTop="20sp"
             android:layout_marginEnd="0dp"
+            android:layout_marginBottom="20sp"
             android:orientation="vertical"
             tools:itemCount="4"
             tools:listitem="@layout/maquinas_inner_recycler_layout" />

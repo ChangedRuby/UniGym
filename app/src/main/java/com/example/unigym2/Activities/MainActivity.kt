@@ -75,7 +75,10 @@ class MainActivity : AppCompatActivity(), Communicator{
 
         val fragmentManager = supportFragmentManager
         val fragmentTransaction = fragmentManager.beginTransaction()
+        val supportFragmentManager = supportFragmentManager
         fragmentTransaction.replace(R.id.frame_layout, fragment)
+        fragmentTransaction.setReorderingAllowed(true)
+        fragmentTransaction.addToBackStack(supportFragmentManager.findFragmentById(R.id.frame_layout).toString())
         fragmentTransaction.commit()
     }
 

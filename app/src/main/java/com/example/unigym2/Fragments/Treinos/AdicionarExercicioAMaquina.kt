@@ -1,6 +1,7 @@
 package com.example.unigym2.Fragments.Treinos
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -32,6 +33,7 @@ class AdicionarExercicioAMaquina : Fragment() {
     lateinit var addBtn: TextView
     lateinit var maquinaTitle: TextView
     lateinit var editTextExercicioAMaquina: EditText
+    lateinit var maquinaId: String
     private lateinit var communicator: Communicator
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -63,6 +65,8 @@ class AdicionarExercicioAMaquina : Fragment() {
             if(exercicio.isNotEmpty()) {
                 parentFragmentManager.setFragmentResult("exercicio_adicionado_key", Bundle().apply {
                     putBoolean("exercicio_adicionado", true)
+                    putString("exercicio_name", editTextExercicioAMaquina.text.toString())
+                    putString("maquina_id", maquinaId)
                 })
                 communicator = activity as Communicator
                 communicator.replaceFragment(TreinosMaquinas())
@@ -78,6 +82,7 @@ class AdicionarExercicioAMaquina : Fragment() {
 
         parentFragmentManager.setFragmentResultListener("maquina_info_key", viewLifecycleOwner) { _, bundle ->
             val name = bundle.getString("maquina_name")
+            maquinaId = bundle.getString("maquina_id").toString()
             maquinaTitle.text = name
 
             Toast.makeText(requireContext(), "Visualizando maquina $name .", Toast.LENGTH_SHORT).show()
