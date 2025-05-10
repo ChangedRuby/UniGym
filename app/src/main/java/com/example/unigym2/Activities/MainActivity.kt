@@ -17,27 +17,38 @@ import com.example.unigym2.Fragments.Treinos.TreinosUser
 import com.example.unigym2.R
 import com.example.unigym2.databinding.ActivityMainBinding
 import com.google.firebase.auth.FirebaseUser
+import com.google.firebase.firestore.FirebaseFirestore
 
 class MainActivity : AppCompatActivity(), Communicator{
     var personalMode : Boolean = false
     lateinit var binding: ActivityMainBinding
     lateinit var userId: String
+    lateinit var db: FirebaseFirestore
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        if(intent.getStringExtra("personalMode").equals("true")){
-            personalMode = true
-            replaceFragment(HomePersonalTrainer())
-            Log.d("MainActivityDebug", "Login as personal")
-        } else{
-            replaceFragment(HomeUser())
-        }
-
+        db = FirebaseFirestore.getInstance()
         userId = intent.getStringExtra("userId").toString()
         Log.d("MainActivityDebug", userId)
+
+        db.collection("Usuarios").document(userId).get().addOnSuccessListener { document ->
+            if(document.get("isPersonal") == true){
+                personalMode = true
+                replaceFragment(HomePersonalTrainer())
+                Log.d("MainActivityDebug", "Personal mode set to true")
+            } else{
+                replaceFragment(HomeUser())
+            }
+            Log.d("MainActivityDebug", if(personalMode) "Login as personal" else "Login as user")
+        }.addOnFailureListener { exception ->
+            personalMode = true
+            replaceFragment(HomePersonalTrainer())
+            Log.d("MainActivityDebug", "Error getting user data; User not logged in; Login as Personal instead", exception)
+
+        }
 
         binding.bottomNavigationView.setOnItemSelectedListener {
             if(personalMode){

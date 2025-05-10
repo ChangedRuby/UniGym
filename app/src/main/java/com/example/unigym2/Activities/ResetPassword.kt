@@ -14,7 +14,7 @@ class ResetPassword : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_reset_password)
 
-        newPasswordButton = findViewById(R.id.entrarBtnUser)
+        newPasswordButton = findViewById(R.id.entrarBtn)
 
     }
 

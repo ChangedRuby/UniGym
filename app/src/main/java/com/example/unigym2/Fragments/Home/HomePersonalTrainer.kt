@@ -6,10 +6,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.TextView
 import androidx.fragment.app.Fragment
 import com.example.unigym2.Activities.Communicator
 import com.example.unigym2.Fragments.Calendar.MonitoringSchedules
 import com.example.unigym2.R
+import com.google.firebase.firestore.FirebaseFirestore
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -29,6 +31,8 @@ class HomePersonalTrainer : Fragment() {
 
 
     lateinit var schedulesBtn: Button
+    lateinit var titleView: TextView
+    lateinit var db: FirebaseFirestore
     private lateinit var communicator: Communicator
 
 
@@ -46,15 +50,27 @@ class HomePersonalTrainer : Fragment() {
     ): View? {
         // Inflate the layout for this fragment
         var v = inflater.inflate(R.layout.fragment_home_personal_trainer, container, false)
-
+        
+        db = FirebaseFirestore.getInstance()
 
         communicator = activity as Communicator
+        titleView = v.findViewById(R.id.nameTitle)
         schedulesBtn = v.findViewById(R.id.schedulesBtn)
+
         schedulesBtn.setOnClickListener{
             communicator.replaceFragment(SolicitationsPersonal())
             Log.d("personalLog", "Clicked")
             // this.parentFragmentManager.beginTransaction().replace(R.id.frame_layout, HomeUser()).commit()
         }
+
+        db.collection("Usuarios").document(communicator.getAuthUser())
+            .get()
+            .addOnSuccessListener { result ->
+                titleView.text = result.data?.get("name").toString()
+                Log.d("firestore", "${result.id} => ${result.data}")
+            }.addOnFailureListener { exception ->
+                Log.w("firestore", "Error getting document.", exception)
+            }
 
         return v
     }

@@ -103,22 +103,9 @@ class SolicitationsPersonal : Fragment() {
 
         requestsArrayList = arrayListOf<RequestsData>()
 
-        names = arrayOf(
-            "1",
-            "2",
-            "3",
-            "4",
-            "6",
-            "7",
-            "8",
-            "9",
-            "10",
-            "11",
-        )
-
         db = FirebaseFirestore.getInstance()
 
-        db.collection("Usuarios")
+        db.collection("Usuarios").whereEqualTo("isPersonal", false)
             .addSnapshotListener(object : EventListener<QuerySnapshot>{
                 override fun onEvent(
                     value: QuerySnapshot?,
@@ -144,10 +131,23 @@ class SolicitationsPersonal : Fragment() {
 
             })
 
-//        for(i in names.indices){
-//
-//            val requests = RequestsData(names[i])
-//            requestsArrayList.add(requests)
-//        }
+        /*names = arrayOf(
+            "1",
+            "2",
+            "3",
+            "4",
+            "6",
+            "7",
+            "8",
+            "9",
+            "10",
+            "11",
+        )
+
+        for(i in names.indices){
+
+            val requests = RequestsData(names[i])
+            requestsArrayList.add(requests)
+        }*/
     }
 }

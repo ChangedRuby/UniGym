@@ -55,7 +55,7 @@
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/nameInputLayout"
+            android:id="@+id/namePersonalInputLayout"
             style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -78,7 +78,7 @@
             app:layout_constraintVertical_bias="0.543">
 
             <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/namePersonalInputLayout"
+                android:id="@+id/namePersonalEditText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="textPersonName|textCapWords"
@@ -99,7 +99,7 @@
             app:srcCompat="@drawable/logo" />
 
         <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/emailInputLayout"
+            android:id="@+id/emailPersonalInputLayout"
             style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -120,7 +120,7 @@
             app:layout_constraintTop_toBottomOf="@+id/logoImageView">
 
             <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/emailEditText"
+                android:id="@+id/emailPersonalEditText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="textEmailAddress"
@@ -132,7 +132,7 @@
 
         <!-- Password Input -->
         <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/passwordInputLayout"
+            android:id="@+id/passwordPersonalInputLayout"
             style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -155,7 +155,7 @@
             app:layout_constraintTop_toBottomOf="@+id/CrefInputLayout">
 
             <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/passwordEditText"
+                android:id="@+id/passwordPersonalEditText"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:inputType="textPassword"
@@ -165,7 +165,7 @@
 
         <!-- Confirm Password Input -->
         <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/confirmPasswordInputLayout"
+            android:id="@+id/confirmPasswordPersonalInputLayout"
             style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -185,11 +185,11 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/passwordInputLayout"
+            app:layout_constraintTop_toBottomOf="@+id/passwordPersonalInputLayout"
             app:layout_constraintVertical_bias="0.06">
 
             <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/confirmPasswordEditText"
+                android:id="@+id/confirmPasswordPersonalEditText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="textPassword"
@@ -199,7 +199,7 @@
 
         <!-- Conclude Button -->
         <com.google.android.material.button.MaterialButton
-            android:id="@+id/concludeButton"
+            android:id="@+id/concludePersonalAccountButton"
             android:layout_width="369dp"
             android:layout_height="58dp"
             android:background="@drawable/rounded_corners"
@@ -215,7 +215,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.454"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/confirmPasswordInputLayout" />
+            app:layout_constraintTop_toBottomOf="@+id/confirmPasswordPersonalInputLayout" />
 
         <!-- Push to bottom -->
 

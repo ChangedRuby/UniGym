@@ -3,6 +3,7 @@ package com.example.unigym2.Activities
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
+import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -18,9 +19,9 @@ import com.google.firebase.firestore.FirebaseFirestore
 class CreateAccountUser : AppCompatActivity() {
     lateinit var createBtn: MaterialButton
     lateinit var personalBtn: TextView
-    lateinit var emailTextInput: TextInputLayout
-    lateinit var nameView: TextInputEditText
-    lateinit var passwordTextInput: TextInputLayout
+    lateinit var emailTextInput: EditText
+    lateinit var nameTextInput: TextInputEditText
+    lateinit var passwordTextInput: EditText
     lateinit var db: FirebaseFirestore
     lateinit var auth: FirebaseAuth
 
@@ -32,7 +33,7 @@ class CreateAccountUser : AppCompatActivity() {
         db = FirebaseFirestore.getInstance()
 
         personalBtn = findViewById(R.id.createAccPersonal)
-        createBtn = findViewById(R.id.concludeButton)
+        createBtn = findViewById(R.id.concludePersonalAccountButton)
     }
 
     override fun onStart() {
@@ -44,14 +45,14 @@ class CreateAccountUser : AppCompatActivity() {
             startActivity(intent)
         }
 
-        emailTextInput = findViewById(R.id.emailInputLayout)
-        nameView = findViewById(R.id.nameUserEditText)
-        passwordTextInput = findViewById(R.id.passwordInputLayout)
+        emailTextInput = findViewById(R.id.emailUserEditText)
+        nameTextInput = findViewById(R.id.nameUserEditText)
+        passwordTextInput = findViewById(R.id.passwordUserEditText)
 
         createBtn.setOnClickListener {
 
-            val email = emailTextInput.editText?.text.toString()
-            val password = passwordTextInput.editText?.text.toString()
+            val email = emailTextInput.text.toString()
+            val password = passwordTextInput.text.toString()
             Log.d("create_account", email)
             Log.d("create_account", password)
 
@@ -70,7 +71,7 @@ class CreateAccountUser : AppCompatActivity() {
                         db.collection("Usuarios").document(user!!.uid).set(
                             hashMapOf(
                                 "id" to user.uid,
-                                "name" to nameView.text.toString(),
+                                "name" to nameTextInput.text.toString(),
                                 "isPersonal" to false,
                             )
                         ).addOnSuccessListener { documentReference ->

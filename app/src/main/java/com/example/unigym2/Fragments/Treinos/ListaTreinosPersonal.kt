@@ -15,6 +15,7 @@ import com.example.unigym2.Fragments.Treinos.Recyclerviews.ListaTreinosItem
 import com.example.unigym2.Fragments.Treinos.Recyclerviews.ListaUsuariosClickListener
 import com.example.unigym2.Fragments.Treinos.Recyclerviews.TreinoUserItem
 import com.example.unigym2.R
+import com.google.firebase.firestore.FirebaseFirestore
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -31,6 +32,7 @@ class ListaTreinosPersonal : Fragment(), ListaUsuariosClickListener {
     private var param1: String? = null
     private var param2: String? = null
     lateinit var verTreinoBtn: Button
+    lateinit var db: FirebaseFirestore
     private lateinit var communicator: Communicator
 
     private lateinit var recyclerView: RecyclerView
@@ -89,7 +91,18 @@ class ListaTreinosPersonal : Fragment(), ListaUsuariosClickListener {
     private fun createItems(){
 
         itemArray = arrayListOf()
-        
+
+        db = FirebaseFirestore.getInstance()
+        val userId = communicator.getAuthUser()
+        val userDoc = db.collection("Usuarios").document(userId)
+        val treinosCollection = userDoc.collection("Treinos")
+
+        /*treinosCollection.add(
+            hashMapOf(
+                "maquina" to "maquina id"
+            )
+        )*/
+
         namesArray = arrayOf(
             "Name A",
             "Name B",
