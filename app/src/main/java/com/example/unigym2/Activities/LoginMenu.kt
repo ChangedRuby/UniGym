@@ -96,6 +96,7 @@ class LoginMenu : AppCompatActivity() {
 
                         var intent = Intent(this, MainActivity::class.java)
                         intent.putExtra("userId", user!!.uid)
+                        intent.putExtra("userEmail", user.email)
                         startActivity(intent)
 
                     } else {

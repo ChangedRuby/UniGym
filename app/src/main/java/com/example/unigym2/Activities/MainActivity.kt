@@ -23,6 +23,7 @@ class MainActivity : AppCompatActivity(), Communicator{
     var personalMode : Boolean = false
     lateinit var binding: ActivityMainBinding
     lateinit var userId: String
+    lateinit var userEmail: String
     lateinit var db: FirebaseFirestore
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -32,6 +33,7 @@ class MainActivity : AppCompatActivity(), Communicator{
 
         db = FirebaseFirestore.getInstance()
         userId = intent.getStringExtra("userId").toString()
+        userEmail = intent.getStringExtra("userEmail").toString()
         Log.d("MainActivityDebug", userId)
 
         db.collection("Usuarios").document(userId).get().addOnSuccessListener { document ->
@@ -103,5 +105,13 @@ class MainActivity : AppCompatActivity(), Communicator{
 
     override fun getAuthUser(): String {
         return userId
+    }
+
+    override fun setAuthUserEmail(userEmail: String) {
+        this.userEmail = userEmail
+    }
+
+    override fun getAuthUserEmail(): String {
+        return userEmail
     }
 }

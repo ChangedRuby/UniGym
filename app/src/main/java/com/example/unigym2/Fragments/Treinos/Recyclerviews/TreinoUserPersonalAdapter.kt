@@ -25,7 +25,7 @@ class TreinoUserPersonalAdapter(private val dataList: ArrayList<TreinoUserPerson
 
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
         val currentItem = dataList[position]
-        holder.repeticoesView.text = currentItem.repeticoes
+        holder.repeticoesView.text = currentItem.repeticoes.toString()
         holder.deleteView.setOnClickListener {
             dataList.removeAt(position)
             notifyItemRemoved(position)

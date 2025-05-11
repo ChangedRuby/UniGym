@@ -17,6 +17,11 @@ import com.example.unigym2.Fragments.Treinos.Recyclerviews.TreinoUserItem
 import com.example.unigym2.Fragments.Treinos.Recyclerviews.TreinoUserPersonalAdapter
 import com.example.unigym2.Fragments.Treinos.Recyclerviews.TreinoUserPersonalItem
 import com.example.unigym2.R
+import com.google.firebase.firestore.DocumentChange
+import com.google.firebase.firestore.EventListener
+import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.FirebaseFirestoreException
+import com.google.firebase.firestore.QuerySnapshot
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -37,6 +42,7 @@ class TreinoUsuarioPersonal : Fragment() {
     lateinit var nameTextView: TextView
     lateinit var nameUser: String
     lateinit var userId: String
+    lateinit var db: FirebaseFirestore
 
     private lateinit var itemsArrayA: ArrayList<TreinoUserPersonalItem>
     private lateinit var itemsArrayB: ArrayList<TreinoUserPersonalItem>
@@ -62,6 +68,7 @@ class TreinoUsuarioPersonal : Fragment() {
         var v = inflater.inflate(R.layout.fragment_treino_usuario_personal, container, false)
 
         nameTextView = v.findViewById(R.id.treinoUserName)
+        db = FirebaseFirestore.getInstance()
         communicator = activity as Communicator
 
         addTreinoBtn= v.findViewById(R.id.addTreinoBtn)
@@ -75,7 +82,6 @@ class TreinoUsuarioPersonal : Fragment() {
             communicator.replaceFragment(AdicionarExercicioATreino())
         }
 
-        createItems()
         val layoutManager = LinearLayoutManager(context)
         recyclerView = v.findViewById(R.id.treinoUsuarioPersonalRecycler)
         recyclerView.layoutManager = layoutManager
@@ -95,6 +101,8 @@ class TreinoUsuarioPersonal : Fragment() {
             if(exercicioAdicionado){
                 Toast.makeText(requireContext(), "Exercicio foi adicionado .", Toast.LENGTH_SHORT).show()
             }
+
+            createItems()
         }
         return v
     }
@@ -125,17 +133,44 @@ class TreinoUsuarioPersonal : Fragment() {
 
     private fun createItems(){
 
-        itemsArrayA = arrayListOf()
-        itemsArrayB = arrayListOf()
+        val userDoc = db.collection("Usuarios").document(userId)
+        val treinoDoc = userDoc.collection("Treinos").whereEqualTo("name", "A")
+
+        treinoDoc.addSnapshotListener(object: EventListener<QuerySnapshot>{
+            override fun onEvent(
+                value: QuerySnapshot?,
+                error: FirebaseFirestoreException?
+            ) {
+
+                if(error != null){
+                    Log.e("Firestore error", error.message.toString())
+                    return
+                }
+
+                itemsArrayA = arrayListOf()
+                itemsArrayB = arrayListOf()
+
+                for (dc: DocumentChange in value?.documentChanges!!){
+                    val document = dc.document
+                    val docId = document.id
+
+                    var exercicios = document.get("exercicios")
+                    Log.d("treino_usuario_personal", exercicios.toString())
+
+                    if(dc.type == DocumentChange.Type.ADDED){
+
+                    }
+                }
+            }
+
+        })
 
 
 
 
 
 
-
-
-        repeticoesA = arrayOf(
+        /*repeticoesA = arrayOf(
             "1 x 5",
             "2 x 4",
             "3 x 3",
@@ -154,14 +189,14 @@ class TreinoUsuarioPersonal : Fragment() {
 
         for(i in repeticoesA.indices){
 
-            val exercicios = TreinoUserPersonalItem(0, 0, "", "")
-            itemsArrayA.add(exercicios)
+            val exercicios = TreinoUserPersonalItem(repeticoesA[i])
+            repeticoesArrayA.add(exercicios)
         }
 
         for(i in repeticoesB.indices){
 
-            val exercicios = TreinoUserPersonalItem(0, 0, "", "")
-            itemsArrayB.add(exercicios)
-        }
+            val exercicios = TreinoUserPersonalItem(repeticoesB[i])
+            repeticoesArrayB.add(exercicios)
+        }*/
     }
 }

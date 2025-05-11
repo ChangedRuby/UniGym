@@ -8,4 +8,6 @@ interface Communicator {
     fun getMode(): Boolean
     fun setAuthUser(userId: String)
     fun getAuthUser(): String
+    fun setAuthUserEmail(userEmail: String)
+    fun getAuthUserEmail(): String
 }
