@@ -38,8 +38,8 @@ class TreinoUsuarioPersonal : Fragment() {
     lateinit var nameUser: String
     lateinit var userId: String
 
-    private lateinit var repeticoesArrayA: ArrayList<TreinoUserPersonalItem>
-    private lateinit var repeticoesArrayB: ArrayList<TreinoUserPersonalItem>
+    private lateinit var itemsArrayA: ArrayList<TreinoUserPersonalItem>
+    private lateinit var itemsArrayB: ArrayList<TreinoUserPersonalItem>
 
     private lateinit var repeticoesA: Array<String>
     private lateinit var repeticoesB: Array<String>
@@ -80,7 +80,7 @@ class TreinoUsuarioPersonal : Fragment() {
         recyclerView = v.findViewById(R.id.treinoUsuarioPersonalRecycler)
         recyclerView.layoutManager = layoutManager
         recyclerView.setHasFixedSize(true)
-        changeAdapter(repeticoesArrayA)
+        changeAdapter(itemsArrayA)
 
         parentFragmentManager.setFragmentResultListener("user_info_key", viewLifecycleOwner) { _, bundle ->
             nameUser = bundle.getString("name_user").toString()
@@ -125,8 +125,15 @@ class TreinoUsuarioPersonal : Fragment() {
 
     private fun createItems(){
 
-        repeticoesArrayA = arrayListOf()
-        repeticoesArrayB = arrayListOf()
+        itemsArrayA = arrayListOf()
+        itemsArrayB = arrayListOf()
+
+
+
+
+
+
+
 
         repeticoesA = arrayOf(
             "1 x 5",
@@ -147,14 +154,14 @@ class TreinoUsuarioPersonal : Fragment() {
 
         for(i in repeticoesA.indices){
 
-            val exercicios = TreinoUserPersonalItem(repeticoesA[i])
-            repeticoesArrayA.add(exercicios)
+            val exercicios = TreinoUserPersonalItem(0, 0, "", "")
+            itemsArrayA.add(exercicios)
         }
 
         for(i in repeticoesB.indices){
 
-            val exercicios = TreinoUserPersonalItem(repeticoesB[i])
-            repeticoesArrayB.add(exercicios)
+            val exercicios = TreinoUserPersonalItem(0, 0, "", "")
+            itemsArrayB.add(exercicios)
         }
     }
 }

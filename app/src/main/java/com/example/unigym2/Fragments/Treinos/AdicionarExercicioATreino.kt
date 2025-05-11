@@ -153,8 +153,8 @@ class AdicionarExercicioATreino : Fragment() {
 
 
             addTreinoBtn.setOnClickListener {
-                val maquinaSelecionada = maquinasSpinner.selectedItem
-                val exercicioSelecionado = exerciciosSpinner.selectedItem
+                val maquinaSelecionada = maquinasSpinner.selectedItem.toString().toInt()
+                val exercicioSelecionado = exerciciosSpinner.selectedItem.toString().toInt()
                 val maquinaSelecionadaPos = maquinasSpinner.selectedItemPosition
                 val exercicioSelecionadoPos = exerciciosSpinner.selectedItemPosition
                 val series = seriesEditText.text.toString()

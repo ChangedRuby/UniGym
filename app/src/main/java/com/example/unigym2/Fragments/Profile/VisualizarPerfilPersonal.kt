@@ -51,7 +51,7 @@ class VisualizarPerfilPersonal : Fragment() {
             Log.d("personalLog", "Clicked")
         }
 
-        backBtn.setOnClickListener() {
+        backBtn.setOnClickListener {
             communicator.replaceFragment(if (communicator.getMode()) ChatPersonal() else ChatUser())
         }
         return v
@@ -61,12 +61,12 @@ class VisualizarPerfilPersonal : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         val nameTextView : TextView = view.findViewById(R.id.UserProfileName)
 
-        fragmentManager?.setFragmentResultListener("user_info_key", viewLifecycleOwner) { _, bundle ->
-            val name = bundle.getString("name")
-            val userId = bundle.getString("id")
+        parentFragmentManager.setFragmentResultListener("user_info_key", viewLifecycleOwner) { _, bundle ->
+            val name = bundle.getString("name").toString()
+            val userId = bundle.getString("id").toString()
             nameTextView.text = name
 
-            userId?.let { uid ->
+            userId.let { uid ->
                 db.collection("Usuarios").document(uid).get()
                     .addOnSuccessListener { document ->
                         if (document != null && document.exists()) {

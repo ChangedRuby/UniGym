@@ -39,7 +39,7 @@ class VisualizarPerfilUser : Fragment() {
         communicator = activity as Communicator
         backBtn = v.findViewById(R.id.backButton)
 
-        backBtn.setOnClickListener() {
+        backBtn.setOnClickListener {
             communicator.replaceFragment(if (communicator.getMode()) ChatPersonal() else ChatUser())
         }
         return v
