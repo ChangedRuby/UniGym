@@ -32,6 +32,7 @@ class ListaTreinosPersonal : Fragment(), ListaUsuariosClickListener {
     private var param1: String? = null
     private var param2: String? = null
     lateinit var verTreinoBtn: Button
+    lateinit var adapter: ListaTreinosAdapter
     lateinit var db: FirebaseFirestore
     private lateinit var communicator: Communicator
 
@@ -56,11 +57,12 @@ class ListaTreinosPersonal : Fragment(), ListaUsuariosClickListener {
         var v = inflater.inflate(R.layout.fragment_treinos_lista_personal, container, false)
 
         recyclerView = v.findViewById(R.id.TreinosRecyclerview)
+        db = FirebaseFirestore.getInstance()
         communicator = activity as Communicator
 
         createItems()
         val layoutManager = LinearLayoutManager(context)
-        val adapter = ListaTreinosAdapter(itemArray, this)
+        adapter = ListaTreinosAdapter(itemArray, this)
         recyclerView.layoutManager = layoutManager
         recyclerView.setHasFixedSize(true)
         recyclerView.adapter = adapter
@@ -92,10 +94,17 @@ class ListaTreinosPersonal : Fragment(), ListaUsuariosClickListener {
 
         itemArray = arrayListOf()
 
-        db = FirebaseFirestore.getInstance()
         val userId = communicator.getAuthUser()
-        val userDoc = db.collection("Usuarios").document(userId)
-        val treinosCollection = userDoc.collection("Treinos")
+        val userCollection = db.collection("Usuarios")
+
+        userCollection.whereEqualTo("isPersonal", false).get().addOnSuccessListener { documents ->
+            for(document in documents){
+                itemArray.add(ListaTreinosItem(name = document.get("name").toString(), userId = document.id))
+            }
+        }.addOnSuccessListener {
+
+            adapter.notifyDataSetChanged()
+        }
 
         /*treinosCollection.add(
             hashMapOf(
@@ -103,7 +112,7 @@ class ListaTreinosPersonal : Fragment(), ListaUsuariosClickListener {
             )
         )*/
 
-        namesArray = arrayOf(
+        /*namesArray = arrayOf(
             "Name A",
             "Name B",
             "Name C",
@@ -114,13 +123,14 @@ class ListaTreinosPersonal : Fragment(), ListaUsuariosClickListener {
         for(i in namesArray.indices){
             val nameItem = ListaTreinosItem(namesArray[i])
             itemArray.add(nameItem)
-        }
+        }*/
     }
 
     override fun onItemClick(listaTreinosItem: ListaTreinosItem) {
         Log.d("listaTreinosPersonal", "Recyclerview ${listaTreinosItem.name} clicked")
         parentFragmentManager.setFragmentResult("user_info_key", Bundle().apply {
             putString("name_user", listaTreinosItem.name)
+            putString("id_user", listaTreinosItem.userId)
         })
         communicator.replaceFragment(TreinoUsuarioPersonal())
     }

@@ -17,6 +17,7 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.example.unigym2.Activities.Communicator
 import com.example.unigym2.R
+import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
 
 private const val ARG_PARAM1 = "param1"
@@ -33,6 +34,8 @@ class AdicionarExercicioATreino : Fragment() {
     lateinit var repeticoesEditText: EditText
     lateinit var addTreinoBtn: Button
     lateinit var maquinasNames: MutableList<String>
+    lateinit var nameUser: String
+    lateinit var userId: String
     lateinit var db: FirebaseFirestore
     private lateinit var communicator: Communicator
 
@@ -54,6 +57,14 @@ class AdicionarExercicioATreino : Fragment() {
         backBtn.setOnClickListener {
 
             communicator = activity as Communicator
+
+            parentFragmentManager.setFragmentResult("user_info_key", Bundle().apply {
+                putBoolean("exercicio_adicionado", false)
+                putString("name_user", nameUser)
+                putString("id_user", userId)
+
+            })
+
             communicator.replaceFragment(TreinoUsuarioPersonal())
         }
 
@@ -66,7 +77,7 @@ class AdicionarExercicioATreino : Fragment() {
 
         resetExerciciosSpinner(mutableListOf())
 
-        // pegar nome das maquina e setar no spinner
+        // pegar nome das maquinas e setar no spinner
         collectionMaquinas.get().addOnSuccessListener { documents ->
             for(document in documents){
                 var data = document.data
@@ -137,26 +148,48 @@ class AdicionarExercicioATreino : Fragment() {
         addTreinoBtn = v.findViewById(R.id.addTreino)
         seriesEditText = v.findViewById(R.id.editTextExercicioAMaquina)
         repeticoesEditText = v.findViewById(R.id.editTextRepeticoesExercicio)
+        communicator = activity as Communicator
         addTreinoBtn.setOnClickListener{
 
 
             addTreinoBtn.setOnClickListener {
-                val maquinaSelecionada = maquinasSpinner.selectedItemPosition
-                val exercicioSelecionado = exerciciosSpinner.selectedItemPosition
-                val series = seriesEditText.text.toString().trim()
-                val repeticoes = repeticoesEditText.text.toString().trim()
+                val maquinaSelecionada = maquinasSpinner.selectedItem
+                val exercicioSelecionado = exerciciosSpinner.selectedItem
+                val maquinaSelecionadaPos = maquinasSpinner.selectedItemPosition
+                val exercicioSelecionadoPos = exerciciosSpinner.selectedItemPosition
+                val series = seriesEditText.text.toString()
+                val repeticoes = repeticoesEditText.text.toString()
 
-                if (maquinaSelecionada != 0 &&
-                    exercicioSelecionado != 0 &&
+                if (maquinaSelecionadaPos != 0 &&
+                    exercicioSelecionadoPos != 0 &&
                     series.isNotEmpty() &&
                     repeticoes.isNotEmpty()
                 ) {
-                    parentFragmentManager.setFragmentResult("treino_adicionado_key", Bundle().apply {
-                        putBoolean("treino_adicionado", true)
+                    val userDoc = db.collection("Usuarios").document(userId)
+                    val query = userDoc.collection("Treinos").whereEqualTo("name", "A")
+
+                    query.get().addOnSuccessListener { documents ->
+                        for(document in documents){
+                            val docRef = document.reference
+
+                            docRef.update("exercicios", FieldValue.arrayUnion(
+                                mapOf(
+                                    "exercicio" to maquinaSelecionada,
+                                    "maquina" to exercicioSelecionado,
+                                    "series" to series,
+                                    "repeticoes" to repeticoes,
+                                ),
+                            ))
+                        }
+                    }
+
+                    parentFragmentManager.setFragmentResult("user_info_key", Bundle().apply {
+                        putBoolean("exercicio_adicionado", true)
+                        putString("name_user", nameUser)
+                        putString("id_user", userId)
 
                     })
 
-                    communicator = activity as Communicator
                     communicator.replaceFragment(TreinoUsuarioPersonal())
 
 
@@ -165,6 +198,13 @@ class AdicionarExercicioATreino : Fragment() {
                 }
             }
 
+        }
+
+        parentFragmentManager.setFragmentResultListener("user_info", viewLifecycleOwner) { _, bundle ->
+            userId = bundle.getString("id_user").toString()
+            nameUser = bundle.getString("name_user").toString()
+
+            Log.d("adicionar_exercicio", "User id $userId")
         }
 
         return v

@@ -20,6 +20,7 @@ import com.example.unigym2.Fragments.Treinos.Recyclerviews.MaquinaOuterItem
 import com.example.unigym2.R
 import com.google.firebase.firestore.DocumentChange
 import com.google.firebase.firestore.EventListener
+import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.FirebaseFirestoreException
 import com.google.firebase.firestore.QuerySnapshot
@@ -88,9 +89,6 @@ class TreinosMaquinas : Fragment() {
                 // Create a new user with a first and last name
                 val maquina = hashMapOf(
                     "title" to maquinaName,
-                    "exercises" to listOf(
-                        "exercicio",
-                    )
                 )
 
                 // Add a new document with a generated ID
@@ -123,9 +121,12 @@ class TreinosMaquinas : Fragment() {
             val exercicioName = bundle.getString("exercicio_name")
             if (foiAdicionada) {
                 val document = db.collection("Maquinas").document(bundle.getString("maquina_id").toString())
-                var exercisesArray: ArrayList<String>
+                // var exercisesArray: ArrayList<String>
 
-                document.get().addOnSuccessListener { result ->
+                document.update("exercises", FieldValue.arrayUnion(exercicioName.toString()))
+
+                // versão antiga em que pegava o array de exercicios do document, editava e atualizava
+                /*document.get().addOnSuccessListener { result ->
                     exercisesArray = result.data?.get("exercises") as ArrayList<String>
                     exercisesArray.add(exercicioName.toString())
 
@@ -137,14 +138,14 @@ class TreinosMaquinas : Fragment() {
                         Log.d("treinosMaquinas", "Exercise $exercicioName added.")
                     }
 
-                }
+                }*/
 
                 Log.d("treinosMaquinas", bundle.getString("maquina_id").toString())
                 Toast.makeText(requireContext(), "Exercício $exercicioName adicionado!", Toast.LENGTH_SHORT).show()
             }
         }
 
-        parentFragmentManager.setFragmentResultListener(
+        /*parentFragmentManager.setFragmentResultListener(
             "treino_adicionado_key",
             viewLifecycleOwner
         ) { _, bundle ->
@@ -152,7 +153,7 @@ class TreinosMaquinas : Fragment() {
             if (foiAdicionada) {
                 Toast.makeText(requireContext(), "Treino adicionado!", Toast.LENGTH_SHORT).show()
             }
-        }
+        }*/
 
 
         // RECYCLER VIEW

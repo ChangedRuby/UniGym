@@ -66,9 +66,10 @@ class CreateAccountUser : AppCompatActivity() {
                         // Sign in success, update UI with the signed-in user's information
                         Log.d("create_account", "createUserWithEmail:success")
                         val user = auth.currentUser
+                        val userDoc = db.collection("Usuarios").document(user!!.uid)
                         Log.d("create_account", "account created")
 
-                        db.collection("Usuarios").document(user!!.uid).set(
+                        userDoc.set(
                             hashMapOf(
                                 "id" to user.uid,
                                 "name" to nameTextInput.text.toString(),
@@ -84,6 +85,19 @@ class CreateAccountUser : AppCompatActivity() {
                         }.addOnFailureListener { e ->
                             Log.w("create_account", "Error adding document", e)
                         }
+                        val treinosCollection = userDoc.collection("Treinos")
+
+                        treinosCollection.add(
+                            hashMapOf(
+                                "name" to "A",
+                            ),
+                        )
+
+                        treinosCollection.add(
+                            hashMapOf(
+                                "name" to "B",
+                            ),
+                        )
 
                     } else {
                         // If sign in fails, display a message to the user.

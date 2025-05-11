@@ -48,14 +48,14 @@
             android:id="@+id/addTreinoBtn"
             android:layout_width="109dp"
             android:layout_height="48dp"
-            android:layout_marginTop="32dp"
+            android:layout_marginTop="20dp"
             android:backgroundTint="#45BDA2"
             android:text="Adicionar"
             android:textColorLink="@color/white"
             android:textSize="12sp"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.866"
+            app:layout_constraintHorizontal_bias="0.857"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tabLayout" />
 
@@ -65,10 +65,35 @@
             android:layout_height="569dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tabLayout"
+            app:layout_constraintTop_toBottomOf="@+id/lineGrey"
             app:layout_constraintVertical_bias="0.975"
             tools:itemCount="4"
             tools:listitem="@layout/treinos_exercicio_personal_recycler_layout" />
+
+        <View
+            android:id="@+id/lineGrey"
+            android:layout_width="wrap_content"
+            android:layout_height="2sp"
+            android:layout_marginTop="12dp"
+            android:background="@color/hint_grey"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/addTreinoBtn" />
+
+        <TextView
+            android:id="@+id/treinoUserName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="32dp"
+            android:gravity="left"
+            android:text="Treino de"
+            android:textColor="@android:color/white"
+            android:textSize="16sp"
+            app:layout_constraintEnd_toStartOf="@+id/addTreinoBtn"
+            app:layout_constraintHorizontal_bias="0.316"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tabLayout" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

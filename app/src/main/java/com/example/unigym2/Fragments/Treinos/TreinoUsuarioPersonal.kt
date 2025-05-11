@@ -1,11 +1,13 @@
 package com.example.unigym2.Fragments.Treinos
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.TextView
 import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -32,6 +34,10 @@ class TreinoUsuarioPersonal : Fragment() {
     private var param2: String? = null
 
     private lateinit var recyclerView: RecyclerView
+    lateinit var nameTextView: TextView
+    lateinit var nameUser: String
+    lateinit var userId: String
+
     private lateinit var repeticoesArrayA: ArrayList<TreinoUserPersonalItem>
     private lateinit var repeticoesArrayB: ArrayList<TreinoUserPersonalItem>
 
@@ -54,9 +60,18 @@ class TreinoUsuarioPersonal : Fragment() {
     ): View? {
         // Inflate the layout for this fragment
         var v = inflater.inflate(R.layout.fragment_treino_usuario_personal, container, false)
+
+        nameTextView = v.findViewById(R.id.treinoUserName)
+        communicator = activity as Communicator
+
         addTreinoBtn= v.findViewById(R.id.addTreinoBtn)
         addTreinoBtn.setOnClickListener{
-            communicator = activity as Communicator
+
+            parentFragmentManager.setFragmentResult("user_info", Bundle().apply {
+                putString("id_user", userId)
+                putString("name_user", nameUser)
+            })
+
             communicator.replaceFragment(AdicionarExercicioATreino())
         }
 
@@ -68,9 +83,18 @@ class TreinoUsuarioPersonal : Fragment() {
         changeAdapter(repeticoesArrayA)
 
         parentFragmentManager.setFragmentResultListener("user_info_key", viewLifecycleOwner) { _, bundle ->
-            val name = bundle.getString("name_user")
+            nameUser = bundle.getString("name_user").toString()
+            userId = bundle.getString("id_user").toString()
+            val exercicioAdicionado = bundle.getBoolean("exercicio_adicionado", false)
 
-            Toast.makeText(requireContext(), "Visualizando treino do usuário $name .", Toast.LENGTH_SHORT).show()
+            nameTextView.text = "Treino de $nameUser"
+
+            Log.d("treino_usuario_personal", "$nameUser: $userId")
+            Toast.makeText(requireContext(), "Visualizando treino do usuário $nameUser .", Toast.LENGTH_SHORT).show()
+
+            if(exercicioAdicionado){
+                Toast.makeText(requireContext(), "Exercicio foi adicionado .", Toast.LENGTH_SHORT).show()
+            }
         }
         return v
     }
