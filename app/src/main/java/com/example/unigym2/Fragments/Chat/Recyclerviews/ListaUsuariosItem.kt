@@ -1,3 +1,3 @@
 package com.example.unigym2.Fragments.Chat.Recyclerviews
 
-data class ListaUsuariosItem(val name: String, val userId: String, val isPersonal: Boolean)
+data class ListaUsuariosItem(val name: String, val userId: String)

@@ -11,7 +11,6 @@ import android.widget.CalendarView
 import android.widget.EditText
 import android.widget.ImageButton
 import android.widget.LinearLayout
-import android.widget.Spinner
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.example.unigym2.Activities.Communicator

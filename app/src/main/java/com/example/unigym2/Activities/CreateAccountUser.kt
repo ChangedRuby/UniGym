@@ -74,6 +74,7 @@ class CreateAccountUser : AppCompatActivity() {
                                 "id" to user.uid,
                                 "name" to nameTextInput.text.toString(),
                                 "isPersonal" to false,
+                                "email" to emailTextInput.text.toString(),
                             )
                         ).addOnSuccessListener { documentReference ->
                             var intent = Intent(this, MainActivity::class.java)

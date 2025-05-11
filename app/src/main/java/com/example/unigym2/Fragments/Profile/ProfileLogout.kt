@@ -9,6 +9,7 @@ import android.widget.TextView
 import androidx.fragment.app.Fragment
 import com.example.unigym2.Activities.LoginMenu
 import com.example.unigym2.R
+import com.google.firebase.auth.FirebaseAuth
 
 class ProfileLogout : Fragment() {
 
@@ -24,6 +25,7 @@ class ProfileLogout : Fragment() {
         val btnCancel = view.findViewById<TextView>(R.id.ButtonNega)
 
         btnConfirm.setOnClickListener {
+            FirebaseAuth.getInstance().signOut()
             val intent = Intent(requireActivity(), LoginMenu::class.java)
             intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
             startActivity(intent)

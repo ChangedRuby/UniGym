@@ -91,10 +91,10 @@ class ChatPersonal : Fragment() {
         val userCollection = db.collection("Usuarios")
         userCollection.whereEqualTo("isPersonal", false).get().addOnSuccessListener { documents ->
             for(document in documents){
-                itemArray.add(ListaPersonaisItem(name = document.get("name").toString(), userId = document.id, isPersonal = false))
+                itemArray.add(ListaPersonaisItem(name = document.get("name").toString(), userId = document.id))
                 Log.d("ChatUser", "Item added: ${document.getString("name")}")
             }
-            itemArray.add(0, ListaPersonaisItem(name = "Brok", userId = "", isPersonal = false))
+            itemArray.add(0, ListaPersonaisItem(name = "Brok", userId = ""))
             adapter.notifyDataSetChanged()
         }
     }

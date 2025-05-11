@@ -18,7 +18,7 @@ import com.google.firebase.firestore.FirebaseFirestore
 private const val ARG_PARAM1 = "param1"
 private const val ARG_PARAM2 = "param2"
 
-class VisualizarPerfilPersonal : Fragment() {
+class VisualizarPerfilPersonal() : Fragment() {
     private var param1: String? = null
     private var param2: String? = null
 
@@ -26,6 +26,8 @@ class VisualizarPerfilPersonal : Fragment() {
     private lateinit var communicator : Communicator
     private lateinit var agendamentoTreinoBtn : TextView
     private lateinit var backBtn : ImageView
+    private lateinit var nameTextView : TextView
+    private lateinit var emailTextView: TextView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -41,6 +43,8 @@ class VisualizarPerfilPersonal : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         var v = inflater.inflate(R.layout.fragment_visualizar_profile_personal, container, false)
+        nameTextView = v.findViewById(R.id.UserProfileName)
+        emailTextView = v.findViewById(R.id.userProfileEmail)
         communicator = activity as Communicator
         db = FirebaseFirestore.getInstance()
         agendamentoTreinoBtn = v.findViewById(R.id.agendarTreino)
@@ -54,32 +58,22 @@ class VisualizarPerfilPersonal : Fragment() {
         backBtn.setOnClickListener {
             communicator.replaceFragment(if (communicator.getMode()) ChatPersonal() else ChatUser())
         }
+
+        parentFragmentManager.setFragmentResultListener("personal_info_key", viewLifecycleOwner) { _, bundle ->
+            val personalID = bundle.getString("personal_id").toString()
+            db.collection("Usuarios").document(personalID)
+                .get()
+                .addOnSuccessListener { result ->
+                    nameTextView.text = result.data?.get("name").toString()
+                    emailTextView.text = result.data?.get("email").toString()
+                }.addOnFailureListener { exception ->
+                    Log.d("firestore", "Error getting document.", exception)
+                }
+
+        }
+
+
         return v
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        val nameTextView : TextView = view.findViewById(R.id.UserProfileName)
-
-        parentFragmentManager.setFragmentResultListener("user_info_key", viewLifecycleOwner) { _, bundle ->
-            val name = bundle.getString("name").toString()
-            val userId = bundle.getString("id").toString()
-            nameTextView.text = name
-
-            userId.let { uid ->
-                db.collection("Usuarios").document(uid).get()
-                    .addOnSuccessListener { document ->
-                        if (document != null && document.exists()) {
-                            val userName = document.getString("name")
-                            nameTextView.text = userName
-                        } else {
-                            Log.d("Firestore", "No such document")
-                        }
-                    }
-                    .addOnFailureListener { exception ->
-                        Log.d("Firestore", "get failed with ", exception)
-                    }
-            }
-        }
-    }
 }

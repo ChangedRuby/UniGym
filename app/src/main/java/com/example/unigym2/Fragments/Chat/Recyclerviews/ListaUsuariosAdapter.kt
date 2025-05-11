@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
 import android.widget.TextView
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.fragment.app.FragmentManager
@@ -13,8 +12,6 @@ import com.example.unigym2.Activities.Communicator
 import com.example.unigym2.Fragments.Chat.ChatMain
 import com.example.unigym2.Fragments.Profile.VisualizarPerfilPersonal
 import com.example.unigym2.Fragments.Profile.VisualizarPerfilUser
-import com.example.unigym2.Fragments.Treinos.Recyclerviews.ListaTreinosItem
-import com.example.unigym2.Fragments.Treinos.Recyclerviews.ListaUsuariosClickListener
 import com.example.unigym2.R
 
 class ListaUsuariosAdapter(private val dataList: MutableList<ListaPersonaisItem>, var communicator: Communicator, val fragmentManager : FragmentManager) : RecyclerView.Adapter<ListaUsuariosAdapter.MyViewHolder>(){
@@ -49,14 +46,8 @@ class ListaUsuariosAdapter(private val dataList: MutableList<ListaPersonaisItem>
             fragmentManager.setFragmentResult("user_info_key", Bundle().apply {
                 putString("user_name", currentItem.name)
                 putString("user_id", currentItem.userId)
-                putBoolean("is_personal", currentItem.isPersonal)
             })
-            if (currentItem.isPersonal) {
-                communicator.replaceFragment(VisualizarPerfilPersonal())
-            }
-            else {
-                communicator.replaceFragment(VisualizarPerfilUser())
-            }
+            communicator.replaceFragment(VisualizarPerfilUser())
         }
 
     }
