@@ -47,9 +47,16 @@ class ListaUsuariosAdapter(private val dataList: MutableList<ListaPersonaisItem>
 
         holder.visualizarPerfilBtn.setOnClickListener {
             fragmentManager.setFragmentResult("user_info_key", Bundle().apply {
-                putString("user_name", holder.nameView.text.toString())
+                putString("user_name", currentItem.name)
+                putString("user_id", currentItem.userId)
+                putBoolean("is_personal", currentItem.isPersonal)
             })
-            communicator.replaceFragment(VisualizarPerfilUser())
+            if (currentItem.isPersonal) {
+                communicator.replaceFragment(VisualizarPerfilPersonal())
+            }
+            else {
+                communicator.replaceFragment(VisualizarPerfilUser())
+            }
         }
 
     }

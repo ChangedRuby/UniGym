@@ -13,6 +13,7 @@ import com.example.unigym2.Fragments.Calendar.MonitoringSchedules
 import com.example.unigym2.Fragments.Chat.ChatPersonal
 import com.example.unigym2.Fragments.Chat.ChatUser
 import com.example.unigym2.R
+import com.google.firebase.firestore.FirebaseFirestore
 
 private const val ARG_PARAM1 = "param1"
 private const val ARG_PARAM2 = "param2"
@@ -21,6 +22,7 @@ class VisualizarPerfilPersonal : Fragment() {
     private var param1: String? = null
     private var param2: String? = null
 
+    private lateinit var db: FirebaseFirestore
     private lateinit var communicator : Communicator
     private lateinit var agendamentoTreinoBtn : TextView
     private lateinit var backBtn : ImageView
@@ -40,6 +42,7 @@ class VisualizarPerfilPersonal : Fragment() {
     ): View? {
         var v = inflater.inflate(R.layout.fragment_visualizar_profile_personal, container, false)
         communicator = activity as Communicator
+        db = FirebaseFirestore.getInstance()
         agendamentoTreinoBtn = v.findViewById(R.id.agendarTreino)
         backBtn = v.findViewById(R.id.SairPersonal)
 
@@ -52,5 +55,31 @@ class VisualizarPerfilPersonal : Fragment() {
             communicator.replaceFragment(if (communicator.getMode()) ChatPersonal() else ChatUser())
         }
         return v
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        val nameTextView : TextView = view.findViewById(R.id.UserProfileName)
+
+        fragmentManager?.setFragmentResultListener("user_info_key", viewLifecycleOwner) { _, bundle ->
+            val name = bundle.getString("name")
+            val userId = bundle.getString("id")
+            nameTextView.text = name
+
+            userId?.let { uid ->
+                db.collection("Usuarios").document(uid).get()
+                    .addOnSuccessListener { document ->
+                        if (document != null && document.exists()) {
+                            val userName = document.getString("name")
+                            nameTextView.text = userName
+                        } else {
+                            Log.d("Firestore", "No such document")
+                        }
+                    }
+                    .addOnFailureListener { exception ->
+                        Log.d("Firestore", "get failed with ", exception)
+                    }
+            }
+        }
     }
 }

@@ -12,18 +12,21 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.unigym2.Activities.Communicator
 import com.example.unigym2.Fragments.Chat.ChatMain
 import com.example.unigym2.Fragments.Profile.VisualizarPerfilPersonal
+import com.example.unigym2.Fragments.Profile.VisualizarPerfilUser
 import com.example.unigym2.Fragments.Treinos.Recyclerviews.ListaTreinosItem
 import com.example.unigym2.Fragments.Treinos.Recyclerviews.ListaUsuariosClickListener
 import com.example.unigym2.R
+import com.google.firebase.firestore.FirebaseFirestore
 
 class ListaPersonaisAdapter(private val dataList : MutableList<ListaPersonaisItem>, var communicator : Communicator, val fragmentManager : FragmentManager) : RecyclerView.Adapter<ListaPersonaisAdapter.MyViewHolder>(){
 
-
+    lateinit var db: FirebaseFirestore
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
         val itemView = LayoutInflater.from(parent.context).inflate(
             R.layout.usuarios_chat_recycler_layout,
             parent, false)
+        db = FirebaseFirestore.getInstance()
         return MyViewHolder(itemView)
     }
 
@@ -36,19 +39,25 @@ class ListaPersonaisAdapter(private val dataList : MutableList<ListaPersonaisIte
         holder.nameView.text = currentItem.name
         holder.itemView.setOnClickListener {
             communicator.replaceFragment(ChatMain())
-
         }
 
         if(position == 0){
             holder.visualizarPerfilBtn.visibility = View.GONE
+            holder.nameView.text = "Brok"
             holder.descriptionView.text = "Converse com um agente de IA."
         }
-
         holder.visualizarPerfilBtn.setOnClickListener {
             fragmentManager.setFragmentResult("personal_info_key", Bundle().apply {
-                putString("personal_name", holder.nameView.text.toString())
+                putString("personal_name", currentItem.name)
+                putString("user_id", currentItem.userId)
+                putBoolean("is_personal", currentItem.isPersonal)
             })
-            communicator.replaceFragment(VisualizarPerfilPersonal())
+            if (currentItem.isPersonal) {
+                communicator.replaceFragment(VisualizarPerfilPersonal())
+            }
+            else {
+                communicator.replaceFragment(VisualizarPerfilUser())
+            }
         }
 
     }

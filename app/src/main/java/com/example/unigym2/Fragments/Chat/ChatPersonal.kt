@@ -1,6 +1,7 @@
 package com.example.unigym2.Fragments.Chat
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,7 +12,9 @@ import com.example.unigym2.Activities.Communicator
 import com.example.unigym2.Fragments.Chat.Recyclerviews.ListaPersonaisAdapter
 import com.example.unigym2.Fragments.Chat.Recyclerviews.ListaPersonaisItem
 import com.example.unigym2.Fragments.Chat.Recyclerviews.ListaUsuariosAdapter
+import com.example.unigym2.Fragments.Treinos.Recyclerviews.ListaTreinosItem
 import com.example.unigym2.R
+import com.google.firebase.firestore.FirebaseFirestore
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -30,8 +33,9 @@ class ChatPersonal : Fragment() {
 
     lateinit var communicator: Communicator
     private lateinit var recyclerView: RecyclerView
+    lateinit var db: FirebaseFirestore
+    lateinit var adapter: ListaUsuariosAdapter
 
-    private lateinit var namesArray: Array<String>
     private lateinit var itemArray: MutableList<ListaPersonaisItem>
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -48,13 +52,14 @@ class ChatPersonal : Fragment() {
     ): View? {
         // Inflate the layout for this fragment
         var v = inflater.inflate(R.layout.fragment_chat_trainer, container, false)
+        db = FirebaseFirestore.getInstance()
 
         recyclerView = v.findViewById(R.id.listaUsuariosRecyclerview)
         communicator = activity as Communicator
 
         createItems()
         val layoutManager = LinearLayoutManager(context)
-        val adapter = ListaUsuariosAdapter(itemArray, communicator, parentFragmentManager)
+        adapter = ListaUsuariosAdapter(itemArray, communicator, parentFragmentManager)
         recyclerView.layoutManager = layoutManager
         recyclerView.adapter = adapter
 
@@ -82,20 +87,15 @@ class ChatPersonal : Fragment() {
     }
 
     private fun createItems(){
-
         itemArray = arrayListOf()
-
-        namesArray = arrayOf(
-            "Brok",
-            "Name B",
-            "Name C",
-            "Name D",
-            "Name E",
-        )
-
-        for(i in namesArray.indices){
-            val nameItem = ListaPersonaisItem(namesArray[i])
-            itemArray.add(nameItem)
+        val userCollection = db.collection("Usuarios")
+        userCollection.whereEqualTo("isPersonal", false).get().addOnSuccessListener { documents ->
+            for(document in documents){
+                itemArray.add(ListaPersonaisItem(name = document.get("name").toString(), userId = document.id, isPersonal = false))
+                Log.d("ChatUser", "Item added: ${document.getString("name")}")
+            }
+            itemArray.add(0, ListaPersonaisItem(name = "Brok", userId = "", isPersonal = false))
+            adapter.notifyDataSetChanged()
         }
     }
 }
