@@ -13,11 +13,15 @@ package com.example.unigym2.Fragments.Profile
     import com.example.unigym2.Activities.ResetPassword
     import com.example.unigym2.R
     import com.google.android.material.textfield.TextInputEditText
+    import com.google.firebase.firestore.FirebaseFirestore
 
-    class EditProfilePersonal : Fragment() {
+class EditProfilePersonal : Fragment() {
         private lateinit var communicator: Communicator
+        private lateinit var db: FirebaseFirestore
         private lateinit var saveButton: TextView
         private lateinit var usernameEditText: TextInputEditText
+        private lateinit var userProfileEmail: TextView
+        private lateinit var crefTextView: TextView
         private lateinit var specialtyET1: TextInputEditText
         private lateinit var specialtyET2: TextInputEditText
         private lateinit var specialtyET3: TextInputEditText
@@ -40,9 +44,12 @@ package com.example.unigym2.Fragments.Profile
         ): View? {
             val view = inflater.inflate(R.layout.fragment_edit_profile_personal, container, false)
 
+            db = FirebaseFirestore.getInstance()
             communicator = activity as Communicator
 
             usernameEditText = view.findViewById(R.id.editTextUsername)
+            userProfileEmail = view.findViewById(R.id.userProfileEmail)
+            crefTextView = view.findViewById(R.id.userCREF)
             specialtyET1 = view.findViewById(R.id.editEspecialidade1)
             specialtyET2 = view.findViewById(R.id.editEspecialidade2)
             specialtyET3 = view.findViewById(R.id.editEspecialidade3)
@@ -55,6 +62,28 @@ package com.example.unigym2.Fragments.Profile
             servicePriceET2 = view.findViewById(R.id.editText10)
             servicePriceET3 = view.findViewById(R.id.editText11)
             servicePriceET4 = view.findViewById(R.id.editText12)
+            db.collection("Usuarios").document(communicator.getAuthUser())
+                .get()
+                .addOnSuccessListener { result ->
+                    usernameEditText.hint = result.data?.get("name").toString()
+                    userProfileEmail.text = communicator.getAuthUserEmail()
+                    crefTextView.text = result.data?.get("CREF").toString()
+                    specialtyET1.hint = result.data?.get("specialty1").toString()
+                    specialtyET2.hint = result.data?.get("specialty2").toString()
+                    specialtyET3.hint = result.data?.get("specialty3").toString()
+                    specialtyET4.hint = result.data?.get("specialty4").toString()
+                    serviceNameET1.hint = result.data?.get("service1").toString()
+                    serviceNameET2.hint = result.data?.get("service2").toString()
+                    serviceNameET3.hint = result.data?.get("service3").toString()
+                    serviceNameET4.hint = result.data?.get("service4").toString()
+                    servicePriceET1.hint = result.data?.get("servicePrice1").toString()
+                    servicePriceET2.hint = result.data?.get("servicePrice2").toString()
+                    servicePriceET3.hint = result.data?.get("servicePrice3").toString()
+                    servicePriceET4.hint = result.data?.get("servicePrice4").toString()
+                    Log.d("firestore", "${result.id} => ${result.data}")
+                }.addOnFailureListener { exception ->
+                    Log.w("firestore", "Error getting document.", exception)
+                }
 
             saveButton = view.findViewById(R.id.ConfirmarEditPersonal)
             saveButton.setOnClickListener {
@@ -87,7 +116,40 @@ package com.example.unigym2.Fragments.Profile
             val servicePrice3 = servicePriceET3.text.toString()
             val servicePrice4 = servicePriceET4.text.toString()
 
-            // TODO: Implement saving data to your database or storage
-            // For example: FirebaseDatabase.getInstance().getReference("users").child(userId).setValue(userProfile)
+            val userRef = db.collection("Usuarios").document(communicator.getAuthUser())
+            val updates = hashMapOf<String, Any>()
+
+            // Add username if not empty
+            if (username.isNotEmpty()) {
+                updates["name"] = username
+            }
+
+            // Add specialties if not empty
+            if (specialty1.isNotEmpty()) updates["specialty1"] = specialty1
+            if (specialty2.isNotEmpty()) updates["specialty2"] = specialty2
+            if (specialty3.isNotEmpty()) updates["specialty3"] = specialty3
+            if (specialty4.isNotEmpty()) updates["specialty4"] = specialty4
+
+            // Add services and prices if not empty
+            if (service1.isNotEmpty()) updates["service1"] = service1
+            if (service2.isNotEmpty()) updates["service2"] = service2
+            if (service3.isNotEmpty()) updates["service3"] = service3
+            if (service4.isNotEmpty()) updates["service4"] = service4
+
+            if (servicePrice1.isNotEmpty()) updates["servicePrice1"] = servicePrice1
+            if (servicePrice2.isNotEmpty()) updates["servicePrice2"] = servicePrice2
+            if (servicePrice3.isNotEmpty()) updates["servicePrice3"] = servicePrice3
+            if (servicePrice4.isNotEmpty()) updates["servicePrice4"] = servicePrice4
+
+            // Only update if there are changes to make
+            if (updates.isNotEmpty()) {
+                userRef.update(updates)
+                    .addOnSuccessListener {
+                        Log.d("firestore", "Personal trainer profile successfully updated!")
+                    }
+                    .addOnFailureListener { e ->
+                        Log.w("firestore", "Error updating personal trainer profile", e)
+                    }
+            }
         }
     }

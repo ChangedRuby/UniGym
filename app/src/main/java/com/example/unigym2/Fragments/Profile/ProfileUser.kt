@@ -28,6 +28,10 @@ class ProfileUser : Fragment() {
     private lateinit var communicator : Communicator
     lateinit var nameTextView : TextView
     lateinit var emailTextView: TextView
+    lateinit var objetivo1TextView: TextView
+    lateinit var objetivo2TextView: TextView
+    lateinit var objetivo3TextView: TextView
+    lateinit var objetivo4TextView: TextView
     lateinit var auth: FirebaseAuth
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -51,12 +55,20 @@ class ProfileUser : Fragment() {
         exitBtn = v.findViewById(R.id.ExitButton)
         accessibilityBtn = v.findViewById(R.id.AcessibilidadeUser)
         nameTextView = v.findViewById(R.id.UserProfileName)
-        emailTextView = v.findViewById(R.id.UserProfileEmail)
+        emailTextView = v.findViewById(R.id.userCREF)
+        objetivo1TextView = v.findViewById(R.id.especialidade1)
+        objetivo2TextView = v.findViewById(R.id.especialidade2)
+        objetivo3TextView = v.findViewById(R.id.objetivo3)
+        objetivo4TextView = v.findViewById(R.id.objetivo4)
         db.collection("Usuarios").document(communicator.getAuthUser())
             .get()
             .addOnSuccessListener { result ->
                 nameTextView.text = result.data?.get("name").toString()
                 emailTextView.text = communicator.getAuthUserEmail()
+                objetivo1TextView.text = result.data?.get("objetivo1").toString()
+                objetivo2TextView.text = result.data?.get("objetivo2").toString()
+                objetivo3TextView.text = result.data?.get("objetivo3").toString()
+                objetivo4TextView.text = result.data?.get("objetivo4").toString()
                 Log.d("firestore", "${result.id} => ${result.data}")
             }.addOnFailureListener { exception ->
                 Log.w("firestore", "Error getting document.", exception)
