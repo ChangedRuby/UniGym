@@ -69,6 +69,18 @@ class CreateAccountPersonalTrainer : AppCompatActivity() {
                                 "isPersonal" to true,
                                 "CREF" to crefTextInput.text.toString(),
                                 "email" to emailTextInput.text.toString(),
+                                "specialty1" to "",
+                                "specialty2" to "",
+                                "specialty3" to "",
+                                "specialty4" to "",
+                                "service1" to "",
+                                "service2" to "",
+                                "service3" to "",
+                                "service4" to "",
+                                "servicePrice1" to "",
+                                "servicePrice2" to "",
+                                "servicePrice3" to "",
+                                "servicePrice4" to ""
                             )
                         ).addOnSuccessListener { documentReference ->
                             var intent = Intent(this, MainActivity::class.java)

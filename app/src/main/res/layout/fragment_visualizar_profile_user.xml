@@ -127,7 +127,7 @@
             app:layout_constraintTop_toBottomOf="@+id/objectivesTextView" />
 
         <TextView
-            android:id="@+id/objective3"
+            android:id="@+id/objetivo3"
             android:layout_width="129dp"
             android:layout_height="32dp"
             android:layout_marginTop="16dp"
@@ -146,7 +146,7 @@
             app:layout_constraintTop_toBottomOf="@+id/especialidade1" />
 
         <TextView
-            android:id="@+id/objective"
+            android:id="@+id/objetivo4"
             android:layout_width="129dp"
             android:layout_height="32dp"
             android:layout_marginTop="16dp"
@@ -165,7 +165,7 @@
             app:layout_constraintTop_toBottomOf="@+id/especialidade2" />
 
         <TextView
-            android:id="@+id/UserProfileEmail"
+            android:id="@+id/userCREF"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="12dp"

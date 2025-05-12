@@ -143,7 +143,7 @@
 
 
         <TextView
-            android:id="@+id/UserProfileEmail"
+            android:id="@+id/userCREF"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
@@ -204,7 +204,7 @@
             app:layout_constraintTop_toTopOf="@+id/profileSecondaryColor" />
 
         <TextView
-            android:id="@+id/textView3"
+            android:id="@+id/servico1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="140dp"
@@ -216,7 +216,7 @@
             app:layout_constraintStart_toStartOf="parent" />
 
         <TextView
-            android:id="@+id/textView11"
+            android:id="@+id/servico2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="100dp"
@@ -228,7 +228,7 @@
             app:layout_constraintStart_toStartOf="parent" />
 
         <TextView
-            android:id="@+id/textView12"
+            android:id="@+id/servico3"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="60dp"
@@ -240,7 +240,7 @@
             app:layout_constraintStart_toStartOf="parent" />
 
         <TextView
-            android:id="@+id/textView17"
+            android:id="@+id/servico4"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="20dp"
@@ -252,7 +252,7 @@
             app:layout_constraintStart_toStartOf="parent" />
 
         <TextView
-            android:id="@+id/textView8"
+            android:id="@+id/precoServico1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="140dp"
@@ -265,7 +265,7 @@
             app:layout_constraintStart_toStartOf="parent" />
 
         <TextView
-            android:id="@+id/textView10"
+            android:id="@+id/precoServico2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="100dp"
@@ -278,7 +278,7 @@
             app:layout_constraintStart_toStartOf="parent" />
 
         <TextView
-            android:id="@+id/textView14"
+            android:id="@+id/precoServico3"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="60dp"
@@ -291,7 +291,7 @@
             app:layout_constraintStart_toStartOf="parent" />
 
         <TextView
-            android:id="@+id/textView18"
+            android:id="@+id/precoServico4"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="20dp"
