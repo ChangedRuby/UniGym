@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
+import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -33,6 +34,7 @@ class ChatMain : Fragment() {
     private lateinit var communicator: Communicator
     private lateinit var recyclerView: RecyclerView
     private lateinit var backBtn : ImageView
+    private lateinit var chatName : TextView
 
     private lateinit var namesArray: Array<String>
     private lateinit var itemArray: MutableList<ListaPersonaisItem>
@@ -51,8 +53,15 @@ class ChatMain : Fragment() {
     ): View? {
         // Inflate the layout for this fragment
         var v = inflater.inflate(R.layout.fragment_chat_main, container, false)
+        chatName = v.findViewById(R.id.chatName)
         backBtn = v.findViewById(R.id.goBackBtn)
         communicator = activity as Communicator
+
+        parentFragmentManager.setFragmentResultListener("chat_name_key", viewLifecycleOwner) { _, bundle ->
+            val userName = bundle.getString("name", "Unknown Username")
+            chatName.text = userName
+        }
+
         backBtn.setOnClickListener {
             communicator.replaceFragment(if (communicator.getMode()) ChatPersonal() else ChatUser())
         }
