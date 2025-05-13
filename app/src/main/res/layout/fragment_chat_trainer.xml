@@ -15,6 +15,17 @@
             android:layout_height="match_parent"
             android:background="@color/dark_blue_bg">
 
+            <TextView
+                android:id="@+id/textView3"
+                android:layout_width="290dp"
+                android:layout_height="40dp"
+                android:layout_weight="1"
+                android:text="Pesquisar"
+                app:layout_constraintBottom_toBottomOf="@+id/conversasSearchView"
+                app:layout_constraintEnd_toEndOf="@+id/conversasSearchView"
+                app:layout_constraintStart_toStartOf="@+id/conversasSearchView"
+                app:layout_constraintTop_toTopOf="@+id/conversasSearchView" />
+
             <SearchView
                 android:id="@+id/conversasSearchView"
                 android:layout_width="393sp"
