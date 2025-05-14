@@ -36,6 +36,7 @@ class AdicionarExercicioATreino : Fragment() {
     lateinit var maquinasNames: MutableList<String>
     lateinit var nameUser: String
     lateinit var userId: String
+    lateinit var treinoName: String
     lateinit var db: FirebaseFirestore
     private lateinit var communicator: Communicator
 
@@ -153,20 +154,20 @@ class AdicionarExercicioATreino : Fragment() {
 
 
             addTreinoBtn.setOnClickListener {
-                val maquinaSelecionada = maquinasSpinner.selectedItem.toString().toInt()
-                val exercicioSelecionado = exerciciosSpinner.selectedItem.toString().toInt()
+                val maquinaSelecionada = maquinasSpinner.selectedItem.toString()
+                val exercicioSelecionado = exerciciosSpinner.selectedItem.toString()
                 val maquinaSelecionadaPos = maquinasSpinner.selectedItemPosition
                 val exercicioSelecionadoPos = exerciciosSpinner.selectedItemPosition
-                val series = seriesEditText.text.toString()
-                val repeticoes = repeticoesEditText.text.toString()
+                val series = seriesEditText.text.toString().toInt()
+                val repeticoes = repeticoesEditText.text.toString().toInt()
 
                 if (maquinaSelecionadaPos != 0 &&
                     exercicioSelecionadoPos != 0 &&
-                    series.isNotEmpty() &&
-                    repeticoes.isNotEmpty()
+                    series != 0 &&
+                    repeticoes != 0
                 ) {
                     val userDoc = db.collection("Usuarios").document(userId)
-                    val query = userDoc.collection("Treinos").whereEqualTo("name", "A")
+                    val query = userDoc.collection("Treinos").whereEqualTo("name", treinoName)
 
                     query.get().addOnSuccessListener { documents ->
                         for(document in documents){
@@ -174,8 +175,8 @@ class AdicionarExercicioATreino : Fragment() {
 
                             docRef.update("exercicios", FieldValue.arrayUnion(
                                 mapOf(
-                                    "exercicio" to maquinaSelecionada,
-                                    "maquina" to exercicioSelecionado,
+                                    "exercicio" to exercicioSelecionado,
+                                    "maquina" to maquinaSelecionada,
                                     "series" to series,
                                     "repeticoes" to repeticoes,
                                 ),
@@ -203,6 +204,10 @@ class AdicionarExercicioATreino : Fragment() {
         parentFragmentManager.setFragmentResultListener("user_info", viewLifecycleOwner) { _, bundle ->
             userId = bundle.getString("id_user").toString()
             nameUser = bundle.getString("name_user").toString()
+            when(bundle.getString("treino_name").toString()){
+                "Treino A" -> treinoName = "A"
+                "Treino B" -> treinoName = "B"
+            }
 
             Log.d("adicionar_exercicio", "User id $userId")
         }
