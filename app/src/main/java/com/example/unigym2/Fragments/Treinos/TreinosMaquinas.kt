@@ -23,6 +23,7 @@ import com.google.firebase.firestore.EventListener
 import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.FirebaseFirestoreException
+import com.google.firebase.firestore.Query
 import com.google.firebase.firestore.QuerySnapshot
 
 // TODO: Rename parameter arguments, choose names that match
@@ -204,7 +205,7 @@ class TreinosMaquinas : Fragment() {
 
     private fun createOuterItems() {
 
-        db.collection("Maquinas")
+        db.collection("Maquinas").orderBy("title", Query.Direction.ASCENDING)
             .addSnapshotListener(object : EventListener<QuerySnapshot> {
                 override fun onEvent(
                     value: QuerySnapshot?,

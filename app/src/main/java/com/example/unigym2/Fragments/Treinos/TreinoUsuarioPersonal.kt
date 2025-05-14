@@ -17,6 +17,7 @@ import com.example.unigym2.Fragments.Treinos.Recyclerviews.TreinoUserItem
 import com.example.unigym2.Fragments.Treinos.Recyclerviews.TreinoUserPersonalAdapter
 import com.example.unigym2.Fragments.Treinos.Recyclerviews.TreinoUserPersonalItem
 import com.example.unigym2.R
+import com.google.android.material.tabs.TabLayout
 import com.google.firebase.firestore.DocumentChange
 import com.google.firebase.firestore.EventListener
 import com.google.firebase.firestore.FirebaseFirestore
@@ -40,8 +41,10 @@ class TreinoUsuarioPersonal : Fragment() {
 
     private lateinit var recyclerView: RecyclerView
     lateinit var nameTextView: TextView
+    lateinit var treinosTabLayout: TabLayout
     lateinit var nameUser: String
     lateinit var userId: String
+    lateinit var adapter: TreinoUserPersonalAdapter
     lateinit var db: FirebaseFirestore
 
     private lateinit var itemsArrayA: ArrayList<TreinoUserPersonalItem>
@@ -68,6 +71,7 @@ class TreinoUsuarioPersonal : Fragment() {
         var v = inflater.inflate(R.layout.fragment_treino_usuario_personal, container, false)
 
         nameTextView = v.findViewById(R.id.treinoUserName)
+        treinosTabLayout = v.findViewById(R.id.treinosTabLayout)
         db = FirebaseFirestore.getInstance()
         communicator = activity as Communicator
 
@@ -77,10 +81,39 @@ class TreinoUsuarioPersonal : Fragment() {
             parentFragmentManager.setFragmentResult("user_info", Bundle().apply {
                 putString("id_user", userId)
                 putString("name_user", nameUser)
+                putString("treino_name", treinosTabLayout.getTabAt(treinosTabLayout.selectedTabPosition)?.text.toString())
             })
 
             communicator.replaceFragment(AdicionarExercicioATreino())
         }
+
+        treinosTabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
+            override fun onTabSelected(tab: TabLayout.Tab?) {
+                when(tab?.text) {
+                    "Treino A" -> {
+                        changeAdapter(itemsArrayA)
+                    }
+
+                    "Treino B" -> {
+                        changeAdapter(itemsArrayB)
+                    }
+                }
+
+                Log.d("tab_selected", tab?.text.toString())
+            }
+
+            override fun onTabUnselected(tab: TabLayout.Tab?) {
+                Log.d("tab_selected", "Tab unselected: ${tab?.text.toString()}")
+            }
+
+            override fun onTabReselected(tab: TabLayout.Tab?) {
+                Log.d("tab_selected", "Tab reselected: ${tab?.text.toString()}")
+            }
+
+        })
+
+        itemsArrayA = arrayListOf()
+        itemsArrayB = arrayListOf()
 
         val layoutManager = LinearLayoutManager(context)
         recyclerView = v.findViewById(R.id.treinoUsuarioPersonalRecycler)
@@ -126,15 +159,15 @@ class TreinoUsuarioPersonal : Fragment() {
                 }
             }
     }
-    private fun changeAdapter(userItemArray: ArrayList<TreinoUserPersonalItem>){
-        val adapter = TreinoUserPersonalAdapter(userItemArray)
+    public fun changeAdapter(userItemArray: ArrayList<TreinoUserPersonalItem>){
+        adapter = TreinoUserPersonalAdapter(userItemArray)
         recyclerView.adapter = adapter
     }
 
     private fun createItems(){
 
         val userDoc = db.collection("Usuarios").document(userId)
-        val treinoDoc = userDoc.collection("Treinos").whereEqualTo("name", "A")
+        val treinoDoc = userDoc.collection("Treinos")
 
         treinoDoc.addSnapshotListener(object: EventListener<QuerySnapshot>{
             override fun onEvent(
@@ -154,13 +187,38 @@ class TreinoUsuarioPersonal : Fragment() {
                     val document = dc.document
                     val docId = document.id
 
-                    var exercicios = document.get("exercicios")
+                    var exercicios = document.get("exercicios") as List<Map<String, Any>>
                     Log.d("treino_usuario_personal", exercicios.toString())
 
+                    for (exercicio in exercicios){
+                        if(document.get("name").toString() == "A"){
+                            itemsArrayA.add(TreinoUserPersonalItem(
+                                series = exercicio.get("series").toString().toInt(),
+                                repeticoes = exercicio.get("repeticoes").toString().toInt(),
+                                maquina = exercicio.get("maquina").toString(),
+                                exercicio = exercicio.get("exercicio").toString(),
+                                userId = userId,
+                                treinoId = docId,
+                            ))
+                        } else{
+                            itemsArrayB.add(TreinoUserPersonalItem(
+                                series = exercicio.get("series").toString().toInt(),
+                                repeticoes = exercicio.get("repeticoes").toString().toInt(),
+                                maquina = exercicio.get("maquina").toString(),
+                                exercicio = exercicio.get("exercicio").toString(),
+                                userId = userId,
+                                treinoId = docId,
+                            ))
+                        }
+                    }
+
                     if(dc.type == DocumentChange.Type.ADDED){
+                        Log.d("treino_usuario_personal", "Adicionado")
 
                     }
                 }
+
+                changeAdapter(itemsArrayA)
             }
 
         })

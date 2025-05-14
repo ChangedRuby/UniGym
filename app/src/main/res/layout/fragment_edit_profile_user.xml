@@ -200,13 +200,13 @@
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/editTextUsername"
-            android:layout_width="100dp"
+            android:layout_width="150dp"
             android:layout_height="50dp"
             android:layout_marginStart="52dp"
             android:backgroundTint="#FFFFFF"
             android:hint="Username"
             android:textColor="@color/white"
-            android:textColorHint="@color/white"
+            android:textColorHint="@color/hint_grey"
             android:textSize="20sp"
             app:layout_constraintBottom_toBottomOf="@+id/ConfirmarEditUser"
             app:layout_constraintStart_toStartOf="parent"

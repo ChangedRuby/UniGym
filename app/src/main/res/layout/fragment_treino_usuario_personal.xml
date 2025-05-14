@@ -15,7 +15,7 @@
         >
 
         <com.google.android.material.tabs.TabLayout
-            android:id="@+id/tabLayout"
+            android:id="@+id/treinosTabLayout"
             android:layout_width="306dp"
             android:layout_height="40dp"
             android:layout_marginTop="40dp"
@@ -57,7 +57,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.857"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tabLayout" />
+            app:layout_constraintTop_toBottomOf="@+id/treinosTabLayout" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/treinoUsuarioPersonalRecycler"
@@ -93,7 +93,7 @@
             app:layout_constraintEnd_toStartOf="@+id/addTreinoBtn"
             app:layout_constraintHorizontal_bias="0.316"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tabLayout" />
+            app:layout_constraintTop_toBottomOf="@+id/treinosTabLayout" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

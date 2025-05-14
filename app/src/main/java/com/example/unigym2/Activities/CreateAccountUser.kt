@@ -78,7 +78,7 @@ class CreateAccountUser : AppCompatActivity() {
                                 "objetivo1" to "",
                                 "objetivo2" to "",
                                 "objetivo3" to "",
-                                "objetivo4" to ""
+                                "objetivo4" to "",
                             )
                         ).addOnSuccessListener { documentReference ->
                             var intent = Intent(this, MainActivity::class.java)

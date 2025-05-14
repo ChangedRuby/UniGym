@@ -11,43 +11,35 @@
         android:layout_height="match_parent"
         android:background="@color/dark_blue_bg">
 
-        <RadioGroup
-            android:id="@+id/treinoToggle"
-            android:layout_width="300dp"
-            android:layout_height="48dp"
-            android:layout_marginTop="40sp"
+        <com.google.android.material.tabs.TabLayout
+            android:id="@+id/treinosUserTabLayout"
+            android:layout_width="306dp"
+            android:layout_height="40dp"
+            android:layout_marginTop="40dp"
             android:background="@drawable/rectangle_objetivos_teste"
-            android:checkedButton="@+id/treinoButtonB"
-            android:orientation="horizontal"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.59"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
+            app:layout_constraintTop_toTopOf="parent"
+            app:tabIndicator="@drawable/rectangle_light_gradient"
+            app:tabIndicatorColor="@android:color/transparent"
+            app:tabIndicatorFullWidth="true"
+            app:tabIndicatorGravity="stretch"
+            app:tabRippleColor="@android:color/transparent"
+            app:tabSelectedTextColor="@color/black"
+            app:tabTextColor="@color/white">
 
-            <RadioButton
-                android:id="@+id/treinoButtonA"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_marginLeft="0dp"
-                android:layout_marginTop="0dp"
-                android:layout_marginBottom="0dp"
-                android:layout_weight="1"
-                android:background="@drawable/toggle_background"
-                android:button="@null"
-                android:gravity="center"
-                android:text="Treino A"
-                android:textColor="@drawable/toggle_text_color" />
+            <com.google.android.material.tabs.TabItem
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Treino A" />
 
-            <RadioButton
-                android:id="@+id/treinoButtonB"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:background="@drawable/toggle_background"
-                android:button="@null"
-                android:gravity="center"
-                android:text="Treino B"
-                android:textColor="@drawable/toggle_text_color" />
-        </RadioGroup>
+
+            <com.google.android.material.tabs.TabItem
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Treino B" />
+        </com.google.android.material.tabs.TabLayout>
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/treinoUserRecyclerview"
@@ -57,7 +49,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.4"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/treinoToggle"
+            app:layout_constraintTop_toBottomOf="@+id/treinosUserTabLayout"
             tools:itemCount="5"
             tools:listitem="@layout/treinos_exercicio_recycler_layout" />
 
@@ -74,6 +66,6 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.78"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/treinoToggle" />
+            app:layout_constraintTop_toBottomOf="@+id/treinosUserTabLayout" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </FrameLayout>
