@@ -9,13 +9,15 @@
         android:layout_alignParentLeft="true"
         android:layout_marginLeft="5dp"
         android:layout_marginTop="5dp">
+
         <TextView
-            android:id="@+id/textView3"
+            android:id="@+id/txt_received_message"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@drawable/background_message_recieved"
+            android:background="@drawable/background_message_sent"
             android:padding="10dp"
-            android:text="Mensagem recebida"
+            android:text="Mensagem enviada"
             android:textColor="@color/white" />
+
     </RelativeLayout>
 </RelativeLayout>

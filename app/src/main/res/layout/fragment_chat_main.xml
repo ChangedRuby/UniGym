@@ -37,7 +37,7 @@
                 app:layout_constraintTop_toTopOf="parent" />
 
             <EditText
-                android:id="@+id/editTextTextMultiLine"
+                android:id="@+id/messageBox"
                 android:layout_width="286dp"
                 android:layout_height="63dp"
                 android:backgroundTint="#00000000"
@@ -115,6 +115,18 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintVertical_bias="0.518" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/mainChat_RecycleView"
+                android:layout_width="409dp"
+                android:layout_height="586dp"
+                android:layout_marginStart="1dp"
+                android:layout_marginEnd="1dp"
+                app:layout_constraintBottom_toTopOf="@+id/materialToolbar2"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/view6" />
+
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
