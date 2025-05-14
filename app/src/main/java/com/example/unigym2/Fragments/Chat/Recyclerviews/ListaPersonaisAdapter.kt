@@ -34,7 +34,14 @@ class ListaPersonaisAdapter(private val dataList : MutableList<ListaPersonaisIte
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
         val currentItem = dataList[position]
         holder.nameView.text = currentItem.name
+
         holder.itemView.setOnClickListener {
+            val bundle = Bundle().apply {
+                putString("name", currentItem.name)
+                putString("recieverID", currentItem.userId)
+            }
+
+            fragmentManager.setFragmentResult("chat_name_key", bundle)
             communicator.replaceFragment(ChatMain())
         }
 

@@ -27,8 +27,8 @@
 
             <com.google.android.material.appbar.MaterialToolbar
                 android:id="@+id/materialToolbar"
-                android:layout_width="411dp"
-                android:layout_height="76dp"
+                android:layout_width="410dp"
+                android:layout_height="83dp"
                 android:background="#22344D"
                 android:minHeight="?attr/actionBarSize"
                 android:theme="?attr/actionBarTheme"
@@ -37,7 +37,7 @@
                 app:layout_constraintTop_toTopOf="parent" />
 
             <EditText
-                android:id="@+id/editTextTextMultiLine"
+                android:id="@+id/messageBox"
                 android:layout_width="286dp"
                 android:layout_height="63dp"
                 android:backgroundTint="#00000000"
@@ -46,11 +46,13 @@
                 android:hint="Mensagem..."
                 android:inputType="textMultiLine"
                 android:singleLine="true"
-                android:textColorHint="#C7C7C7"
+                android:textColor="#FFFFFF"
+                android:textColorHint="#92C7C7C7"
+                android:textColorLink="#FFFFFF"
                 android:textStyle="bold"
                 app:layout_constraintBottom_toBottomOf="@+id/materialToolbar2"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintHorizontal_bias="0.128"
                 app:layout_constraintStart_toStartOf="@+id/materialToolbar2"
                 app:layout_constraintTop_toTopOf="@+id/materialToolbar2"
                 app:layout_constraintVertical_bias="1.0" />
@@ -70,9 +72,9 @@
             <ImageView
                 android:id="@+id/goBackBtn"
                 android:layout_width="23dp"
-                android:layout_height="24dp"
-                android:layout_marginStart="20dp"
-                android:layout_marginTop="28dp"
+                android:layout_height="25dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="33dp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:srcCompat="@drawable/go_back_button" />
@@ -81,7 +83,7 @@
                 android:id="@+id/view6"
                 android:layout_width="wrap_content"
                 android:layout_height="2sp"
-                android:layout_marginTop="76dp"
+                android:layout_marginTop="80dp"
                 android:background="@color/dark_blue_bg"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
@@ -92,11 +94,11 @@
                 android:id="@+id/profileUserImage"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
-                android:layout_marginTop="16dp"
+                android:layout_marginBottom="12dp"
+                app:layout_constraintBottom_toTopOf="@+id/view6"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.157"
+                app:layout_constraintHorizontal_bias="0.146"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
                 app:shapeAppearanceOverlay="@style/roundedImageView"
                 tools:src="@tools:sample/avatars" />
 
@@ -104,7 +106,9 @@
                 android:id="@+id/chatName"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="244dp"
+                android:layout_marginStart="13dp"
+                android:layout_marginEnd="252dp"
+                android:layout_marginBottom="24dp"
                 android:fontFamily="@font/roboto"
                 android:text="Nome"
                 android:textAlignment="center"
@@ -113,8 +117,20 @@
                 android:textStyle="bold"
                 app:layout_constraintBottom_toTopOf="@+id/view6"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.518" />
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toEndOf="@+id/profileUserImage" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/mainChat_RecycleView"
+                android:layout_width="409dp"
+                android:layout_height="586dp"
+                android:layout_marginStart="1dp"
+                android:layout_marginEnd="1dp"
+                app:layout_constraintBottom_toTopOf="@+id/materialToolbar2"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/view6" />
+
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

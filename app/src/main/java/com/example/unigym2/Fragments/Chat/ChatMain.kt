@@ -4,97 +4,113 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
+import android.widget.EditText
 import android.widget.ImageView
+import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.unigym2.Activities.Communicator
-import com.example.unigym2.Fragments.Chat.Recyclerviews.ListaPersonaisAdapter
-import com.example.unigym2.Fragments.Chat.Recyclerviews.ListaPersonaisItem
-import com.example.unigym2.Fragments.Treinos.Recyclerviews.ListaTreinosAdapter
-import com.example.unigym2.Fragments.Treinos.Recyclerviews.ListaTreinosItem
+import com.example.unigym2.Fragments.Chat.Recyclerviews.Message
+import com.example.unigym2.Fragments.Chat.Recyclerviews.MessageAdapter
 import com.example.unigym2.R
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FirebaseFirestore
+import java.time.Instant
+import java.time.ZoneId
+import java.time.format.DateTimeFormatter
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
-
-/**
- * A simple [Fragment] subclass.
- * Use the [ChatUser.newInstance] factory method to
- * create an instance of this fragment.
- */
 class ChatMain : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
 
-    private lateinit var communicator: Communicator
-    private lateinit var recyclerView: RecyclerView
-    private lateinit var backBtn : ImageView
+    private lateinit var mainChatRecyclerView: RecyclerView
+    private lateinit var messageBox: EditText
+    private lateinit var sendButton: Button
+    private lateinit var messageAdapter: MessageAdapter
+    private lateinit var messageList: ArrayList<Message>
+    private lateinit var backBtn: ImageView
+    private lateinit var communicator : Communicator
 
-    private lateinit var namesArray: Array<String>
-    private lateinit var itemArray: MutableList<ListaPersonaisItem>
+    private lateinit var db: FirebaseFirestore
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
-        }
-    }
+    private var receiverRoom: String? = null
+    private var senderRoom: String? = null
+    private lateinit var chatName : TextView
+
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
+        inflater: LayoutInflater,
+        container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
-        var v = inflater.inflate(R.layout.fragment_chat_main, container, false)
-        backBtn = v.findViewById(R.id.goBackBtn)
+        // Infla o layout do fragmento
+        val view = inflater.inflate(R.layout.fragment_chat_main, container, false)
+
+        chatName = view.findViewById(R.id.chatName)
+        backBtn = view.findViewById(R.id.goBackBtn)
         communicator = activity as Communicator
+
+        var receiverUid: String? = null
+        parentFragmentManager.setFragmentResultListener("chat_name_key", viewLifecycleOwner) { _, bundle ->
+            val userName = bundle.getString("name", "Unknown Username")
+            val UID = bundle.getString("recieverID")
+            chatName.text = userName
+            receiverUid = UID
+        }
+
+        val senderUid = FirebaseAuth.getInstance().currentUser ?.uid
+
+        val currentInstant: Instant = Instant.now()
+        val formatter: DateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSS").withZone(ZoneId.systemDefault())
+        val formattedTimestamp: String = formatter.format(currentInstant)
+
+        db = FirebaseFirestore.getInstance()
+
+        senderRoom = receiverUid
+        receiverRoom = senderUid + receiverUid
+
+        mainChatRecyclerView = view.findViewById(R.id.mainChat_RecycleView)
+        messageBox = view.findViewById(R.id.messageBox)
+        sendButton = view.findViewById(R.id.enviarButton)
+        messageList = ArrayList()
+        messageAdapter = MessageAdapter(requireContext(), messageList)
+
+        // Configura o RecyclerView
+        mainChatRecyclerView.layoutManager = LinearLayoutManager(context)
+        mainChatRecyclerView.adapter = messageAdapter
+
         backBtn.setOnClickListener {
             communicator.replaceFragment(if (communicator.getMode()) ChatPersonal() else ChatUser())
         }
 
-        return v
-    }
-
-    companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment ChatUser.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            ChatUser().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
-                }
+        // Adicionando a mensagem ao Database
+        sendButton.setOnClickListener {
+            val messageText = messageBox.text.toString().trim()
+            if (messageText.isNotEmpty()) {
+                val messageObject = Message(message = messageText, senderId = senderUid)
+                // Adiciona a mensagem ao Firestore
+                val messageData = hashMapOf(
+                    "receiver_name" to receiverUid,
+                    "sender_name" to senderUid,
+                    "message" to messageText,
+                    "timestamp" to formattedTimestamp
+                )
+                db.collection("Chats")
+                    .document(receiverRoom!!)
+                    .collection("messages")
+                    .add(messageData)
+                    .addOnSuccessListener {
+                        // Limpa a caixa de texto após o envio
+                        messageBox.text.clear()
+                    }
+                    .addOnFailureListener { e ->
+                        // Handle the error
+                        e.printStackTrace()
+                    }
             }
-    }
 
-//    private fun createItems(){
-//
-//        itemArray = arrayListOf()
-//
-//        namesArray = arrayOf(
-//            "Name A",
-//            "Name B",
-//            "Name C",
-//            "Name D",
-//            "Name E",
-//        )
-//
-//        for(i in namesArray.indices){
-//            val nameItem = ListaPersonaisItem(namesArray[i])
-//            itemArray.add(nameItem)
-//        }
-//    }
+        }
+
+        return view
+    }
 }

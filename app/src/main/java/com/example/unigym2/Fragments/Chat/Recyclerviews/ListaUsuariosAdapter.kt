@@ -33,8 +33,13 @@ class ListaUsuariosAdapter(private val dataList: MutableList<ListaPersonaisItem>
         val currentItem = dataList[position]
         holder.nameView.text = currentItem.name
         holder.itemView.setOnClickListener {
-            communicator.replaceFragment(ChatMain())
+            val bundle = Bundle().apply {
+                putString("name", currentItem.name)
+                putString("recieverID", currentItem.userId)
+            }
 
+            fragmentManager.setFragmentResult("chat_name_key", bundle)
+            communicator.replaceFragment(ChatMain())
         }
 
         if(position == 0){
