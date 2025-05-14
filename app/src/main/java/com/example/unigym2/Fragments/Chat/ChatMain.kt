@@ -6,9 +6,12 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
+import android.widget.ImageView
+import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.unigym2.Activities.Communicator
 import com.example.unigym2.Fragments.Chat.Recyclerviews.Message
 import com.example.unigym2.Fragments.Chat.Recyclerviews.MessageAdapter
 import com.example.unigym2.R
@@ -25,11 +28,15 @@ class ChatMain : Fragment() {
     private lateinit var sendButton: Button
     private lateinit var messageAdapter: MessageAdapter
     private lateinit var messageList: ArrayList<Message>
+    private lateinit var backBtn: ImageView
+    private lateinit var communicator : Communicator
 
     private lateinit var db: FirebaseFirestore
 
     private var receiverRoom: String? = null
     private var senderRoom: String? = null
+    private lateinit var chatName : TextView
+
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -39,8 +46,17 @@ class ChatMain : Fragment() {
         // Infla o layout do fragmento
         val view = inflater.inflate(R.layout.fragment_chat_main, container, false)
 
-        val name = arguments?.getString("name")
-        val receiverUid = arguments?.getString("uid")
+        chatName = view.findViewById(R.id.chatName)
+        backBtn = view.findViewById(R.id.goBackBtn)
+        communicator = activity as Communicator
+
+        var receiverUid: String? = null
+        parentFragmentManager.setFragmentResultListener("chat_name_key", viewLifecycleOwner) { _, bundle ->
+            val userName = bundle.getString("name", "Unknown Username")
+            val UID = bundle.getString("id")
+            chatName.text = userName
+            receiverUid = UID
+        }
 
         val senderUid = FirebaseAuth.getInstance().currentUser ?.uid
 
@@ -62,6 +78,10 @@ class ChatMain : Fragment() {
         // Configura o RecyclerView
         mainChatRecyclerView.layoutManager = LinearLayoutManager(context)
         mainChatRecyclerView.adapter = messageAdapter
+
+        backBtn.setOnClickListener {
+            communicator.replaceFragment(if (communicator.getMode()) ChatPersonal() else ChatUser())
+        }
 
         // Adicionando a mensagem ao Database
         sendButton.setOnClickListener {
@@ -88,6 +108,7 @@ class ChatMain : Fragment() {
                         e.printStackTrace()
                     }
             }
+
         }
 
         return view
