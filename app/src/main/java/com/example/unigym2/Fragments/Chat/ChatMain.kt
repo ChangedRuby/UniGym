@@ -53,7 +53,7 @@ class ChatMain : Fragment() {
         var receiverUid: String? = null
         parentFragmentManager.setFragmentResultListener("chat_name_key", viewLifecycleOwner) { _, bundle ->
             val userName = bundle.getString("name", "Unknown Username")
-            val UID = bundle.getString("id")
+            val UID = bundle.getString("recieverID")
             chatName.text = userName
             receiverUid = UID
         }
@@ -66,7 +66,7 @@ class ChatMain : Fragment() {
 
         db = FirebaseFirestore.getInstance()
 
-        senderRoom = receiverUid + senderUid
+        senderRoom = receiverUid
         receiverRoom = senderUid + receiverUid
 
         mainChatRecyclerView = view.findViewById(R.id.mainChat_RecycleView)
@@ -96,7 +96,7 @@ class ChatMain : Fragment() {
                     "timestamp" to formattedTimestamp
                 )
                 db.collection("Chats")
-                    .document(senderRoom!!)
+                    .document(receiverRoom!!)
                     .collection("messages")
                     .add(messageData)
                     .addOnSuccessListener {
