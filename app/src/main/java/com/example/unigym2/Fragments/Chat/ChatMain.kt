@@ -61,12 +61,12 @@ class ChatMain : Fragment() {
         val senderUid = FirebaseAuth.getInstance().currentUser ?.uid
 
         val currentInstant: Instant = Instant.now()
-        val formatter: DateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSS").withZone(ZoneId.systemDefault())
+        val formatter: DateTimeFormatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm").withZone(ZoneId.of("UTC-3"))
         val formattedTimestamp: String = formatter.format(currentInstant)
 
         db = FirebaseFirestore.getInstance()
 
-        senderRoom = receiverUid
+        senderRoom = receiverUid + senderUid
         receiverRoom = senderUid + receiverUid
 
         mainChatRecyclerView = view.findViewById(R.id.mainChat_RecycleView)
@@ -88,28 +88,56 @@ class ChatMain : Fragment() {
             val messageText = messageBox.text.toString().trim()
             if (messageText.isNotEmpty()) {
                 val messageObject = Message(message = messageText, senderId = senderUid)
-                // Adiciona a mensagem ao Firestore
                 val messageData = hashMapOf(
                     "receiver_name" to receiverUid,
                     "sender_name" to senderUid,
                     "message" to messageText,
                     "timestamp" to formattedTimestamp
                 )
+
+                // Verifica se a sala de chat já existe
                 db.collection("Chats")
                     .document(receiverRoom!!)
-                    .collection("messages")
-                    .add(messageData)
-                    .addOnSuccessListener {
-                        // Limpa a caixa de texto após o envio
-                        messageBox.text.clear()
+                    .get()
+                    .addOnSuccessListener { document ->
+                        if (document.exists()) {
+                            // Sala de chat existe, adicione a mensagem
+                            db.collection("Chats")
+                                .document(receiverRoom!!)
+                                .collection("messages")
+                                .add(messageData)
+                                .addOnSuccessListener {
+                                    messageBox.text.clear()
+                                }
+                                .addOnFailureListener { e ->
+                                    e.printStackTrace()
+                                }
+                        } else {
+                            // Sala de chat não existe, crie um novo documento
+                            db.collection("Chats")
+                                .document(receiverRoom!!)
+                                .set(hashMapOf("users" to listOf(senderUid, receiverUid))) // Adiciona alguma informação inicial
+                                .addOnSuccessListener {
+                                    // Agora adicione a mensagem
+                                    db.collection("Chats")
+                                        .document(receiverRoom!!)
+                                        .collection("messages")
+                                        .add(messageData)
+                                        .addOnSuccessListener {
+                                            messageBox.text.clear()
+                                        }
+                                        .addOnFailureListener { e ->
+                                            e.printStackTrace()
+                                        }
+                                }
+                        }
                     }
                     .addOnFailureListener { e ->
-                        // Handle the error
                         e.printStackTrace()
                     }
             }
-
         }
+
 
         return view
     }
