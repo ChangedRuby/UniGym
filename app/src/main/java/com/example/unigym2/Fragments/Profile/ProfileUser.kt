@@ -1,6 +1,8 @@
 package com.example.unigym2.Fragments.Profile
 
 import android.content.Intent
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -8,11 +10,25 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.core.graphics.scale
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
 import com.example.unigym2.Activities.Communicator
+import com.example.unigym2.Managers.GravatarManager
 import com.example.unigym2.R
+import com.google.android.material.imageview.ShapeableImageView
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
+import java.io.BufferedInputStream
+import java.io.BufferedReader
+import java.io.InputStreamReader
+import java.net.HttpURLConnection
+import java.net.URI
+import java.net.URL
 
 private const val ARG_PARAM1 = "param1"
 private const val ARG_PARAM2 = "param2"
@@ -32,6 +48,8 @@ class ProfileUser : Fragment() {
     lateinit var objetivo2TextView: TextView
     lateinit var objetivo3TextView: TextView
     lateinit var objetivo4TextView: TextView
+    lateinit var profileView: ShapeableImageView
+    lateinit var profileBitmap: Bitmap
     lateinit var auth: FirebaseAuth
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -60,6 +78,7 @@ class ProfileUser : Fragment() {
         objetivo2TextView = v.findViewById(R.id.especialidade2)
         objetivo3TextView = v.findViewById(R.id.objetivo3)
         objetivo4TextView = v.findViewById(R.id.objetivo4)
+        profileView = v.findViewById(R.id.profileUserImage)
         db.collection("Usuarios").document(communicator.getAuthUser())
             .get()
             .addOnSuccessListener { result ->
@@ -90,6 +109,44 @@ class ProfileUser : Fragment() {
                 .add(android.R.id.content, ProfileLogout())
                 .addToBackStack(null)
                 .commit()
+        }
+
+        val apiUrl = "https://gravatar.com/avatar/56b7594a16c05252e9373288a16e7edb5bcd735e6c94b731a45c4cf35bb7be4c"
+
+        /*lifecycleScope.launch(Dispatchers.IO) {
+            val url: URL = URI.create(apiUrl).toURL()
+            val connection: HttpURLConnection = url.openConnection() as HttpURLConnection
+
+            connection.requestMethod = "GET"
+            connection.connectTimeout = 15000
+            connection.readTimeout = 10000
+            connection.setRequestProperty("Authorization", "Bearer 4182:gk-4fL9c25ISRDpREuWqFIewKMrXBB4DaHcZGLVMwQnpaEKhsh6RXzGP2hvkZhcr")
+
+            val responseCode: Int = connection.responseCode
+            Log.d("user_profile", "Response Code: $responseCode")
+
+            if(responseCode == 200){
+                val inputStream = connection.inputStream
+                val bufferedInputStream = BufferedInputStream(inputStream)
+                val originalWidth = profileView.width
+                val originalHeight = profileView.height
+                Log.d("user_profile", "width; $originalWidth")
+                Log.d("user_profile", "height; $originalHeight")
+
+                profileBitmap = BitmapFactory.decodeStream(bufferedInputStream)
+                profileBitmap.scale(originalWidth, originalHeight)
+
+                Log.d("user_profile", "$profileBitmap")
+            }
+        }.invokeOnCompletion {
+
+            lifecycleScope.launch(Dispatchers.Main) {
+                profileView.setImageBitmap(profileBitmap)
+            }
+        }*/
+
+        GravatarManager.getGravatarBitmap(communicator.getAuthUserEmail(), communicator.getAuthUserName(), 80, lifecycleScope){ bitmap ->
+            profileView.setImageBitmap(bitmap)
         }
 
         return v

@@ -124,7 +124,7 @@
             tools:src="@tools:sample/avatars" />
 
         <View
-            android:id="@+id/circleImageView"
+            android:id="@+id/userProfileImageView"
             android:layout_width="130sp"
             android:layout_height="130sp"
             android:layout_marginTop="104dp"

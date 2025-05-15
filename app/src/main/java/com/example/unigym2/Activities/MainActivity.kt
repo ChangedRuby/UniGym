@@ -24,6 +24,7 @@ class MainActivity : AppCompatActivity(), Communicator{
     lateinit var binding: ActivityMainBinding
     lateinit var userId: String
     lateinit var userEmail: String
+    lateinit var userName: String
     lateinit var db: FirebaseFirestore
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -113,5 +114,13 @@ class MainActivity : AppCompatActivity(), Communicator{
 
     override fun getAuthUserEmail(): String {
         return userEmail
+    }
+
+    override fun setAuthUserName(userName: String) {
+        this.userName = userName
+    }
+
+    override fun getAuthUserName(): String {
+        return userName
     }
 }

@@ -70,7 +70,7 @@
             android:layout_marginStart="20dp"
             android:layout_marginTop="161dp"
             android:src="@drawable/vertical_white_separator"
-            app:layout_constraintStart_toEndOf="@+id/circleImageView"
+            app:layout_constraintStart_toEndOf="@+id/userProfileImageView"
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
@@ -200,7 +200,7 @@
             tools:src="@tools:sample/avatars" />
 
         <View
-            android:id="@+id/circleImageView"
+            android:id="@+id/userProfileImageView"
             android:layout_width="130sp"
             android:layout_height="130sp"
             android:layout_marginTop="104dp"

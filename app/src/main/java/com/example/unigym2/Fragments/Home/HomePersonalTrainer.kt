@@ -66,7 +66,9 @@ class HomePersonalTrainer : Fragment() {
         db.collection("Usuarios").document(communicator.getAuthUser())
             .get()
             .addOnSuccessListener { result ->
-                titleView.text = result.data?.get("name").toString()
+                val userName = result.data?.get("name").toString()
+                titleView.text = userName
+                communicator.setAuthUserName(userName)
                 Log.d("firestore", "${result.id} => ${result.data}")
             }.addOnFailureListener { exception ->
                 Log.w("firestore", "Error getting document.", exception)

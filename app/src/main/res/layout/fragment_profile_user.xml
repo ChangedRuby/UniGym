@@ -70,7 +70,7 @@
             android:layout_marginStart="20dp"
             android:layout_marginTop="161dp"
             android:src="@drawable/vertical_white_separator"
-            app:layout_constraintStart_toEndOf="@+id/circleImageView"
+            app:layout_constraintStart_toEndOf="@+id/userProfileImageView"
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
@@ -189,8 +189,8 @@
 
         <com.google.android.material.imageview.ShapeableImageView
             android:id="@+id/profileUserImage"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="130sp"
+            android:layout_height="130sp"
             android:layout_marginTop="104dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.12"
@@ -200,7 +200,7 @@
             tools:src="@tools:sample/avatars" />
 
         <View
-            android:id="@+id/circleImageView"
+            android:id="@+id/userProfileImageView"
             android:layout_width="130sp"
             android:layout_height="130sp"
             android:layout_marginTop="104dp"
@@ -253,7 +253,7 @@
             app:layout_constraintBottom_toTopOf="@+id/AcessibilidadeUser"
             app:layout_constraintEnd_toStartOf="@+id/EditProfileUser"
             app:layout_constraintHorizontal_bias="0.915"
-            app:layout_constraintStart_toEndOf="@+id/circleImageView"
+            app:layout_constraintStart_toEndOf="@+id/userProfileImageView"
             app:layout_constraintTop_toBottomOf="@+id/profileSecondaryColor"
             app:layout_constraintVertical_bias="0.541" />
 

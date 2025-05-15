@@ -10,4 +10,6 @@ interface Communicator {
     fun getAuthUser(): String
     fun setAuthUserEmail(userEmail: String)
     fun getAuthUserEmail(): String
+    fun setAuthUserName(userName: String)
+    fun getAuthUserName(): String
 }
