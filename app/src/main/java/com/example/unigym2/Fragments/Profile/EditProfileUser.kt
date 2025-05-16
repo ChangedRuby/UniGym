@@ -12,6 +12,9 @@ import com.example.unigym2.Activities.ResetPassword
 import com.example.unigym2.R
 import com.google.android.material.textfield.TextInputEditText
 import android.content.Intent
+import android.net.Uri
+import androidx.activity.result.contract.ActivityResultContracts
+import com.google.android.material.imageview.ShapeableImageView
 import com.google.firebase.firestore.FirebaseFirestore
 
 class EditProfileUser : Fragment() {
@@ -20,6 +23,7 @@ class EditProfileUser : Fragment() {
     private lateinit var saveButton : TextView
     private lateinit var usernameEdit : TextInputEditText
     private lateinit var userProfileEmail : TextView
+    private lateinit var userImage: ShapeableImageView
     private lateinit var objetivo1 : TextInputEditText
     private lateinit var objetivo2 : TextInputEditText
     private lateinit var objetivo3 : TextInputEditText
@@ -39,6 +43,7 @@ class EditProfileUser : Fragment() {
 
         usernameEdit = view.findViewById(R.id.editTextUsername)
         userProfileEmail = view.findViewById(R.id.userProfileEmail)
+        userImage = view.findViewById(R.id.profileUserEditImage)
         objetivo1 = view.findViewById(R.id.editObjetivo1)
         objetivo2 = view.findViewById(R.id.editObjetivo2)
         objetivo3 = view.findViewById(R.id.editObjetivo3)

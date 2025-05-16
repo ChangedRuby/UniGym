@@ -1,5 +1,6 @@
 package com.example.unigym2.Fragments.Treinos
 
+import android.graphics.Bitmap
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -7,6 +8,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.unigym2.Activities.Communicator
@@ -14,6 +16,7 @@ import com.example.unigym2.Fragments.Treinos.Recyclerviews.ListaTreinosAdapter
 import com.example.unigym2.Fragments.Treinos.Recyclerviews.ListaTreinosItem
 import com.example.unigym2.Fragments.Treinos.Recyclerviews.ListaUsuariosClickListener
 import com.example.unigym2.Fragments.Treinos.Recyclerviews.TreinoUserItem
+import com.example.unigym2.Managers.GravatarManager
 import com.example.unigym2.R
 import com.google.firebase.firestore.FirebaseFirestore
 
@@ -99,11 +102,15 @@ class ListaTreinosPersonal : Fragment(), ListaUsuariosClickListener {
 
         userCollection.whereEqualTo("isPersonal", false).get().addOnSuccessListener { documents ->
             for(document in documents){
-                itemArray.add(ListaTreinosItem(name = document.get("name").toString(), userId = document.id))
-            }
-        }.addOnSuccessListener {
+                var profileImage: Bitmap?
 
-            adapter.notifyDataSetChanged()
+                GravatarManager.getGravatarBitmap(document.get("email").toString(), document.get("name").toString(), 40, lifecycleScope) { bitmap ->
+                    profileImage = bitmap
+
+                    itemArray.add(ListaTreinosItem(name = document.get("name").toString(), userId = document.id, image = profileImage))
+                    adapter.notifyDataSetChanged()
+                }
+            }
         }
 
         /*treinosCollection.add(

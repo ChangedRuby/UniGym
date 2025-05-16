@@ -91,7 +91,7 @@
                 app:layout_constraintTop_toTopOf="parent" />
 
             <com.google.android.material.imageview.ShapeableImageView
-                android:id="@+id/profileUserImage"
+                android:id="@+id/profileListaImage"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
                 android:layout_marginBottom="12dp"
@@ -118,7 +118,7 @@
                 app:layout_constraintBottom_toTopOf="@+id/view6"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
-                app:layout_constraintStart_toEndOf="@+id/profileUserImage" />
+                app:layout_constraintStart_toEndOf="@+id/profileListaImage" />
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/mainChat_RecycleView"

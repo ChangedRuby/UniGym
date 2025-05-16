@@ -2,7 +2,6 @@ package com.example.unigym2.Fragments.Profile
 
 import android.content.Intent
 import android.graphics.Bitmap
-import android.graphics.BitmapFactory
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -10,7 +9,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
-import androidx.core.graphics.scale
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import com.example.unigym2.Activities.Communicator
@@ -19,16 +17,6 @@ import com.example.unigym2.R
 import com.google.android.material.imageview.ShapeableImageView
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
-import java.io.BufferedInputStream
-import java.io.BufferedReader
-import java.io.InputStreamReader
-import java.net.HttpURLConnection
-import java.net.URI
-import java.net.URL
 
 private const val ARG_PARAM1 = "param1"
 private const val ARG_PARAM2 = "param2"
