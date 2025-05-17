@@ -66,10 +66,15 @@ class EditProfileUser : Fragment() {
             .addOnSuccessListener { result ->
                 usernameEdit.hint = result.data?.get("name").toString()
                 userProfileEmail.text = communicator.getAuthUserEmail()
-                objetivo1.hint = result.data?.get("objetivo1").toString()
-                objetivo2.hint = result.data?.get("objetivo2").toString()
-                objetivo3.hint = result.data?.get("objetivo3").toString()
-                objetivo4.hint = result.data?.get("objetivo4").toString()
+                val objectives = result.data?.get("objetivos") as List<*>
+                for (i in 0 until objectives.size) {
+                    when (i) {
+                        0 -> objetivo1.hint = objectives[i].toString()
+                        1 -> objetivo2.hint = objectives[i].toString()
+                        2 -> objetivo3.hint = objectives[i].toString()
+                        3 -> objetivo4.hint = objectives[i].toString()
+                    }
+                }
                 Log.d("firestore", "${result.id} => ${result.data}")
             }.addOnFailureListener { exception ->
                 Log.w("firestore", "Error getting document.", exception)
@@ -80,24 +85,26 @@ class EditProfileUser : Fragment() {
 
     private fun saveProfileChanges() {
         val username = usernameEdit.text.toString()
-        val objetivo1 = objetivo1.text.toString()
-        val objetivo2 = objetivo2.text.toString()
-        val objetivo3 = objetivo3.text.toString()
-        val objetivo4 = objetivo4.text.toString()
+        val obj1 = objetivo1.text.toString()
+        val obj2 = objetivo2.text.toString()
+        val obj3 = objetivo3.text.toString()
+        val obj4 = objetivo4.text.toString()
 
         val userRef = db.collection("Usuarios").document(communicator.getAuthUser())
         val updates = hashMapOf<String, Any>()
 
-        // Add username if not empty
         if (username.isNotEmpty()) {
             updates["name"] = username
         }
 
-        // Add objectives if not empty
-        if (objetivo1.isNotEmpty()) updates["objetivo1"] = objetivo1
-        if (objetivo2.isNotEmpty()) updates["objetivo2"] = objetivo2
-        if (objetivo3.isNotEmpty()) updates["objetivo3"] = objetivo3
-        if (objetivo4.isNotEmpty()) updates["objetivo4"] = objetivo4
+        val objectives = ArrayList<String>()
+
+        objectives.add(if (obj1.isNotEmpty()) obj1 else objetivo1.hint.toString())
+        objectives.add(if (obj2.isNotEmpty()) obj2 else objetivo2.hint.toString())
+        objectives.add(if (obj3.isNotEmpty()) obj3 else objetivo3.hint.toString())
+        objectives.add(if (obj4.isNotEmpty()) obj4 else objetivo4.hint.toString())
+
+        updates["objetivos"] = objectives
 
         if (updates.isNotEmpty()) {
             userRef.update(updates)

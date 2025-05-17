@@ -13,7 +13,9 @@ package com.example.unigym2.Fragments.Profile
     import com.example.unigym2.Activities.ResetPassword
     import com.example.unigym2.R
     import com.google.android.material.textfield.TextInputEditText
+    import com.google.firebase.firestore.FieldValue
     import com.google.firebase.firestore.FirebaseFirestore
+    import kotlin.reflect.typeOf
 
 class EditProfilePersonal : Fragment() {
         private lateinit var communicator: Communicator
@@ -68,18 +70,36 @@ class EditProfilePersonal : Fragment() {
                     usernameEditText.hint = result.data?.get("name").toString()
                     userProfileEmail.text = communicator.getAuthUserEmail()
                     crefTextView.text = result.data?.get("CREF").toString()
-                    specialtyET1.hint = result.data?.get("specialty1").toString()
-                    specialtyET2.hint = result.data?.get("specialty2").toString()
-                    specialtyET3.hint = result.data?.get("specialty3").toString()
-                    specialtyET4.hint = result.data?.get("specialty4").toString()
-                    serviceNameET1.hint = result.data?.get("service1").toString()
-                    serviceNameET2.hint = result.data?.get("service2").toString()
-                    serviceNameET3.hint = result.data?.get("service3").toString()
-                    serviceNameET4.hint = result.data?.get("service4").toString()
-                    servicePriceET1.hint = result.data?.get("servicePrice1").toString()
-                    servicePriceET2.hint = result.data?.get("servicePrice2").toString()
-                    servicePriceET3.hint = result.data?.get("servicePrice3").toString()
-                    servicePriceET4.hint = result.data?.get("servicePrice4").toString()
+
+                    val specialties = result.data?.get("specialties") as List<*>
+                    val services = result.data?.get("services") as List<*>
+                    val prices = result.data?.get("servicePrices") as List<*>
+                    for (i in 0 until specialties.size) {
+                        when (i) {
+                            0 -> specialtyET1.hint = specialties[i].toString()
+                            1 -> specialtyET2.hint = specialties[i].toString()
+                            2 -> specialtyET3.hint = specialties[i].toString()
+                            3 -> specialtyET4.hint = specialties[i].toString()
+                        }
+                    }
+
+                    for (i in 0 until services.size) {
+                        when (i) {
+                            0 -> serviceNameET1.hint = services[i].toString()
+                            1 -> serviceNameET2.hint = services[i].toString()
+                            2 -> serviceNameET3.hint = services[i].toString()
+                            3 -> serviceNameET4.hint = services[i].toString()
+                        }
+                    }
+
+                    for (i in 0 until prices.size) {
+                        when (i) {
+                            0 -> servicePriceET1.hint = prices[i].toString()
+                            1 -> servicePriceET2.hint = prices[i].toString()
+                            2 -> servicePriceET3.hint = prices[i].toString()
+                            3 -> servicePriceET4.hint = prices[i].toString()
+                        }
+                    }
                     Log.d("firestore", "${result.id} => ${result.data}")
                 }.addOnFailureListener { exception ->
                     Log.w("firestore", "Error getting document.", exception)
@@ -101,55 +121,44 @@ class EditProfilePersonal : Fragment() {
             return view
         }
 
-        private fun saveProfileChanges() {
-            val username = usernameEditText.text.toString()
-            val specialty1 = specialtyET1.text.toString()
-            val specialty2 = specialtyET2.text.toString()
-            val specialty3 = specialtyET3.text.toString()
-            val specialty4 = specialtyET4.text.toString()
-            val service1 = serviceNameET1.text.toString()
-            val service2 = serviceNameET2.text.toString()
-            val service3 = serviceNameET3.text.toString()
-            val service4 = serviceNameET4.text.toString()
-            val servicePrice1 = servicePriceET1.text.toString()
-            val servicePrice2 = servicePriceET2.text.toString()
-            val servicePrice3 = servicePriceET3.text.toString()
-            val servicePrice4 = servicePriceET4.text.toString()
+    private fun saveProfileChanges() {
+        val username = usernameEditText.text.toString()
+        val userRef = db.collection("Usuarios").document(communicator.getAuthUser())
+        val updates = hashMapOf<String, Any>()
 
-            val userRef = db.collection("Usuarios").document(communicator.getAuthUser())
-            val updates = hashMapOf<String, Any>()
-
-            // Add username if not empty
-            if (username.isNotEmpty()) {
-                updates["name"] = username
-            }
-
-            // Add specialties if not empty
-            if (specialty1.isNotEmpty()) updates["specialty1"] = specialty1
-            if (specialty2.isNotEmpty()) updates["specialty2"] = specialty2
-            if (specialty3.isNotEmpty()) updates["specialty3"] = specialty3
-            if (specialty4.isNotEmpty()) updates["specialty4"] = specialty4
-
-            // Add services and prices if not empty
-            if (service1.isNotEmpty()) updates["service1"] = service1
-            if (service2.isNotEmpty()) updates["service2"] = service2
-            if (service3.isNotEmpty()) updates["service3"] = service3
-            if (service4.isNotEmpty()) updates["service4"] = service4
-
-            if (servicePrice1.isNotEmpty()) updates["servicePrice1"] = servicePrice1
-            if (servicePrice2.isNotEmpty()) updates["servicePrice2"] = servicePrice2
-            if (servicePrice3.isNotEmpty()) updates["servicePrice3"] = servicePrice3
-            if (servicePrice4.isNotEmpty()) updates["servicePrice4"] = servicePrice4
-
-            // Only update if there are changes to make
-            if (updates.isNotEmpty()) {
-                userRef.update(updates)
-                    .addOnSuccessListener {
-                        Log.d("firestore", "Personal trainer profile successfully updated!")
-                    }
-                    .addOnFailureListener { e ->
-                        Log.w("firestore", "Error updating personal trainer profile", e)
-                    }
-            }
+        if (username.isNotEmpty()) {
+            updates["name"] = username
         }
+
+        val specialties = ArrayList<String>()
+        val services = ArrayList<String>()
+        val prices = ArrayList<String>()
+
+        specialties.add(if (specialtyET1.text.toString().isNotEmpty()) specialtyET1.text.toString() else specialtyET1.hint.toString())
+        specialties.add(if (specialtyET2.text.toString().isNotEmpty()) specialtyET2.text.toString() else specialtyET2.hint.toString())
+        specialties.add(if (specialtyET3.text.toString().isNotEmpty()) specialtyET3.text.toString() else specialtyET3.hint.toString())
+        specialties.add(if (specialtyET4.text.toString().isNotEmpty()) specialtyET4.text.toString() else specialtyET4.hint.toString())
+
+        services.add(if (serviceNameET1.text.toString().isNotEmpty()) serviceNameET1.text.toString() else serviceNameET1.hint.toString())
+        services.add(if (serviceNameET2.text.toString().isNotEmpty()) serviceNameET2.text.toString() else serviceNameET2.hint.toString())
+        services.add(if (serviceNameET3.text.toString().isNotEmpty()) serviceNameET3.text.toString() else serviceNameET3.hint.toString())
+        services.add(if (serviceNameET4.text.toString().isNotEmpty()) serviceNameET4.text.toString() else serviceNameET4.hint.toString())
+
+        prices.add(if (servicePriceET1.text.toString().isNotEmpty()) servicePriceET1.text.toString() else servicePriceET1.hint.toString())
+        prices.add(if (servicePriceET2.text.toString().isNotEmpty()) servicePriceET2.text.toString() else servicePriceET2.hint.toString())
+        prices.add(if (servicePriceET3.text.toString().isNotEmpty()) servicePriceET3.text.toString() else servicePriceET3.hint.toString())
+        prices.add(if (servicePriceET4.text.toString().isNotEmpty()) servicePriceET4.text.toString() else servicePriceET4.hint.toString())
+
+        updates["specialties"] = specialties
+        updates["services"] = services
+        updates["servicePrices"] = prices
+
+        userRef.update(updates)
+            .addOnSuccessListener {
+                Log.d("firestore", "Personal trainer profile successfully updated!")
+            }
+            .addOnFailureListener { e ->
+                Log.w("firestore", "Error updating personal trainer profile", e)
+            }
     }
+}

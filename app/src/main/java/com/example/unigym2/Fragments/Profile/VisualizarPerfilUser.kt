@@ -67,10 +67,16 @@ class VisualizarPerfilUser : Fragment() {
                 .addOnSuccessListener { result ->
                     nameTextView.text = result.data?.get("name").toString()
                     emailTextView.text = result.data?.get("email").toString()
-                    objetivo1.text = result.data?.get("objetivo1").toString()
-                    objetivo2.text = result.data?.get("objetivo2").toString()
-                    objetivo3.text = result.data?.get("objetivo3").toString()
-                    objetivo4.text = result.data?.get("objetivo4").toString()
+                    val objetivos = result.data?.get("objetivos") as List<*>
+
+                    for (i in 0 until objetivos.size) {
+                        when (i) {
+                            0 -> objetivo1.text = objetivos[i].toString()
+                            1 -> objetivo2.text = objetivos[i].toString()
+                            2 -> objetivo3.text = objetivos[i].toString()
+                            3 -> objetivo4.text = objetivos[i].toString()
+                        }
+                    }
                 }.addOnFailureListener { exception ->
                     Log.d("firestore", "Error getting document.", exception)
                 }

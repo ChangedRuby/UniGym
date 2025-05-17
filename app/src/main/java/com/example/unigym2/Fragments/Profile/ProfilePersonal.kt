@@ -93,6 +93,35 @@ class ProfilePersonal : Fragment() {
                 preco2.text = result.data?.get("servicePrice2").toString()
                 preco3.text = result.data?.get("servicePrice3").toString()
                 preco4.text = result.data?.get("servicePrice4").toString()
+                val specialties = result.data?.get("specialties") as List<*>
+                val services = result.data?.get("services") as List<*>
+                val prices = result.data?.get("servicePrices") as List<*>
+                for (i in 0 until specialties.size) {
+                    when (i) {
+                        0 -> especialidade1.text = specialties[i].toString()
+                        1 -> especialidade2.text = specialties[i].toString()
+                        2 -> especialidade3.text = specialties[i].toString()
+                        3 -> especialidade4.text = specialties[i].toString()
+                    }
+                }
+
+                for (i in 0 until services.size) {
+                    when (i) {
+                        0 -> servico1.text = services[i].toString()
+                        1 -> servico2.text = services[i].toString()
+                        2 -> servico3.text = services[i].toString()
+                        3 -> servico4.text = services[i].toString()
+                    }
+                }
+
+                for (i in 0 until prices.size) {
+                    when (i) {
+                        0 -> preco1.text = prices[i].toString()
+                        1 -> preco2.text = prices[i].toString()
+                        2 -> preco3.text = prices[i].toString()
+                        3 -> preco4.text = prices[i].toString()
+                    }
+                }
                 Log.d("firestore", "${result.id} => ${result.data}")
             }.addOnFailureListener { exception ->
                 Log.w("firestore", "Error getting document.", exception)

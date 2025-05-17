@@ -57,7 +57,6 @@ class MonitoringSchedules : Fragment() {
         parentFragmentManager.setFragmentResultListener("personal_monitoring_key", viewLifecycleOwner) { _, bundle ->
             personalID = bundle.getString("personal_id").toString()
             personalName = bundle.getString("personal_name").toString()
-            // Use these values as needed in your MonitoringSchedules fragment
         }
 
         val calendarView = view.findViewById<CalendarView>(R.id.calendarView3)

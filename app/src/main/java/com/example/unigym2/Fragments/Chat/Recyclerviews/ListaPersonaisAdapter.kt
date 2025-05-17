@@ -38,7 +38,7 @@ class ListaPersonaisAdapter(private val dataList : MutableList<ListaPersonaisIte
         holder.itemView.setOnClickListener {
             val bundle = Bundle().apply {
                 putString("name", currentItem.name)
-                putString("recieverID", currentItem.userId)
+                putString("receiverID", currentItem.userId)
             }
 
             fragmentManager.setFragmentResult("chat_name_key", bundle)

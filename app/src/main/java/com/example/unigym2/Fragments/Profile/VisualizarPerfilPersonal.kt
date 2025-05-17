@@ -93,18 +93,35 @@ class VisualizarPerfilPersonal() : Fragment() {
                     nameTextView.text = result.data?.get("name").toString()
                     emailTextView.text = result.data?.get("email").toString()
                     crefTextView.text = result.data?.get("CREF").toString()
-                    specialty1.text = result.data?.get("specialty1").toString()
-                    specialty2.text = result.data?.get("specialty2").toString()
-                    specialty3.text = result.data?.get("specialty3").toString()
-                    specialty4.text = result.data?.get("specialty4").toString()
-                    service1.text = result.data?.get("service1").toString()
-                    service2.text = result.data?.get("service2").toString()
-                    service3.text = result.data?.get("service3").toString()
-                    service4.text = result.data?.get("service4").toString()
-                    price1.text = result.data?.get("servicePrice1").toString()
-                    price2.text = result.data?.get("servicePrice2").toString()
-                    price3.text = result.data?.get("servicePrice3").toString()
-                    price4.text = result.data?.get("servicePrice4").toString()
+                    val specialties = result.data?.get("specialties") as List<*>
+                    val services = result.data?.get("services") as List<*>
+                    val prices = result.data?.get("servicePrices") as List<*>
+                    for (i in 0 until specialties.size) {
+                        when (i) {
+                            0 -> specialty1.text = specialties[i].toString()
+                            1 -> specialty2.text = specialties[i].toString()
+                            2 -> specialty3.text = specialties[i].toString()
+                            3 -> specialty4.text = specialties[i].toString()
+                        }
+                    }
+
+                    for (i in 0 until services.size) {
+                        when (i) {
+                            0 -> service1.text = services[i].toString()
+                            1 -> service2.text = services[i].toString()
+                            2 -> service3.text = services[i].toString()
+                            3 -> service4.text = services[i].toString()
+                        }
+                    }
+
+                    for (i in 0 until prices.size) {
+                        when (i) {
+                            0 -> price1.text = prices[i].toString()
+                            1 -> price2.text = prices[i].toString()
+                            2 -> price3.text = prices[i].toString()
+                            3 -> price4.text = prices[i].toString()
+                        }
+                    }
                 }.addOnFailureListener { exception ->
                     Log.d("firestore", "Error getting document.", exception)
                 }

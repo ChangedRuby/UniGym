@@ -72,10 +72,18 @@ class ProfileUser : Fragment() {
             .addOnSuccessListener { result ->
                 nameTextView.text = result.data?.get("name").toString()
                 emailTextView.text = communicator.getAuthUserEmail()
-                objetivo1TextView.text = result.data?.get("objetivo1").toString()
-                objetivo2TextView.text = result.data?.get("objetivo2").toString()
-                objetivo3TextView.text = result.data?.get("objetivo3").toString()
-                objetivo4TextView.text = result.data?.get("objetivo4").toString()
+
+                val objetivos = result.data?.get("objetivos") as List<*>
+
+                for (i in 0 until objetivos.size) {
+                    when (i) {
+                        0 -> objetivo1TextView.text = objetivos[i].toString()
+                        1 -> objetivo2TextView.text = objetivos[i].toString()
+                        2 -> objetivo3TextView.text = objetivos[i].toString()
+                        3 -> objetivo4TextView.text = objetivos[i].toString()
+                    }
+                }
+
                 Log.d("firestore", "${result.id} => ${result.data}")
             }.addOnFailureListener { exception ->
                 Log.w("firestore", "Error getting document.", exception)
