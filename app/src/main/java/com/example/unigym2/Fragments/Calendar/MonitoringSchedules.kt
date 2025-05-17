@@ -16,6 +16,8 @@ import androidx.fragment.app.Fragment
 import com.example.unigym2.Activities.Communicator
 import com.example.unigym2.Fragments.Profile.VisualizarPerfilPersonal
 import com.example.unigym2.R
+import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.auth.FirebaseAuth
 
 
 // TODO: Rename parameter arguments, choose names that match
@@ -30,6 +32,7 @@ private const val ARG_PARAM2 = "param2"
  */
 class MonitoringSchedules : Fragment() {
     lateinit var communicator: Communicator
+    private var dataSelecionada: String? = null
     // TODO: Rename and change types of parameters
     private var param1: String? = null
     private var param2: String? = null
@@ -52,6 +55,7 @@ class MonitoringSchedules : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        val personalID = arguments?.getString("personalID")
 
 
 
@@ -68,6 +72,9 @@ class MonitoringSchedules : Fragment() {
         val adapter = ArrayAdapter(requireContext(),android.R.layout.simple_dropdown_item_1line, servicos)
         autoServico.setAdapter(adapter)
 
+
+
+
         autoServico.setOnClickListener{
             autoServico.showDropDown()
         }
@@ -81,23 +88,50 @@ class MonitoringSchedules : Fragment() {
 
         calendarView.setOnDateChangeListener { _, year, month, dayOfMonth ->
             blocoNovaSessao.visibility = View.VISIBLE
+
+            val mesCorreto = month+1
+            dataSelecionada = String.format("%02d/%02d/%04d", dayOfMonth, mesCorreto, year)
         }
 
         btnAgendar.setOnClickListener {
             val hora = inputHora.text.toString()
             val minuto = inputMinuto.text.toString()
             val servicoSelecionado = autoServico.text.toString()
+            val auth = FirebaseAuth.getInstance()
+            val clienteID = auth.currentUser?.uid
 
-            if (hora == "12" && minuto == "00" && servicoSelecionado == "Personal Trainer"){
-                textIndisponivel.visibility = View.VISIBLE
+            textIndisponivel.visibility = View.INVISIBLE
+
+            if(dataSelecionada == null){
+                Toast.makeText(requireContext(), "Selecione uma data!", Toast.LENGTH_SHORT).show()
+            }else {
+                val firestore = FirebaseFirestore.getInstance()
+                val agendamento = hashMapOf(
+                    "clienteID" to clienteID,
+                    "personalID" to personalID,
+                    "data" to dataSelecionada,
+                    "hora" to "$hora:$minuto",
+                    "servico" to servicoSelecionado
+                )
+
+                firestore.collection("Agendamentos")
+                    .add(agendamento)
+                    .addOnSuccessListener {
+                        textIndisponivel.visibility = View.GONE
+                        Toast.makeText(requireContext(), "Sessão : $hora:$minuto - $servicoSelecionado solicitada ao personal!", Toast.LENGTH_SHORT).show()
+
+                        communicator.replaceFragment(VisualizarPerfilPersonal())
+
+                    }
             }
-            else {
-                textIndisponivel.visibility = View.GONE
-                Toast.makeText(requireContext(), "Sessão : $hora:$minuto - $servicoSelecionado", Toast.LENGTH_SHORT).show()
 
-                communicator.replaceFragment(VisualizarPerfilPersonal())
 
-            }
+
+
+
+
+
+
 
         }
 

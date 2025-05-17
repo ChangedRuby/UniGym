@@ -41,6 +41,7 @@ class VisualizarPerfilPersonal() : Fragment() {
     private lateinit var price2 : TextView
     private lateinit var price3 : TextView
     private lateinit var price4 : TextView
+    private var personalID: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -76,38 +77,50 @@ class VisualizarPerfilPersonal() : Fragment() {
         agendamentoTreinoBtn = v.findViewById(R.id.agendarTreino)
         backBtn = v.findViewById(R.id.SairPersonal)
 
+
+
         agendamentoTreinoBtn.setOnClickListener {
+            val fragment = MonitoringSchedules()
+            var args = Bundle()
+            args.putString("personalID", personalID)
+            fragment.arguments = args
             communicator.replaceFragment(MonitoringSchedules())
-            Log.d("personalLog", "Clicked")
+            Log.d("personalLog", "Clicado com o personalID $personalID")
         }
 
         backBtn.setOnClickListener {
             communicator.replaceFragment(if (communicator.getMode()) ChatPersonal() else ChatUser())
         }
 
+
+
         parentFragmentManager.setFragmentResultListener("personal_info_key", viewLifecycleOwner) { _, bundle ->
-            val personalID = bundle.getString("personal_id").toString()
-            db.collection("Usuarios").document(personalID)
-                .get()
-                .addOnSuccessListener { result ->
-                    nameTextView.text = result.data?.get("name").toString()
-                    emailTextView.text = result.data?.get("email").toString()
-                    crefTextView.text = result.data?.get("CREF").toString()
-                    specialty1.text = result.data?.get("specialty1").toString()
-                    specialty2.text = result.data?.get("specialty2").toString()
-                    specialty3.text = result.data?.get("specialty3").toString()
-                    specialty4.text = result.data?.get("specialty4").toString()
-                    service1.text = result.data?.get("service1").toString()
-                    service2.text = result.data?.get("service2").toString()
-                    service3.text = result.data?.get("service3").toString()
-                    service4.text = result.data?.get("service4").toString()
-                    price1.text = result.data?.get("servicePrice1").toString()
-                    price2.text = result.data?.get("servicePrice2").toString()
-                    price3.text = result.data?.get("servicePrice3").toString()
-                    price4.text = result.data?.get("servicePrice4").toString()
-                }.addOnFailureListener { exception ->
-                    Log.d("firestore", "Error getting document.", exception)
-                }
+              personalID = bundle.getString("personal_id").toString()
+            if(personalID!=null) {
+                db.collection("Usuarios").document(personalID!!)
+                    .get()
+                    .addOnSuccessListener { result ->
+                        nameTextView.text = result.data?.get("name").toString()
+                        emailTextView.text = result.data?.get("email").toString()
+                        crefTextView.text = result.data?.get("CREF").toString()
+                        specialty1.text = result.data?.get("specialty1").toString()
+                        specialty2.text = result.data?.get("specialty2").toString()
+                        specialty3.text = result.data?.get("specialty3").toString()
+                        specialty4.text = result.data?.get("specialty4").toString()
+                        service1.text = result.data?.get("service1").toString()
+                        service2.text = result.data?.get("service2").toString()
+                        service3.text = result.data?.get("service3").toString()
+                        service4.text = result.data?.get("service4").toString()
+                        price1.text = result.data?.get("servicePrice1").toString()
+                        price2.text = result.data?.get("servicePrice2").toString()
+                        price3.text = result.data?.get("servicePrice3").toString()
+                        price4.text = result.data?.get("servicePrice4").toString()
+                    }.addOnFailureListener { exception ->
+                        Log.d("firestore", "Error getting document.", exception)
+                    }
+            } else{
+                Log.e("Firestore", "personalID é nulo.")
+            }
 
         }
 
