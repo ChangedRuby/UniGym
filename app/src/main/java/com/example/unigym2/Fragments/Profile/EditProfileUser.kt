@@ -12,10 +12,17 @@ import com.example.unigym2.Activities.ResetPassword
 import com.example.unigym2.R
 import com.google.android.material.textfield.TextInputEditText
 import android.content.Intent
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.net.Uri
+import android.util.Base64
+import android.widget.Button
+import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
+import com.example.unigym2.Managers.AvatarManager
 import com.google.android.material.imageview.ShapeableImageView
 import com.google.firebase.firestore.FirebaseFirestore
+import java.io.ByteArrayOutputStream
 
 class EditProfileUser : Fragment() {
     private lateinit var communicator : Communicator
@@ -23,13 +30,32 @@ class EditProfileUser : Fragment() {
     private lateinit var saveButton : TextView
     private lateinit var usernameEdit : TextInputEditText
     private lateinit var userProfileEmail : TextView
-    private lateinit var userImage: ShapeableImageView
+    private lateinit var changeImageButton: Button
+    private lateinit var imageUser: ShapeableImageView
     private lateinit var objetivo1 : TextInputEditText
     private lateinit var objetivo2 : TextInputEditText
     private lateinit var objetivo3 : TextInputEditText
     private lateinit var objetivo4 : TextInputEditText
+    private lateinit var galleryLauncher: ActivityResultLauncher<String>
 
     private lateinit var alterarSenha: TextView
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        galleryLauncher = registerForActivityResult(ActivityResultContracts.GetContent()) { uri ->
+            var imageUri: Uri?
+
+            // uri to base 64
+            imageUri = uri
+            var imageConverted = AvatarManager.uriToBase64(imageUri, 20, requireContext())
+            AvatarManager.storeAvatarForUser(communicator.getAuthUser(), imageConverted)
+//            imageUser.setImageURI(imageUri)
+            Log.d("userlog", "Image converted to base 64")
+
+            // base 64 to bitmap
+            imageUser.setImageBitmap(AvatarManager.base64ToBitmap(imageConverted))
+        }
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -43,7 +69,8 @@ class EditProfileUser : Fragment() {
 
         usernameEdit = view.findViewById(R.id.editTextUsername)
         userProfileEmail = view.findViewById(R.id.userProfileEmail)
-        userImage = view.findViewById(R.id.profileUserEditImage)
+        changeImageButton = view.findViewById(R.id.changeUserImageBtn)
+        imageUser = view.findViewById(R.id.profileUserEditImage)
         objetivo1 = view.findViewById(R.id.editObjetivo1)
         objetivo2 = view.findViewById(R.id.editObjetivo2)
         objetivo3 = view.findViewById(R.id.editObjetivo3)
@@ -59,6 +86,11 @@ class EditProfileUser : Fragment() {
         alterarSenha.setOnClickListener {
             var intent = Intent(requireContext(), ResetPassword::class.java)
             startActivity(intent)
+        }
+
+        changeImageButton.setOnClickListener {
+
+            galleryLauncher.launch("image/*")
         }
 
         db.collection("Usuarios").document(communicator.getAuthUser())

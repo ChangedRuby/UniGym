@@ -12,7 +12,7 @@ import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import com.example.unigym2.Activities.Communicator
-import com.example.unigym2.Managers.GravatarManager
+import com.example.unigym2.Managers.AvatarManager
 import com.example.unigym2.R
 import com.google.android.material.imageview.ShapeableImageView
 import com.google.firebase.auth.FirebaseAuth
@@ -133,7 +133,7 @@ class ProfileUser : Fragment() {
             }
         }*/
 
-        GravatarManager.getGravatarBitmap(communicator.getAuthUserEmail(), communicator.getAuthUserName(), 80, lifecycleScope){ bitmap ->
+        AvatarManager.getUserAvatar(communicator.getAuthUser(), communicator.getAuthUserEmail(), communicator.getAuthUserName(), 80, lifecycleScope){ bitmap ->
             profileView.setImageBitmap(bitmap)
         }
 

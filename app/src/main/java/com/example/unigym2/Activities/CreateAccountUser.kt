@@ -75,6 +75,7 @@ class CreateAccountUser : AppCompatActivity() {
                                 "name" to nameTextInput.text.toString(),
                                 "isPersonal" to false,
                                 "email" to emailTextInput.text.toString(),
+                                "avatar" to "",
                                 "objetivo1" to "",
                                 "objetivo2" to "",
                                 "objetivo3" to "",

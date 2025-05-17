@@ -15,8 +15,7 @@ import com.example.unigym2.Activities.Communicator
 import com.example.unigym2.Fragments.Treinos.Recyclerviews.ListaTreinosAdapter
 import com.example.unigym2.Fragments.Treinos.Recyclerviews.ListaTreinosItem
 import com.example.unigym2.Fragments.Treinos.Recyclerviews.ListaUsuariosClickListener
-import com.example.unigym2.Fragments.Treinos.Recyclerviews.TreinoUserItem
-import com.example.unigym2.Managers.GravatarManager
+import com.example.unigym2.Managers.AvatarManager
 import com.example.unigym2.R
 import com.google.firebase.firestore.FirebaseFirestore
 
@@ -104,7 +103,7 @@ class ListaTreinosPersonal : Fragment(), ListaUsuariosClickListener {
             for(document in documents){
                 var profileImage: Bitmap?
 
-                GravatarManager.getGravatarBitmap(document.get("email").toString(), document.get("name").toString(), 40, lifecycleScope) { bitmap ->
+                AvatarManager.getUserAvatar(document.get("id").toString(), document.get("email").toString(), document.get("name").toString(), 40, lifecycleScope) { bitmap ->
                     profileImage = bitmap
 
                     itemArray.add(ListaTreinosItem(name = document.get("name").toString(), userId = document.id, image = profileImage))
