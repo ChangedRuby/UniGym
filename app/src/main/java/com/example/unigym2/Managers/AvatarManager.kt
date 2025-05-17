@@ -1,28 +1,48 @@
 package com.example.unigym2.Managers
 
+import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
+import android.net.Uri
+import android.util.Base64
 import android.util.Log
-import androidx.core.graphics.scale
 import androidx.lifecycle.LifecycleCoroutineScope
-import androidx.lifecycle.lifecycleScope
+import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import java.io.BufferedInputStream
+import java.io.ByteArrayOutputStream
 import java.net.HttpURLConnection
 import java.net.URI
 import java.net.URL
 import java.security.MessageDigest
 
-object GravatarManager {
+object AvatarManager {
     public var imageCache: HashMap<String, Bitmap> = HashMap()
+
+    public fun getUserAvatar(userId: String, email: String, userName: String, size: Int, lifecycle: LifecycleCoroutineScope, callback: (Bitmap?) -> Unit) {
+        var db = FirebaseFirestore.getInstance()
+
+        db.collection("Usuarios").document(userId).get().addOnSuccessListener { document ->
+            var userImageBase64: String = document.get("avatar").toString()
+            Log.d("avatar_manager", userImageBase64.toString())
+            if(userImageBase64 == "null" || userImageBase64 == ""){
+                getGravatarBitmap(email, userName, size, lifecycle) { bitmap ->
+                    callback(bitmap)
+                }
+            } else{
+                callback(base64ToBitmap(userImageBase64))
+            }
+
+        }
+    }
 
     public fun getGravatarBitmap(email: String, userName: String, size: Int, lifecycle: LifecycleCoroutineScope, callback: (Bitmap?) -> Unit) {
 
         // essa função obtem a foto de usuario pelo hash SHA-256 do email utilizando a API do Gravatar
         val hashedEmail = generateHash(email.lowercase().trim())
-        val apiUrl = "https://gravatar.com/avatar/$hashedEmail?s=$size&d=initials&name=${userName.trim().replace(" ", "+")}"
+        // val apiUrl = "https://gravatar.com/avatar/$hashedEmail?s=$size&d=initials&name=${userName.trim().replace(" ", "+")}"
+        val apiUrl = "https://gravatar.com/avatar/000000000000000000000000000000000000000000000000000000?s=$size&d=initials&name=${userName.trim().replace(" ", "+")}"
         var profileBitmap: Bitmap? = null
 
         if(imageCache.contains(hashedEmail)){
@@ -57,6 +77,34 @@ object GravatarManager {
             }
         }
 
+    }
+
+    public fun uriToBase64(uri: Uri?, quality: Int, context: Context): String{
+
+        // converts uri to bitmap
+        var inputStream = context.contentResolver.openInputStream(uri!!)
+        var imageBitmap = BitmapFactory.decodeStream(inputStream)
+
+        var outputStream = ByteArrayOutputStream()
+        imageBitmap.compress(Bitmap.CompressFormat.JPEG, quality, outputStream)
+
+        // converts image to base64 after converting to bytearray
+        var imageByteArray = outputStream.toByteArray()
+        var convertedImage = Base64.encodeToString(imageByteArray, Base64.DEFAULT)
+
+        return convertedImage
+    }
+
+    public fun base64ToBitmap(base64: String): Bitmap?{
+        var decodedBytes = Base64.decode(base64, Base64.DEFAULT)
+        var decodedImage = BitmapFactory.decodeByteArray(decodedBytes, 0, decodedBytes.size)
+        return decodedImage
+    }
+
+    public fun storeAvatarForUser(userId: String, imageBase64: String){
+        var db = FirebaseFirestore.getInstance()
+
+        db.collection("Usuarios").document(userId).update("avatar", imageBase64)
     }
 
     private fun generateHash(input: String): String {
