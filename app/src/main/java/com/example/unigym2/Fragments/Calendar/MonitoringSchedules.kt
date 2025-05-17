@@ -36,7 +36,7 @@ class MonitoringSchedules : Fragment() {
     // TODO: Rename and change types of parameters
     private var param1: String? = null
     private var param2: String? = null
-    lateinit var personalID : String
+
     lateinit var personalName : String
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -56,7 +56,7 @@ class MonitoringSchedules : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val personalID = arguments?.getString("personalID")
+        var personalID = arguments?.getString("personalID")
 
         parentFragmentManager.setFragmentResultListener("personal_monitoring_key", viewLifecycleOwner) { _, bundle ->
             personalID = bundle.getString("personal_id").toString()
