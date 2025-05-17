@@ -9,6 +9,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.unigym2.R
 import com.google.firebase.firestore.FirebaseFirestore
+import kotlin.math.acos
 
 class RequestsRecyclerAdapter(private val requestsList: ArrayList<RequestsData>) : RecyclerView.Adapter<RequestsRecyclerAdapter.MyViewHolder>(){
 
@@ -59,6 +60,26 @@ class RequestsRecyclerAdapter(private val requestsList: ArrayList<RequestsData>)
                 } }
 
 
+        }
+
+        holder.accept.setOnClickListener{
+            val agendamentoID =currentItem.agendamentoID
+            if(agendamentoID!==null){
+                dataBase.collection("Agendamentos")
+                    .document(agendamentoID)
+                    .update("status", "aceito")
+                    .addOnSuccessListener {
+                        requestsList.removeAt(position)
+                        notifyItemRemoved(position)
+                        notifyItemRangeChanged(position, requestsList.size)
+                    }
+                    .addOnFailureListener { e ->
+                        Log.e("ACEITAR", "Erro ao aceitar solicitação")
+                    }
+
+            } else{
+                Log.e("ACEITAR", "ID é nulo")
+            }
         }
 
     }

@@ -134,23 +134,6 @@ class SolicitationsPersonal : Fragment() {
 
             })
 
-        /*names = arrayOf(
-            "1",
-            "2",
-            "3",
-            "4",
-            "6",
-            "7",
-            "8",
-            "9",
-            "10",
-            "11",
-        )
 
-        for(i in names.indices){
-
-            val requests = RequestsData(names[i])
-            requestsArrayList.add(requests)
-        }*/
     }
 }

@@ -9,6 +9,8 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import com.example.unigym2.R
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FirebaseFirestore
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -48,15 +50,24 @@ class CalendarPersonal : Fragment() {
         val programacoesContainer = view.findViewById<LinearLayout>(R.id.programacoes_container)
         val programacoesConteudo = view.findViewById<TextView>(R.id.programacoes_conteudo)
 
+        val auth = FirebaseAuth.getInstance()
+        var personalID = auth.currentUser?.uid
+        val dataBase = FirebaseFirestore.getInstance()
+
         calendarView.setOnDateChangeListener{ _,year, month, dayOfMonth ->
             val dataSelecionada = "$dayOfMonth/${month + 1}/$year"
 
         programacoesContainer.visibility = View.VISIBLE
 
-        programacoesConteudo.text = when (dataSelecionada) {
-            "11/8/2025" -> "Reunião com cliente às 10h"
-            else -> "Sem agendamentos"
-           }
+        programacoesConteudo.text = "Carregando Programação..."
+            dataBase.collection("Agendamentos")
+                .whereEqualTo("personalID", personalID)
+                .whereEqualTo("data", dataSelecionada)
+                .whereEqualTo("status", "aceito")
+                .get()
+                .addOnSuccessListener { documents ->
+                    //val agendamento
+                }
         }
     }
 

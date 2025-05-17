@@ -1,6 +1,7 @@
 package com.example.unigym2.Fragments.Calendar
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -88,52 +89,102 @@ class MonitoringSchedules : Fragment() {
         btnVoltar.setOnClickListener {
             communicator.replaceFragment(VisualizarPerfilPersonal())
         }
-            // talvez ajeitar essa botao de voltar
+            // talvez ajeitar esse botao de voltar
 
         calendarView.setOnDateChangeListener { _, year, month, dayOfMonth ->
             blocoNovaSessao.visibility = View.VISIBLE
 
-            val mesCorreto = month+1
-            dataSelecionada = String.format("%02d/%02d/%04d", dayOfMonth, mesCorreto, year)
+            dataSelecionada = String.format("%02d/%02d/%04d", dayOfMonth, month+1, year)
         }
 
         btnAgendar.setOnClickListener {
-            val hora = inputHora.text.toString()
-            val minuto = inputMinuto.text.toString()
-            val servicoSelecionado = autoServico.text.toString()
-            val auth = FirebaseAuth.getInstance()
-            val clienteID = auth.currentUser?.uid
+            val horaString = inputHora.text.toString().trim()
+            val minutoString = inputMinuto.text.toString().trim()
+            val servicoSelecionado = autoServico.text.toString().trim()
 
-            textIndisponivel.visibility = View.INVISIBLE
+            // Verificação se algum campo está vazio
+            if (horaString.isEmpty() || minutoString.isEmpty()) {
+                Toast.makeText(requireContext(), "Preencha a hora e os minutos!", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
 
-            if(dataSelecionada == null){
+            val hora = horaString.toIntOrNull()
+            val minuto = minutoString.toIntOrNull()
+
+
+            if (hora == null || hora !in 3..23) {
+                Toast.makeText(requireContext(), "O horário deve ser válido!", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+
+            if (minuto == null || minuto !in 0..59) {
+                Toast.makeText(requireContext(), "O horário deve ser válido!", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+
+            if (dataSelecionada == null) {
                 Toast.makeText(requireContext(), "Selecione uma data!", Toast.LENGTH_SHORT).show()
-            }else {
-                val firestore = FirebaseFirestore.getInstance()
-                val agendamento = hashMapOf(
-                    "clienteID" to clienteID,
-                    "personalID" to personalID,
-                    "data" to dataSelecionada,
-                    "hora" to "$hora:$minuto",
-                    "servico" to servicoSelecionado
-                )
+                return@setOnClickListener
+            }
 
-                firestore.collection("Agendamentos")
-                    .add(agendamento)
-                    .addOnSuccessListener {
-                        textIndisponivel.visibility = View.GONE
-                        Toast.makeText(requireContext(), "Sessão : $hora:$minuto - $servicoSelecionado solicitada ao personal!", Toast.LENGTH_SHORT).show()
-
-                        communicator.replaceFragment(VisualizarPerfilPersonal())
-
-                    }
+            if (servicoSelecionado.isEmpty()) {
+                Toast.makeText(requireContext(), "Selecione um serviço!", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
             }
 
 
+            val auth = FirebaseAuth.getInstance()
+            val clienteID = auth.currentUser?.uid
+            val firestore = FirebaseFirestore.getInstance()
+            val horaFormatada = String.format("%02d:%02d", hora, minuto)
 
 
 
+            firestore.collection("Agendamentos")
+                .whereEqualTo("personalID", personalID)
+                .whereEqualTo("data", dataSelecionada)
+                .get()
+                .addOnSuccessListener { result ->
+                    var conflito = false
+                    for(document in result){
+                        val horaDoc = document.getString("hora")?:continue
+                        val partes = horaDoc.split(":")
 
+                        val h = partes[0].toInt()
+                        val m = partes[1].toInt()
+                        var minutosDoc = h * 60 + m
+                        val horasEmMinutos = hora*60+minuto
+                        if(kotlin.math.abs(horasEmMinutos - minutosDoc)<50){
+                            conflito = true
+                            break
+                        }
+                    }
+
+                    if(conflito) Toast.makeText(requireContext(), "Horário indisponível!", Toast.LENGTH_SHORT).show()
+                    else{
+                        val agendamento = hashMapOf(
+                            "clienteID" to clienteID,
+                            "personalID" to personalID,
+                            "data" to dataSelecionada,
+                            "hora" to horaFormatada,
+                            "servico" to servicoSelecionado,
+                            "status" to "pendente"
+                        )
+                        firestore.collection("Agendamentos")
+                            .add(agendamento)
+                            .addOnSuccessListener {
+                                textIndisponivel.visibility = View.GONE
+                                Toast.makeText(requireContext(), "Sessão: $horaFormatada - $servicoSelecionado solicitada ao personal!", Toast.LENGTH_SHORT).show()
+                                communicator.replaceFragment(VisualizarPerfilPersonal())
+                            }
+                            .addOnFailureListener {
+                                Toast.makeText(requireContext(), "Erro ao agendar. Tente novamente.", Toast.LENGTH_SHORT).show()
+                            }
+                    }
+                }
+                .addOnFailureListener{
+                    Toast.makeText(requireContext(), "Erro ao consultar disponibilidade", Toast.LENGTH_SHORT)
+                }
 
 
 
