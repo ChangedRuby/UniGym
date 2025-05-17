@@ -55,6 +55,10 @@ class ListaPersonaisAdapter(private val dataList : MutableList<ListaPersonaisIte
                 putString("personal_name", currentItem.name)
                 putString("personal_id", currentItem.userId)
             })
+            fragmentManager.setFragmentResult("personal_monitoring_key", Bundle().apply {
+                putString("personal_name", currentItem.name)
+                putString("personal_id", currentItem.userId)
+            })
             communicator.replaceFragment(VisualizarPerfilPersonal())
 
         }

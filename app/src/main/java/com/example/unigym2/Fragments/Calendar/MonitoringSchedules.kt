@@ -36,7 +36,8 @@ class MonitoringSchedules : Fragment() {
     // TODO: Rename and change types of parameters
     private var param1: String? = null
     private var param2: String? = null
-
+    lateinit var personalID : String
+    lateinit var personalName : String
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
@@ -57,7 +58,11 @@ class MonitoringSchedules : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         val personalID = arguments?.getString("personalID")
 
-
+        parentFragmentManager.setFragmentResultListener("personal_monitoring_key", viewLifecycleOwner) { _, bundle ->
+            personalID = bundle.getString("personal_id").toString()
+            personalName = bundle.getString("personal_name").toString()
+            // Use these values as needed in your MonitoringSchedules fragment
+        }
 
         val calendarView = view.findViewById<CalendarView>(R.id.calendarView3)
         val blocoNovaSessao = view.findViewById<LinearLayout>(R.id.nova_sessao)
@@ -134,6 +139,8 @@ class MonitoringSchedules : Fragment() {
 
 
         }
+
+
 
     }
     companion object {
