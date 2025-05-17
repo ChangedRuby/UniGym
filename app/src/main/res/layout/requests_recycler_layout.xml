@@ -18,7 +18,9 @@
             android:id="@+id/view"
             android:layout_width="400sp"
             android:layout_height="200sp"
+            android:layout_alignParentBottom="true"
             android:layout_marginLeft="5sp"
+            android:layout_marginBottom="13dp"
             android:background="@drawable/rectangle_objetivos_teste"
             android:backgroundTint="#10FFFBFB"
             android:backgroundTintMode="add" />
@@ -42,7 +44,7 @@
             android:textColor="@color/white" />
 
         <TextView
-            android:id="@+id/textView9"
+            android:id="@+id/serviceView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="80sp"
@@ -51,7 +53,7 @@
             android:textColor="@color/hint_grey" />
 
         <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/button6"
+            android:id="@+id/acceptRequestBtn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="300sp"

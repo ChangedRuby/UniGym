@@ -76,10 +76,12 @@ class CreateAccountUser : AppCompatActivity() {
                                 "isPersonal" to false,
                                 "email" to emailTextInput.text.toString(),
                                 "avatar" to "",
-                                "objetivo1" to "",
-                                "objetivo2" to "",
-                                "objetivo3" to "",
-                                "objetivo4" to "",
+                                "objetivos" to listOf(
+                                    "",
+                                    "",
+                                    "",
+                                    ""
+                                )
                             )
                         ).addOnSuccessListener { documentReference ->
                             var intent = Intent(this, MainActivity::class.java)

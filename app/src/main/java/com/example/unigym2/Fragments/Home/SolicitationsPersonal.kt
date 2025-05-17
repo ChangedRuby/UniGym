@@ -14,6 +14,7 @@ import com.example.unigym2.Activities.Communicator
 import com.example.unigym2.Fragments.Home.Recyclerviews.RequestsData
 import com.example.unigym2.Fragments.Home.Recyclerviews.RequestsRecyclerAdapter
 import com.example.unigym2.R
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.DocumentChange
 import com.google.firebase.firestore.EventListener
 import com.google.firebase.firestore.FirebaseFirestore
@@ -104,8 +105,9 @@ class SolicitationsPersonal : Fragment() {
         requestsArrayList = arrayListOf<RequestsData>()
 
         db = FirebaseFirestore.getInstance()
+        val personalIdAtual = FirebaseAuth.getInstance().currentUser?.uid
 
-        db.collection("Usuarios").whereEqualTo("isPersonal", false)
+        db.collection("Agendamentos").whereEqualTo("personalID", personalIdAtual)
             .addSnapshotListener(object : EventListener<QuerySnapshot>{
                 override fun onEvent(
                     value: QuerySnapshot?,
@@ -121,8 +123,9 @@ class SolicitationsPersonal : Fragment() {
                     for(dc : DocumentChange in value?.documentChanges!!){
 
                         if(dc.type == DocumentChange.Type.ADDED){
-
-                            requestsArrayList.add(dc.document.toObject(RequestsData::class.java))
+                            val agendamento = dc.document.toObject(RequestsData::class.java)
+                                .copy(agendamentoID = dc.document.id)
+                            requestsArrayList.add(agendamento)
                         }
                     }
 
