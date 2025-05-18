@@ -8,6 +8,12 @@ import android.widget.CalendarView
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import com.example.unigym2.Fragments.Calendar.Recyclerviews.CalendarPersonalAdapter
+import com.example.unigym2.Fragments.Calendar.Recyclerviews.CalendarPersonalItem
+import com.example.unigym2.Fragments.Calendar.Recyclerviews.CalendarUserAdapter
+import com.example.unigym2.Fragments.Calendar.Recyclerviews.CalendarUserItem
 import com.example.unigym2.R
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
@@ -26,6 +32,9 @@ class CalendarPersonal : Fragment() {
     // TODO: Rename and change types of parameters
     private var param1: String? = null
     private var param2: String? = null
+    lateinit var recyclerView: RecyclerView
+    lateinit var adapter: CalendarPersonalAdapter
+    lateinit var schedulesArrayList: ArrayList<CalendarPersonalItem>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -40,7 +49,17 @@ class CalendarPersonal : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_calendar_personal, container, false)
+        val v = inflater.inflate(R.layout.fragment_calendar_personal, container, false)
+
+        dataInitialize()
+        val layoutManager = LinearLayoutManager(context)
+        recyclerView = v.findViewById(R.id.calendarPersonalRecyclerView)
+        recyclerView.layoutManager = layoutManager
+        recyclerView.setHasFixedSize(true)
+        adapter = CalendarPersonalAdapter(schedulesArrayList)
+        recyclerView.adapter = adapter
+
+        return v
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -48,7 +67,6 @@ class CalendarPersonal : Fragment() {
 
         val calendarView = view.findViewById<CalendarView>(R.id.calendarView4)
         val programacoesContainer = view.findViewById<LinearLayout>(R.id.programacoes_container)
-        val programacoesConteudo = view.findViewById<TextView>(R.id.programacoes_conteudo)
 
         val auth = FirebaseAuth.getInstance()
         var personalID = auth.currentUser?.uid
@@ -59,7 +77,7 @@ class CalendarPersonal : Fragment() {
 
         programacoesContainer.visibility = View.VISIBLE
 
-        programacoesConteudo.text = "Carregando Programação..."
+        /*programacoesConteudo.text = "Carregando Programação..."
             dataBase.collection("Agendamentos")
                 .whereEqualTo("personalID", personalID)
                 .whereEqualTo("data", dataSelecionada)
@@ -67,7 +85,7 @@ class CalendarPersonal : Fragment() {
                 .get()
                 .addOnSuccessListener { documents ->
                     //val agendamento
-                }
+                }*/
         }
     }
 
@@ -89,5 +107,12 @@ class CalendarPersonal : Fragment() {
                     putString(ARG_PARAM2, param2)
                 }
             }
+    }
+
+    fun dataInitialize(){
+        schedulesArrayList = arrayListOf(
+            CalendarPersonalItem("dfhjgfdkjghdf"),
+            CalendarPersonalItem("sdfijhgflikfdjhgiol"),
+        )
     }
 }
