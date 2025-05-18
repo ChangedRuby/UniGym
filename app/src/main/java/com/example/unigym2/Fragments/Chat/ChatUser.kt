@@ -7,11 +7,13 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.unigym2.Activities.Communicator
 import com.example.unigym2.Fragments.Chat.Recyclerviews.ListaPersonaisAdapter
 import com.example.unigym2.Fragments.Chat.Recyclerviews.ListaPersonaisItem
+import com.example.unigym2.Managers.AvatarManager
 import com.example.unigym2.R
 import com.google.firebase.firestore.FirebaseFirestore
 
@@ -89,8 +91,14 @@ class ChatUser : Fragment() {
         val userCollection = db.collection("Usuarios")
         userCollection.whereEqualTo("isPersonal", true).get().addOnSuccessListener { documents ->
             for(document in documents){
-                itemArray.add(ListaPersonaisItem(name = document.getString("name").toString(), userId = document.getString("id").toString()))
-                Log.d("ChatUser", "Item added: ${document.getString("name")}")
+
+                AvatarManager.getUserAvatar(document.get("id").toString(), document.get("email").toString(), document.get("name").toString(), 40, lifecycleScope) { bitmap ->
+                    itemArray.add(ListaPersonaisItem(name = document.getString("name").toString(),
+                        userId = document.getString("id").toString(),
+                        image = bitmap))
+                    adapter.notifyDataSetChanged()
+                    Log.d("ChatUser", "Item added: ${document.getString("name")}")
+                }
             }
             itemArray.add(0, ListaPersonaisItem(name = "Brok", userId = ""))
             adapter.notifyDataSetChanged()

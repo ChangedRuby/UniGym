@@ -27,6 +27,7 @@ object AvatarManager {
             var userImageBase64: String = document.get("avatar").toString()
             Log.d("avatar_manager", userImageBase64.toString())
             if(userImageBase64 == "null" || userImageBase64 == ""){
+                Log.d("avatar_manager", "getting profile image from Gravatar")
                 getGravatarBitmap(email, userName, size, lifecycle) { bitmap ->
                     callback(bitmap)
                 }
@@ -46,6 +47,7 @@ object AvatarManager {
         var profileBitmap: Bitmap? = null
 
         if(imageCache.contains(hashedEmail)){
+            Log.d("avatar_manager", "-> avatar already loaded, loading from cache instead")
             callback(imageCache.get(hashedEmail))
         } else{
             lifecycle.launch(Dispatchers.IO) {

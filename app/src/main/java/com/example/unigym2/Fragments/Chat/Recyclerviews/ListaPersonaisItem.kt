@@ -1,3 +1,5 @@
 package com.example.unigym2.Fragments.Chat.Recyclerviews
 
-data class ListaPersonaisItem(val name: String, val userId: String)
+import android.graphics.Bitmap
+
+data class ListaPersonaisItem(var name: String ?= null, var userId: String ?= null, var image: Bitmap ?= null)
