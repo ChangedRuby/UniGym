@@ -158,31 +158,18 @@ class EditProfileUser : Fragment() {
         objectives.add(if (obj3.isNotEmpty()) obj3 else objetivo3.hint.toString())
         objectives.add(if (obj4.isNotEmpty()) obj4 else objetivo4.hint.toString())
 
-        updates["objetivos"] = objectives
-
-        if (updates.isNotEmpty()) {
-            userRef.update(updates)
-                .addOnSuccessListener {
-                    Log.d("firestore", "User objectives successfully updated!")
-                }
-                .addOnFailureListener { e ->
-                    Log.w("firestore", "Error updating user objectives", e)
-                }
-        }
-
-        //verificação de email
         if (newEmail.isNotEmpty() && newEmail != currentEmail){
             @Suppress("DEPRECATION")
             currentUser?.updateEmail(newEmail)
                 ?.addOnSuccessListener{
                     userRef.update("email", newEmail)
                         .addOnSuccessListener{
-                        Log.d("firestore", "Email atualizado com sucesso no Firestore.")
-                    }
+                            Log.d("firestore", "Email atualizado com sucesso no Firestore.")
+                        }
                         .addOnFailureListener{ e ->
                             Log.w("firestore", "Erro ao atualizar email no Firestore", e)
                         }
-                      Log.d("firebaseAuth", "Email atualizado com sucesso.")
+                    Log.d("firebaseAuth", "Email atualizado com sucesso.")
 
                 }
                 ?.addOnFailureListener { e ->
@@ -229,7 +216,21 @@ class EditProfileUser : Fragment() {
                     builder.show()
                 }
 
-    }
+        }
+        updates["objetivos"] = objectives
+        updates["email"] = if (newEmail.isNotEmpty()) newEmail else currentEmail
+
+        if (updates.isNotEmpty()) {
+            userRef.update(updates)
+                .addOnSuccessListener {
+                    Log.d("firestore", "User objectives successfully updated!")
+                }
+                .addOnFailureListener { e ->
+                    Log.w("firestore", "Error updating user objectives", e)
+                }
+        }
+
+        //verificação de email
 
 
 
