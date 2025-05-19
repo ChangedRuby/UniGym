@@ -33,7 +33,7 @@ class EditProfileUser : Fragment() {
     private lateinit var saveButton : TextView
     private lateinit var usernameEdit : TextInputEditText
     private lateinit var userProfileEmail : TextView
-    private lateinit var inputEmail : TextInputEditText
+    private var inputEmail : TextInputEditText ?=null
     private lateinit var changeImageButton: Button
     private lateinit var imageUser: ShapeableImageView
     private lateinit var objetivo1 : TextInputEditText
@@ -75,16 +75,15 @@ class EditProfileUser : Fragment() {
 
         db = FirebaseFirestore.getInstance()
         communicator = activity as Communicator
-
         usernameEdit = view.findViewById(R.id.editTextUsername)
         userProfileEmail = view.findViewById(R.id.userProfileEmail)
-        inputEmail = view.findViewById(R.id.emailEditText)
         changeImageButton = view.findViewById(R.id.changeUserImageBtn)
         imageUser = view.findViewById(R.id.profileUserEditImage)
         objetivo1 = view.findViewById(R.id.editObjetivo1)
         objetivo2 = view.findViewById(R.id.editObjetivo2)
         objetivo3 = view.findViewById(R.id.editObjetivo3)
         objetivo4 = view.findViewById(R.id.editObjetivo4)
+        inputEmail = view.findViewById(R.id.emailEditText)
         saveButton = view.findViewById(R.id.ConfirmarEditUser)
         saveButton.setOnClickListener {
             saveProfileChanges()
@@ -136,7 +135,7 @@ class EditProfileUser : Fragment() {
         val obj2 = objetivo2.text.toString()
         val obj3 = objetivo3.text.toString()
         val obj4 = objetivo4.text.toString()
-        val newEmail = inputEmail.text.toString().trim()
+        val newEmail = inputEmail?.text?.toString()?.trim().orEmpty()
         val currentEmail = communicator.getAuthUserEmail()
         val currentUser = communicator.getAuthInstance().currentUser
 
