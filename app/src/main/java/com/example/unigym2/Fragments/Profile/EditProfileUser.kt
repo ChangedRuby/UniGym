@@ -178,7 +178,7 @@ class EditProfileUser : Fragment() {
 
                     val builder = android.app.AlertDialog.Builder(requireContext())
                     builder.setTitle("Reautenticação necessária")
-                    builder.setMessage("Para alterar seu e-mail, por favor insira sua senha atual.")
+                    builder.setMessage("Aperte em confirmar para que haja a mudança de email")
 
                     val input = android.widget.EditText(requireContext())
                     input.inputType = android.text.InputType.TYPE_CLASS_TEXT or android.text.InputType.TYPE_TEXT_VARIATION_PASSWORD
