@@ -16,6 +16,7 @@ import com.example.unigym2.Fragments.Treinos.TreinosPersonal
 import com.example.unigym2.Fragments.Treinos.TreinosUser
 import com.example.unigym2.R
 import com.example.unigym2.databinding.ActivityMainBinding
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.firestore.FirebaseFirestore
 
@@ -122,5 +123,9 @@ class MainActivity : AppCompatActivity(), Communicator{
 
     override fun getAuthUserName(): String {
         return userName
+    }
+
+    override fun getAuthInstance(): FirebaseAuth {
+        return FirebaseAuth.getInstance()
     }
 }
