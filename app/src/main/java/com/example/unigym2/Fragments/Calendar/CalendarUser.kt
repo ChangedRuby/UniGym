@@ -4,10 +4,16 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Adapter
 import android.widget.CalendarView
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import com.example.unigym2.Fragments.Calendar.Recyclerviews.CalendarUserAdapter
+import com.example.unigym2.Fragments.Calendar.Recyclerviews.CalendarUserItem
+import com.example.unigym2.Fragments.Home.Recyclerviews.RequestsRecyclerAdapter
 import com.example.unigym2.R
 
 // TODO: Rename parameter arguments, choose names that match
@@ -24,6 +30,9 @@ class CalendarUser : Fragment() {
     // TODO: Rename and change types of parameters
     private var param1: String? = null
     private var param2: String? = null
+    lateinit var recyclerView: RecyclerView
+    lateinit var adapter: CalendarUserAdapter
+    lateinit var schedulesArrayList: ArrayList<CalendarUserItem>
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -39,7 +48,17 @@ class CalendarUser : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_calendar_user, container, false)
+        val v = inflater.inflate(R.layout.fragment_calendar_user, container, false)
+
+        dataInitialize()
+        val layoutManager = LinearLayoutManager(context)
+        recyclerView = v.findViewById(R.id.calendarUserRecyclerView)
+        recyclerView.layoutManager = layoutManager
+        recyclerView.setHasFixedSize(true)
+        adapter = CalendarUserAdapter(schedulesArrayList)
+        recyclerView.adapter = adapter
+
+        return v
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -47,17 +66,16 @@ class CalendarUser : Fragment() {
 
         val calendarView = view.findViewById<CalendarView>(R.id.calendarView)
         val programacoesContainer = view.findViewById<LinearLayout>(R.id.programacoes_container)
-        val programacoesConteudo = view.findViewById<TextView>(R.id.programacoes_conteudo)
 
         calendarView.setOnDateChangeListener{_, year, month, dayOfMonth ->
             val dataSelecionada = "$dayOfMonth/${month + 1}/$year"
 
             programacoesContainer.visibility = View.VISIBLE
 
-            programacoesConteudo.text = when (dataSelecionada){
+            /*programacoesConteudo.text = when (dataSelecionada){
                 "11/8/2025" -> "Reunião com cliente às 10h"
                 else -> "Sem agendamentos"
-            }
+            }*/
         }
     }
 
@@ -81,5 +99,12 @@ class CalendarUser : Fragment() {
                     putString(ARG_PARAM2, param2)
                 }
             }
+    }
+
+    fun dataInitialize(){
+        schedulesArrayList = arrayListOf(
+            CalendarUserItem("fdsiughrfediuhg"),
+            CalendarUserItem("sdroighlsdkfjlsdkfg"),
+        )
     }
 }
