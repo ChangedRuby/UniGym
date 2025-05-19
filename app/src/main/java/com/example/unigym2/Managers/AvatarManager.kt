@@ -18,14 +18,14 @@ import java.net.URL
 import java.security.MessageDigest
 
 object AvatarManager {
-    public var imageCache: HashMap<String, Bitmap> = HashMap()
+    public var imageCache: HashMap<String, Bitmap> = hashMapOf()
 
     public fun getUserAvatar(userId: String, email: String, userName: String, size: Int, lifecycle: LifecycleCoroutineScope, callback: (Bitmap?) -> Unit) {
         var db = FirebaseFirestore.getInstance()
 
         db.collection("Usuarios").document(userId).get().addOnSuccessListener { document ->
             var userImageBase64: String = document.get("avatar").toString()
-            Log.d("avatar_manager", userImageBase64.toString())
+            Log.d("avatar_manager", "Image base64 retrieved")
             if(userImageBase64 == "null" || userImageBase64 == ""){
                 Log.d("avatar_manager", "getting profile image from Gravatar")
                 getGravatarBitmap(email, userName, size, lifecycle) { bitmap ->
@@ -93,6 +93,7 @@ object AvatarManager {
         // converts image to base64 after converting to bytearray
         var imageByteArray = outputStream.toByteArray()
         var convertedImage = Base64.encodeToString(imageByteArray, Base64.DEFAULT)
+        inputStream?.close()
 
         return convertedImage
     }

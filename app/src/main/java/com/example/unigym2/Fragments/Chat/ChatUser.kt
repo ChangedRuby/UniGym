@@ -1,5 +1,6 @@
 package com.example.unigym2.Fragments.Chat
 
+import android.graphics.BitmapFactory
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -100,7 +101,7 @@ class ChatUser : Fragment() {
                     Log.d("ChatUser", "Item added: ${document.getString("name")}")
                 }
             }
-            itemArray.add(0, ListaPersonaisItem(name = "Brok", userId = ""))
+            itemArray.add(0, ListaPersonaisItem(name = "Brok", userId = "", image = BitmapFactory.decodeResource(context?.resources, R.drawable.brok_logo)))
             adapter.notifyDataSetChanged()
         }
     }

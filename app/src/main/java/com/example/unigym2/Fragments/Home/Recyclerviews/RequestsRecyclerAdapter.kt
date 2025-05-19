@@ -8,6 +8,7 @@ import android.widget.Button
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.unigym2.R
+import com.google.android.material.imageview.ShapeableImageView
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlin.math.acos
 
@@ -45,6 +46,7 @@ class RequestsRecyclerAdapter(private val requestsList: ArrayList<RequestsData>)
         holder.dataView.text = currentItem.data
         holder.serviceView.text = "Quer agendar um(a) \n${currentItem.servico.toString()}"
         holder.hourView.text = currentItem.hora
+        holder.profileView.setImageBitmap(currentItem.image)
 
 
         holder.deleteView.setOnClickListener {
@@ -91,6 +93,7 @@ class RequestsRecyclerAdapter(private val requestsList: ArrayList<RequestsData>)
         var dataView : TextView = itemView.findViewById(R.id.diaValue)
         var serviceView: TextView = itemView.findViewById(R.id.serviceView)
         val deleteView: Button = itemView.findViewById(R.id.removeRequestButton)
+        val profileView: ShapeableImageView = itemView.findViewById(R.id.imageProfileSolicitation)
         val accept: Button = itemView.findViewById(R.id.acceptRequestBtn)
     }
 }

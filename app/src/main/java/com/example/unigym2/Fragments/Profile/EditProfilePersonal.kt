@@ -9,9 +9,12 @@ package com.example.unigym2.Fragments.Profile
     import android.widget.Button
     import android.widget.TextView
     import androidx.fragment.app.Fragment
+    import androidx.lifecycle.lifecycleScope
     import com.example.unigym2.Activities.Communicator
     import com.example.unigym2.Activities.ResetPassword
+    import com.example.unigym2.Managers.AvatarManager
     import com.example.unigym2.R
+    import com.google.android.material.imageview.ShapeableImageView
     import com.google.android.material.textfield.TextInputEditText
     import com.google.firebase.firestore.FieldValue
     import com.google.firebase.firestore.FirebaseFirestore
@@ -24,6 +27,7 @@ class EditProfilePersonal : Fragment() {
         private lateinit var usernameEditText: TextInputEditText
         private lateinit var userProfileEmail: TextView
         private lateinit var crefTextView: TextView
+        private lateinit var imageView: ShapeableImageView
         private lateinit var specialtyET1: TextInputEditText
         private lateinit var specialtyET2: TextInputEditText
         private lateinit var specialtyET3: TextInputEditText
@@ -52,6 +56,7 @@ class EditProfilePersonal : Fragment() {
             usernameEditText = view.findViewById(R.id.editTextUsername)
             userProfileEmail = view.findViewById(R.id.userProfileEmail)
             crefTextView = view.findViewById(R.id.userCREF)
+            imageView = view.findViewById(R.id.profilePersonalEditImage)
             specialtyET1 = view.findViewById(R.id.editEspecialidade1)
             specialtyET2 = view.findViewById(R.id.editEspecialidade2)
             specialtyET3 = view.findViewById(R.id.editEspecialidade3)
@@ -116,6 +121,10 @@ class EditProfilePersonal : Fragment() {
             alterarSenha.setOnClickListener {
                 var intent = Intent(requireContext(), ResetPassword::class.java)
                 startActivity(intent)
+            }
+
+            AvatarManager.getUserAvatar(communicator.getAuthUser(), communicator.getAuthUserEmail(), communicator.getAuthUser(), 80, lifecycleScope) { bitmap ->
+                imageView.setImageBitmap(bitmap)
             }
 
             return view

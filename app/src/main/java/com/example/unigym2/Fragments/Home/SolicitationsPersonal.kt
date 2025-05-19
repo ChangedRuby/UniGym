@@ -8,11 +8,13 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.ImageView
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.unigym2.Activities.Communicator
 import com.example.unigym2.Fragments.Home.Recyclerviews.RequestsData
 import com.example.unigym2.Fragments.Home.Recyclerviews.RequestsRecyclerAdapter
+import com.example.unigym2.Managers.AvatarManager
 import com.example.unigym2.R
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.DocumentChange
@@ -123,15 +125,19 @@ class SolicitationsPersonal : Fragment() {
                     }
 
                     for(dc : DocumentChange in value?.documentChanges!!){
+                        val document = dc.document
 
                         if(dc.type == DocumentChange.Type.ADDED){
-                            val agendamento = dc.document.toObject(RequestsData::class.java)
-                                .copy(agendamentoID = dc.document.id)
-                            requestsArrayList.add(agendamento)
+                            AvatarManager.getUserAvatar(document.get("clienteID").toString(), document.get("clienteEmail").toString(), document.get("clienteNome").toString(), 40, lifecycleScope) { bitmap ->
+                                val agendamento = RequestsData(nomeCliente = document.getString("nomeCliente"), data = document.getString("data"), hora = document.getString("hora"),
+                                    servico = document.getString("servico"), clienteID = document.getString("clienteID"), personalID = document.getString("personalID"),
+                                    agendamentoID = document.id, image = bitmap)
+                                requestsArrayList.add(agendamento)
+                                adapter.notifyDataSetChanged()
+                            }
                         }
                     }
 
-                    adapter.notifyDataSetChanged()
                 }
 
             })

@@ -26,7 +26,7 @@
             android:backgroundTintMode="add" />
 
         <com.google.android.material.imageview.ShapeableImageView
-            android:id="@+id/imageProfile"
+            android:id="@+id/imageProfileSolicitation"
             android:layout_width="50sp"
             android:layout_height="50sp"
             android:layout_marginLeft="20sp"
@@ -80,8 +80,8 @@
             android:id="@+id/horarioLabel"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@id/imageProfile"
-            android:layout_alignStart="@id/imageProfile"
+            android:layout_below="@id/imageProfileSolicitation"
+            android:layout_alignStart="@id/imageProfileSolicitation"
             android:layout_marginTop="40sp"
             android:text="Horário:"
             android:textColor="@color/white"

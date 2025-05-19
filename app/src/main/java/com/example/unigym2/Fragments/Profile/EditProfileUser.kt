@@ -19,6 +19,7 @@ import android.util.Base64
 import android.widget.Button
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.lifecycle.lifecycleScope
 import com.example.unigym2.Managers.AvatarManager
 import com.google.android.material.imageview.ShapeableImageView
 import com.google.firebase.firestore.FirebaseFirestore
@@ -36,24 +37,28 @@ class EditProfileUser : Fragment() {
     private lateinit var objetivo2 : TextInputEditText
     private lateinit var objetivo3 : TextInputEditText
     private lateinit var objetivo4 : TextInputEditText
+    private lateinit var imageConverted: String
     private lateinit var galleryLauncher: ActivityResultLauncher<String>
 
     private lateinit var alterarSenha: TextView
+    private var changedImage: Boolean = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         galleryLauncher = registerForActivityResult(ActivityResultContracts.GetContent()) { uri ->
-            var imageUri: Uri?
+            if (uri != null) {
+                var imageUri: Uri?
 
-            // uri to base 64
-            imageUri = uri
-            var imageConverted = AvatarManager.uriToBase64(imageUri, 20, requireContext())
-            AvatarManager.storeAvatarForUser(communicator.getAuthUser(), imageConverted)
+                // uri to base 64
+                imageUri = uri
+                imageConverted = AvatarManager.uriToBase64(imageUri, 20, requireContext())
+                changedImage = true
 //            imageUser.setImageURI(imageUri)
-            Log.d("userlog", "Image converted to base 64")
+                Log.d("userlog", "Image converted to base 64")
 
-            // base 64 to bitmap
-            imageUser.setImageBitmap(AvatarManager.base64ToBitmap(imageConverted))
+                // base 64 to bitmap
+                imageUser.setImageBitmap(AvatarManager.base64ToBitmap(imageConverted))
+            }
         }
     }
 
@@ -80,6 +85,10 @@ class EditProfileUser : Fragment() {
             saveProfileChanges()
             communicator.replaceFragment(ProfileUser())
             Log.d("userlog", "Profile Saved")
+        }
+
+        AvatarManager.getUserAvatar(communicator.getAuthUser(), communicator.getAuthUserEmail(), communicator.getAuthUser(), 80, lifecycleScope) { bitmap ->
+            imageUser.setImageBitmap(bitmap)
         }
 
         alterarSenha = view.findViewById(R.id.AlterarSenhaEditUser)
@@ -127,6 +136,10 @@ class EditProfileUser : Fragment() {
 
         if (username.isNotEmpty()) {
             updates["name"] = username
+        }
+
+        if(changedImage){
+            AvatarManager.storeAvatarForUser(communicator.getAuthUser(), imageConverted)
         }
 
         val objectives = ArrayList<String>()

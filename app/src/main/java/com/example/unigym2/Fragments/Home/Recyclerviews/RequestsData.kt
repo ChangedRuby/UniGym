@@ -1,5 +1,7 @@
 package com.example.unigym2.Fragments.Home.Recyclerviews
 
+import android.graphics.Bitmap
+
 data class RequestsData(
     val nomeCliente: String? = null,
     val data: String? = null,
@@ -7,5 +9,6 @@ data class RequestsData(
     val servico: String? = null,
     val clienteID: String? = null,
     val personalID: String? = null,
-    val agendamentoID: String? = null
+    val agendamentoID: String? = null,
+    val image: Bitmap? = null,
 )

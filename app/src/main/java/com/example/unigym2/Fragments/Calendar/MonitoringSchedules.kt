@@ -175,6 +175,7 @@ class MonitoringSchedules : Fragment() {
                             .addOnSuccessListener {
                                 textIndisponivel.visibility = View.GONE
                                 Toast.makeText(requireContext(), "Sessão: $horaFormatada - $servicoSelecionado solicitada ao personal!", Toast.LENGTH_SHORT).show()
+
                                 communicator.replaceFragment(VisualizarPerfilPersonal())
                             }
                             .addOnFailureListener {

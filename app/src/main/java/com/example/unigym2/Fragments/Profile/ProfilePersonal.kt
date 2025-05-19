@@ -9,8 +9,11 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
 import com.example.unigym2.Activities.Communicator
+import com.example.unigym2.Managers.AvatarManager
 import com.example.unigym2.R
+import com.google.android.material.imageview.ShapeableImageView
 import com.google.firebase.firestore.FirebaseFirestore
 
 private const val ARG_PARAM1 = "param1"
@@ -27,6 +30,7 @@ class ProfilePersonal : Fragment() {
     lateinit var editBtn : ImageView
     lateinit var exitBtn : ImageView
     lateinit var accessibilityBtn: TextView
+    lateinit var imageView: ShapeableImageView
     private lateinit var communicator : Communicator
     lateinit var especialidade1 : TextView
     lateinit var especialidade2 : TextView
@@ -63,6 +67,7 @@ class ProfilePersonal : Fragment() {
         nameTextView = v.findViewById(R.id.UserProfileName)
         emailTextView = v.findViewById(R.id.userProfileEmail)
         crefTextView = v.findViewById(R.id.userCREF)
+        imageView = v.findViewById(R.id.profilePersonalImage)
         especialidade1 = v.findViewById(R.id.especialidade1)
         especialidade2 = v.findViewById(R.id.especialidade2)
         especialidade3 = v.findViewById(R.id.especialidade3)
@@ -81,7 +86,7 @@ class ProfilePersonal : Fragment() {
                 nameTextView.text = result.data?.get("name").toString()
                 emailTextView.text = communicator.getAuthUserEmail()
                 crefTextView.text = result.data?.get("CREF").toString()
-                especialidade1.text = result.data?.get("specialty1").toString()
+                /*especialidade1.text = result.data?.get("specialty1").toString()
                 especialidade2.text = result.data?.get("specialty2").toString()
                 especialidade3.text = result.data?.get("specialty3").toString()
                 especialidade4.text = result.data?.get("specialty4").toString()
@@ -92,7 +97,7 @@ class ProfilePersonal : Fragment() {
                 preco1.text = result.data?.get("servicePrice1").toString()
                 preco2.text = result.data?.get("servicePrice2").toString()
                 preco3.text = result.data?.get("servicePrice3").toString()
-                preco4.text = result.data?.get("servicePrice4").toString()
+                preco4.text = result.data?.get("servicePrice4").toString()*/
                 val specialties = result.data?.get("specialties") as List<*>
                 val services = result.data?.get("services") as List<*>
                 val prices = result.data?.get("servicePrices") as List<*>
@@ -143,6 +148,10 @@ class ProfilePersonal : Fragment() {
                 .add(android.R.id.content, ProfileLogout())
                 .addToBackStack(null)
                 .commit()
+        }
+
+        AvatarManager.getUserAvatar(communicator.getAuthUser(), communicator.getAuthUserEmail(), communicator.getAuthUserName(), 80, lifecycleScope) { bitmap ->
+            imageView.setImageBitmap(bitmap)
         }
 
         return v
