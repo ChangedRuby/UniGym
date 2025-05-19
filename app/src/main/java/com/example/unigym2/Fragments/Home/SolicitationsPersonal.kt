@@ -107,7 +107,9 @@ class SolicitationsPersonal : Fragment() {
         db = FirebaseFirestore.getInstance()
         val personalIdAtual = FirebaseAuth.getInstance().currentUser?.uid
 
-        db.collection("Agendamentos").whereEqualTo("personalID", personalIdAtual)
+        db.collection("Agendamentos")
+            .whereEqualTo("personalID", personalIdAtual)
+            .whereEqualTo("status", "pendente")
             .addSnapshotListener(object : EventListener<QuerySnapshot>{
                 override fun onEvent(
                     value: QuerySnapshot?,
