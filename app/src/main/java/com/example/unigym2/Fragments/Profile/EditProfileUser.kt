@@ -18,6 +18,7 @@ import android.graphics.BitmapFactory
 import android.net.Uri
 import android.util.Base64
 import android.widget.Button
+import android.widget.EditText
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.lifecycle.lifecycleScope
@@ -33,7 +34,7 @@ class EditProfileUser : Fragment() {
     private lateinit var saveButton : TextView
     private lateinit var usernameEdit : TextInputEditText
     private lateinit var userProfileEmail : TextView
-    private var inputEmail : TextInputEditText ?=null
+    private var inputEmail : EditText ?=null
     private lateinit var changeImageButton: Button
     private lateinit var imageUser: ShapeableImageView
     private lateinit var objetivo1 : TextInputEditText
@@ -83,7 +84,7 @@ class EditProfileUser : Fragment() {
         objetivo2 = view.findViewById(R.id.editObjetivo2)
         objetivo3 = view.findViewById(R.id.editObjetivo3)
         objetivo4 = view.findViewById(R.id.editObjetivo4)
-        inputEmail = view.findViewById(R.id.emailEditText)
+        inputEmail = view.findViewById(R.id.editTextTextEmailAddress)
         saveButton = view.findViewById(R.id.ConfirmarEditUser)
         saveButton.setOnClickListener {
             saveProfileChanges()
