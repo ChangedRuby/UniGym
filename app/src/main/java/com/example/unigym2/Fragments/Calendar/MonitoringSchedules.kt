@@ -174,7 +174,7 @@ class MonitoringSchedules : Fragment() {
                                 Toast.makeText(requireContext(), "Sessão: $horaFormatada - $servicoSelecionado solicitada ao personal!", Toast.LENGTH_SHORT).show()
                                 val fragment = VisualizarPerfilPersonal()
                                 val bundle = Bundle().apply {
-                                    putString("personalID", personalID)
+                                    putString("personal_id", personalID)
                                 }
                                 parentFragmentManager.setFragmentResult("personal_info_key", bundle)
 //                                requireActivity().supportFragmentManager.beginTransaction()
