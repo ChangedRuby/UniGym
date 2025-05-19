@@ -56,24 +56,32 @@ class VisualizarPerfilPersonal() : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         var v = inflater.inflate(R.layout.fragment_visualizar_profile_personal, container, false)
+
         nameTextView = v.findViewById(R.id.UserProfileName)
         emailTextView = v.findViewById(R.id.userProfileEmail)
         crefTextView = v.findViewById(R.id.userCREF)
+
         specialty1 = v.findViewById(R.id.especialidade1)
         specialty2 = v.findViewById(R.id.especialidade2)
         specialty3 = v.findViewById(R.id.especialidade3)
         specialty4 = v.findViewById(R.id.especialidade4)
+
         service1 = v.findViewById(R.id.servico1)
         service2 = v.findViewById(R.id.servico2)
         service3 = v.findViewById(R.id.servico3)
         service4 = v.findViewById(R.id.servico4)
+
         price1 = v.findViewById(R.id.precoServico1)
         price2 = v.findViewById(R.id.precoServico2)
         price3 = v.findViewById(R.id.precoServico3)
         price4 = v.findViewById(R.id.precoServico4)
+
         communicator = activity as Communicator
+
         db = FirebaseFirestore.getInstance()
+
         agendamentoTreinoBtn = v.findViewById(R.id.agendarTreino)
+
         backBtn = v.findViewById(R.id.SairPersonal)
 
         agendamentoTreinoBtn.setOnClickListener {

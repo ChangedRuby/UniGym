@@ -50,6 +50,7 @@ class ChatPersonal : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+
         // Inflate the layout for this fragment
         var v = inflater.inflate(R.layout.fragment_chat_trainer, container, false)
         db = FirebaseFirestore.getInstance()

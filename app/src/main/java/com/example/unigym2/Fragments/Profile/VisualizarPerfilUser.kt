@@ -22,11 +22,15 @@ class VisualizarPerfilUser : Fragment() {
     private var param2: String? = null
 
     private lateinit var db: FirebaseFirestore
+
     private lateinit var nameTextView : TextView
     private lateinit var emailTextView: TextView
-    private lateinit var communicator : Communicator
     private lateinit var backBtn : ImageView
+
+    private lateinit var communicator : Communicator
+
     private lateinit var userID : String
+
     private lateinit var objetivo1 : TextView
     private lateinit var objetivo2 : TextView
     private lateinit var objetivo3 : TextView
@@ -47,10 +51,14 @@ class VisualizarPerfilUser : Fragment() {
     ): View? {
         var v = inflater.inflate(R.layout.fragment_visualizar_profile_user, container, false)
         db = FirebaseFirestore.getInstance()
+
         communicator = activity as Communicator
+
         backBtn = v.findViewById(R.id.backButton)
+
         nameTextView = v.findViewById(R.id.UserProfileName)
         emailTextView = v.findViewById(R.id.userCREF)
+
         objetivo1 = v.findViewById(R.id.especialidade1)
         objetivo2 = v.findViewById(R.id.especialidade2)
         objetivo3 = v.findViewById(R.id.objetivo3)

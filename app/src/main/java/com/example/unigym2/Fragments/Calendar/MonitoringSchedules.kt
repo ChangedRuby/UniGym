@@ -77,9 +77,6 @@ class MonitoringSchedules : Fragment() {
         val adapter = ArrayAdapter(requireContext(),android.R.layout.simple_dropdown_item_1line, servicos)
         autoServico.setAdapter(adapter)
 
-
-
-
         autoServico.setOnClickListener{
             autoServico.showDropDown()
         }
@@ -175,7 +172,12 @@ class MonitoringSchedules : Fragment() {
                             .addOnSuccessListener {
                                 textIndisponivel.visibility = View.GONE
                                 Toast.makeText(requireContext(), "Sessão: $horaFormatada - $servicoSelecionado solicitada ao personal!", Toast.LENGTH_SHORT).show()
-
+                                val fragment = VisualizarPerfilPersonal()
+                                val bundle = Bundle().apply {
+                                    putString("personalID", personalID)
+                                }
+                                parentFragmentManager.setFragmentResult("personal_info_key", bundle)
+//                                requireActivity().supportFragmentManager.beginTransaction()
                                 communicator.replaceFragment(VisualizarPerfilPersonal())
                             }
                             .addOnFailureListener {
