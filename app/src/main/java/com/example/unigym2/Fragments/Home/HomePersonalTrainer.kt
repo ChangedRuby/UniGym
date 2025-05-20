@@ -78,7 +78,7 @@ class HomePersonalTrainer : Fragment() {
 //
 //            }
 //            .addOnFailureListener {
-//                solicitationsView.text = "Erro de valor"
+//                Log.e("Erro de valor", "Nao foi calculado a qtd")
 //            }
 
         db.collection("Usuarios").document(communicator.getAuthUser())
