@@ -117,5 +117,13 @@ class LoginMenu : AppCompatActivity() {
         } else{
             Toast.makeText(this, "Preencha todos os campos!", Toast.LENGTH_SHORT).show()
         }
+
+        val emailAlterado = intent.getBooleanExtra("email_alterado", false)
+        if (emailAlterado){
+            Toast.makeText(this,"Email alterado com sucesso! Use o novo e-mail para login.", Toast.LENGTH_LONG).show()
+        }
+
+
     }
+
 }
