@@ -1,13 +1,18 @@
 package com.example.unigym2.Fragments.Chat.Recyclerviews
 
+import com.google.firebase.Timestamp
+
 class Message {
     var message: String? = null
     var senderId: String? = null
+    var receiverId : String? = null
 
     constructor(){}
 
-    constructor(message: String?, senderId: String?){
+    constructor(message: String?, senderId: String?, receiverId: String?){
         this.message = message
         this.senderId = senderId
+        this.receiverId = receiverId
+
     }
 }

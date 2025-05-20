@@ -17,6 +17,7 @@ import com.example.unigym2.Fragments.Chat.Recyclerviews.MessageAdapter
 import com.example.unigym2.R
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.ListenerRegistration
 import java.time.Instant
 import java.time.ZoneId
 import java.time.format.DateTimeFormatter
@@ -29,45 +30,36 @@ class ChatMain : Fragment() {
     private lateinit var messageAdapter: MessageAdapter
     private lateinit var messageList: ArrayList<Message>
     private lateinit var backBtn: ImageView
-    private lateinit var communicator : Communicator
-
+    private lateinit var communicator: Communicator
     private lateinit var db: FirebaseFirestore
+    private lateinit var chatName: TextView
+    private lateinit var listenerRegistration: ListenerRegistration
 
-    private var receiverRoom: String? = null
-    private var senderRoom: String? = null
-    private lateinit var chatName : TextView
-
+    private var chatRoomId: String? = null
+    private var receiverUid: String? = null
+    private var senderUid: String? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Infla o layout do fragmento
         val view = inflater.inflate(R.layout.fragment_chat_main, container, false)
 
         chatName = view.findViewById(R.id.chatName)
         backBtn = view.findViewById(R.id.goBackBtn)
         communicator = activity as Communicator
 
-        var receiverUid: String? = null
         parentFragmentManager.setFragmentResultListener("chat_name_key", viewLifecycleOwner) { _, bundle ->
             val userName = bundle.getString("name", "Unknown Username")
             val UID = bundle.getString("recieverID")
             chatName.text = userName
             receiverUid = UID
+            setupChat()
         }
 
-        val senderUid = FirebaseAuth.getInstance().currentUser ?.uid
-
-        val currentInstant: Instant = Instant.now()
-        val formatter: DateTimeFormatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm").withZone(ZoneId.of("UTC-3"))
-        val formattedTimestamp: String = formatter.format(currentInstant)
-
+        senderUid = FirebaseAuth.getInstance().currentUser?.uid
         db = FirebaseFirestore.getInstance()
-
-        senderRoom = receiverUid + senderUid
-        receiverRoom = senderUid + receiverUid
 
         mainChatRecyclerView = view.findViewById(R.id.mainChat_RecycleView)
         messageBox = view.findViewById(R.id.messageBox)
@@ -75,7 +67,6 @@ class ChatMain : Fragment() {
         messageList = ArrayList()
         messageAdapter = MessageAdapter(requireContext(), messageList)
 
-        // Configura o RecyclerView
         mainChatRecyclerView.layoutManager = LinearLayoutManager(context)
         mainChatRecyclerView.adapter = messageAdapter
 
@@ -83,62 +74,83 @@ class ChatMain : Fragment() {
             communicator.replaceFragment(if (communicator.getMode()) ChatPersonal() else ChatUser())
         }
 
-        // Adicionando a mensagem ao Database
+        return view
+    }
+
+    val currentInstant: Instant = Instant.now()
+    val formatter: DateTimeFormatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm").withZone(ZoneId.of("UTC-3"))
+    val formattedTimestamp: String = formatter.format(currentInstant)
+
+    private fun setupChat() {
+        if (senderUid == null || receiverUid == null) return
+
+        // Gera um ID de sala único baseado nos UIDs
+        chatRoomId = if (senderUid!! < receiverUid!!) {
+            senderUid + receiverUid
+        } else {
+            receiverUid + senderUid
+        }
+
+        // Ouve as mensagens em tempo real
+        listenerRegistration = db.collection("Chats")
+            .document(chatRoomId!!)
+            .collection("messages")
+            .addSnapshotListener { snapshot, e ->
+                if (e != null) {
+                    return@addSnapshotListener
+                }
+
+                messageList.clear()
+                if (snapshot != null) {
+                    for (doc in snapshot.documents) {
+                        val message = doc.toObject(Message::class.java)
+                        if (message != null) {
+                            messageList.add(message)
+                        }
+                    }
+                    messageAdapter.notifyDataSetChanged()
+                }
+            }
+
+        // Envia mensagem
         sendButton.setOnClickListener {
             val messageText = messageBox.text.toString().trim()
             if (messageText.isNotEmpty()) {
-                val messageObject = Message(message = messageText, senderId = senderUid)
                 val messageData = hashMapOf(
-                    "receiver_name" to receiverUid,
-                    "sender_name" to senderUid,
                     "message" to messageText,
-                    "timestamp" to formattedTimestamp
+                    "senderId" to senderUid,
+                    "receiverId" to receiverUid,
+                    "timestamp" to formatter
                 )
 
-                // Verifica se a sala de chat já existe
+                // Cria documento da sala se não existir
                 db.collection("Chats")
-                    .document(receiverRoom!!)
+                    .document(chatRoomId!!)
                     .get()
                     .addOnSuccessListener { document ->
-                        if (document.exists()) {
-                            // Sala de chat existe, adicione a mensagem
+                        if (!document.exists()) {
                             db.collection("Chats")
-                                .document(receiverRoom!!)
-                                .collection("messages")
-                                .add(messageData)
-                                .addOnSuccessListener {
-                                    messageBox.text.clear()
-                                }
-                                .addOnFailureListener { e ->
-                                    e.printStackTrace()
-                                }
-                        } else {
-                            // Sala de chat não existe, crie um novo documento
-                            db.collection("Chats")
-                                .document(receiverRoom!!)
-                                .set(hashMapOf("users" to listOf(senderUid, receiverUid))) // Adiciona alguma informação inicial
-                                .addOnSuccessListener {
-                                    // Agora adicione a mensagem
-                                    db.collection("Chats")
-                                        .document(receiverRoom!!)
-                                        .collection("messages")
-                                        .add(messageData)
-                                        .addOnSuccessListener {
-                                            messageBox.text.clear()
-                                        }
-                                        .addOnFailureListener { e ->
-                                            e.printStackTrace()
-                                        }
-                                }
+                                .document(chatRoomId!!)
+                                .set(hashMapOf("users" to listOf(senderUid, receiverUid)))
                         }
-                    }
-                    .addOnFailureListener { e ->
-                        e.printStackTrace()
+
+                        // Adiciona a mensagem
+                        db.collection("Chats")
+                            .document(chatRoomId!!)
+                            .collection("messages")
+                            .add(messageData)
+                            .addOnSuccessListener {
+                                messageBox.text.clear()
+                            }
                     }
             }
         }
+    }
 
-
-        return view
+    override fun onDestroyView() {
+        super.onDestroyView()
+        if (::listenerRegistration.isInitialized) {
+            listenerRegistration.remove()
+        }
     }
 }
