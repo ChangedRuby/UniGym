@@ -47,11 +47,15 @@ class ListaPersonaisAdapter(private val dataList : MutableList<ListaPersonaisIte
             communicator.replaceFragment(ChatMain())
         }
 
-        if(position == 0){
+        if (currentItem.userId == "BROK_AI_AGENT") {
             holder.visualizarPerfilBtn.visibility = View.GONE
             holder.nameView.text = "Brok"
             holder.descriptionView.text = "Converse com um agente de IA."
+        } else {
+            holder.visualizarPerfilBtn.visibility = View.VISIBLE
+            holder.descriptionView.text = "Treino com personal"
         }
+
         holder.visualizarPerfilBtn.setOnClickListener {
             fragmentManager.setFragmentResult("personal_info_key", Bundle().apply {
                 putString("personal_name", currentItem.name)
