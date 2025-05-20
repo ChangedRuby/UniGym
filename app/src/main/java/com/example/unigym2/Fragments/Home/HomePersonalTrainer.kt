@@ -11,6 +11,7 @@ import androidx.fragment.app.Fragment
 import com.example.unigym2.Activities.Communicator
 import com.example.unigym2.Fragments.Calendar.MonitoringSchedules
 import com.example.unigym2.R
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 
 // TODO: Rename parameter arguments, choose names that match
@@ -32,6 +33,8 @@ class HomePersonalTrainer : Fragment() {
 
     lateinit var schedulesBtn: Button
     lateinit var titleView: TextView
+    lateinit var solicitationsView: TextView
+
     lateinit var db: FirebaseFirestore
     private lateinit var communicator: Communicator
 
@@ -57,11 +60,26 @@ class HomePersonalTrainer : Fragment() {
         titleView = v.findViewById(R.id.nameTitle)
         schedulesBtn = v.findViewById(R.id.schedulesBtn)
 
+        val auth = FirebaseAuth.getInstance()
+        val personalID = auth.currentUser?.uid
+
         schedulesBtn.setOnClickListener{
             communicator.replaceFragment(SolicitationsPersonal())
             Log.d("personalLog", "Clicked")
             // this.parentFragmentManager.beginTransaction().replace(R.id.frame_layout, HomeUser()).commit()
         }
+        db.collection("Agendamentos")
+            .whereEqualTo("personalID", personalID )
+            .whereEqualTo("status", "pendente")
+            .get()
+            .addOnSuccessListener { documents ->
+                val solicitacoesPendentes = documents.size()
+                solicitationsView.text = "$solicitacoesPendentes + solicitações pendentes!"
+
+            }
+            .addOnFailureListener {
+                solicitationsView.text = "Erro de valor"
+            }
 
         db.collection("Usuarios").document(communicator.getAuthUser())
             .get()
