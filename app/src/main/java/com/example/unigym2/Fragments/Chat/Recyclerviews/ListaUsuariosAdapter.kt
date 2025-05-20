@@ -13,6 +13,7 @@ import com.example.unigym2.Fragments.Chat.ChatMain
 import com.example.unigym2.Fragments.Profile.VisualizarPerfilPersonal
 import com.example.unigym2.Fragments.Profile.VisualizarPerfilUser
 import com.example.unigym2.R
+import com.google.android.material.imageview.ShapeableImageView
 
 class ListaUsuariosAdapter(private val dataList: MutableList<ListaPersonaisItem>, var communicator: Communicator, val fragmentManager : FragmentManager) : RecyclerView.Adapter<ListaUsuariosAdapter.MyViewHolder>(){
 
@@ -32,6 +33,7 @@ class ListaUsuariosAdapter(private val dataList: MutableList<ListaPersonaisItem>
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
         val currentItem = dataList[position]
         holder.nameView.text = currentItem.name
+        holder.usuarioImage.setImageBitmap(currentItem.image)
         holder.itemView.setOnClickListener {
             val bundle = Bundle().apply {
                 putString("name", currentItem.name)
@@ -61,5 +63,6 @@ class ListaUsuariosAdapter(private val dataList: MutableList<ListaPersonaisItem>
         val visualizarPerfilBtn : AppCompatImageView = itemView.findViewById(R.id.visualizarPerfilBtn)
         val nameView : TextView = itemView.findViewById(R.id.textViewUsername)
         val descriptionView: TextView = itemView.findViewById(R.id.userDescription)
+        val usuarioImage: ShapeableImageView = itemView.findViewById(R.id.profileChatListaImage)
     }
 }

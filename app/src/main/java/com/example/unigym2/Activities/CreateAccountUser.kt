@@ -87,6 +87,7 @@ class CreateAccountUser : AppCompatActivity() {
                             var intent = Intent(this, MainActivity::class.java)
                             intent.putExtra("personalMode", "false")
                             intent.putExtra("userId", user.uid)
+                            intent.putExtra("userEmail", user.email)
                             startActivity(intent)
 
                             Log.d("create_account", "DocumentSnapshot added with ID: ${user.uid}")

@@ -36,6 +36,7 @@ class ProfileUser : Fragment() {
     lateinit var objetivo2TextView: TextView
     lateinit var objetivo3TextView: TextView
     lateinit var objetivo4TextView: TextView
+    lateinit var deleteUserButton: ImageView
     lateinit var profileView: ShapeableImageView
     lateinit var profileBitmap: Bitmap
     lateinit var auth: FirebaseAuth
@@ -59,6 +60,7 @@ class ProfileUser : Fragment() {
         db = FirebaseFirestore.getInstance()
         userEditBtn = v.findViewById(R.id.EditProfileUser)
         exitBtn = v.findViewById(R.id.ExitButton)
+        deleteUserButton = v.findViewById(R.id.deleteUserBtn)
         accessibilityBtn = v.findViewById(R.id.AcessibilidadeUser)
         nameTextView = v.findViewById(R.id.UserProfileName)
         emailTextView = v.findViewById(R.id.userCREF)
@@ -103,6 +105,13 @@ class ProfileUser : Fragment() {
             Log.d("userLog", "Clicked")
             requireActivity().supportFragmentManager.beginTransaction()
                 .add(android.R.id.content, ProfileLogout())
+                .addToBackStack(null)
+                .commit()
+        }
+
+        deleteUserButton.setOnClickListener {
+            requireActivity().supportFragmentManager.beginTransaction()
+                .add(android.R.id.content, ProfileConfirmDeleteAccount())
                 .addToBackStack(null)
                 .commit()
         }

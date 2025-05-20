@@ -1,11 +1,13 @@
 package com.example.unigym2.Fragments.Chat
 
+import android.graphics.BitmapFactory
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.unigym2.Activities.Communicator
@@ -13,6 +15,7 @@ import com.example.unigym2.Fragments.Chat.Recyclerviews.ListaPersonaisAdapter
 import com.example.unigym2.Fragments.Chat.Recyclerviews.ListaPersonaisItem
 import com.example.unigym2.Fragments.Chat.Recyclerviews.ListaUsuariosAdapter
 import com.example.unigym2.Fragments.Treinos.Recyclerviews.ListaTreinosItem
+import com.example.unigym2.Managers.AvatarManager
 import com.example.unigym2.R
 import com.google.firebase.firestore.FirebaseFirestore
 
@@ -92,10 +95,16 @@ class ChatPersonal : Fragment() {
         val userCollection = db.collection("Usuarios")
         userCollection.whereEqualTo("isPersonal", false).get().addOnSuccessListener { documents ->
             for(document in documents){
-                itemArray.add(ListaPersonaisItem(name = document.get("name").toString(), userId = document.id))
-                Log.d("ChatUser", "Item added: ${document.getString("name")}")
+
+                AvatarManager.getUserAvatar(document.get("id").toString(), document.get("email").toString(), document.get("name").toString(), 40, lifecycleScope) { bitmap ->
+                    itemArray.add(ListaPersonaisItem(name = document.getString("name").toString(),
+                        userId = document.getString("id").toString(),
+                        image = bitmap))
+                    adapter.notifyDataSetChanged()
+                    Log.d("ChatUser", "Item added: ${document.getString("name")}")
+                }
             }
-            itemArray.add(0, ListaPersonaisItem(name = "Brok", userId = ""))
+            itemArray.add(0, ListaPersonaisItem(name = "Brok", userId = "", image = BitmapFactory.decodeResource(context?.resources, R.drawable.brok_logo)))
             adapter.notifyDataSetChanged()
         }
     }
