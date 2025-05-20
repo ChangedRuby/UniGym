@@ -1,5 +1,6 @@
 package com.example.unigym2.Fragments.Calendar
 
+import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -12,6 +13,8 @@ import android.widget.CalendarView
 import android.widget.EditText
 import android.widget.ImageButton
 import android.widget.LinearLayout
+import android.widget.Spinner
+import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.example.unigym2.Activities.Communicator
@@ -53,6 +56,7 @@ class MonitoringSchedules : Fragment() {
     ): View? {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_monitoring_schedules, container, false)
+
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -69,24 +73,24 @@ class MonitoringSchedules : Fragment() {
         val btnAgendar = view.findViewById<Button>(R.id.btnAgendar)
         val inputHora = view.findViewById<EditText>(R.id.inputHora)
         val inputMinuto = view.findViewById<EditText>(R.id.inputMinuto)
-
-        val autoServico = view.findViewById<AutoCompleteTextView>(R.id.autoCompleteServico)
-        val servicos = arrayOf("Consulta", "Treino Personal ", "Massagem ", "Avaliação")
         val textIndisponivel = view.findViewById<android.widget.TextView>(R.id.textIndisponivel)
+        val spinnerServico = view.findViewById<Spinner>(R.id.spinner)
 
-        val adapter = ArrayAdapter(requireContext(),android.R.layout.simple_dropdown_item_1line, servicos)
-        autoServico.setAdapter(adapter)
+        val firestore = FirebaseFirestore.getInstance()
 
-        autoServico.setOnClickListener{
-            autoServico.showDropDown()
-        }
+
 
         val btnVoltar = view.findViewById<ImageButton>(R.id.btnVoltar)
         communicator = activity as Communicator
         btnVoltar.setOnClickListener {
+            val fragment = VisualizarPerfilPersonal()
+            val bundle = Bundle().apply {
+                putString("personal_id", personalID)
+            }
+            parentFragmentManager.setFragmentResult("personal_info_key", bundle)
             communicator.replaceFragment(VisualizarPerfilPersonal())
         }
-            // talvez ajeitar esse botao de voltar
+
 
         calendarView.setOnDateChangeListener { _, year, month, dayOfMonth ->
             blocoNovaSessao.visibility = View.VISIBLE
@@ -94,10 +98,40 @@ class MonitoringSchedules : Fragment() {
             dataSelecionada = String.format("%02d/%02d/%04d", dayOfMonth, month+1, year)
         }
 
+
+        firestore.collection("Usuarios").document(personalID!!)
+            .get()
+            .addOnSuccessListener { document ->
+                val servicosList = document.get("services") as? ArrayList<*>
+                val servicosFiltrados = servicosList?.filterIsInstance<String>()?: emptyList()
+                val servicos = listOf("Selecione um serviço") + servicosFiltrados
+
+                val adapter = object: ArrayAdapter<String>(requireContext(), android.R.layout.simple_spinner_item, servicos){
+                    override fun isEnabled(position: Int): Boolean {
+                        return position != 0
+                    }
+
+                    override fun getDropDownView(position: Int, convertView: View?, parent: ViewGroup): View {
+                        val view = super.getDropDownView(position, convertView, parent)
+                        val textView = view as TextView
+                        textView.setTextColor(if (position == 0) Color.LTGRAY else Color.WHITE)
+                        return view
+                    }
+                }
+
+                adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+                spinnerServico.adapter = adapter
+
+
+            }
+            .addOnFailureListener { Toast.makeText(requireContext(), "Erro ao carregar serviços", Toast.LENGTH_SHORT) }
+
         btnAgendar.setOnClickListener {
+
+
             val horaString = inputHora.text.toString().trim()
             val minutoString = inputMinuto.text.toString().trim()
-            val servicoSelecionado = autoServico.text.toString().trim()
+            val servicoSelecionado = spinnerServico.selectedItem?.toString()
 
             // Verificação se algum campo está vazio
             if (horaString.isEmpty() || minutoString.isEmpty()) {
@@ -124,7 +158,7 @@ class MonitoringSchedules : Fragment() {
                 return@setOnClickListener
             }
 
-            if (servicoSelecionado.isEmpty()) {
+            if (servicoSelecionado == "Selecione um serviço") {
                 Toast.makeText(requireContext(), "Selecione um serviço!", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
@@ -132,7 +166,6 @@ class MonitoringSchedules : Fragment() {
 
             val auth = FirebaseAuth.getInstance()
             val clienteID = auth.currentUser?.uid
-            val firestore = FirebaseFirestore.getInstance()
             val horaFormatada = String.format("%02d:%02d", hora, minuto)
 
 

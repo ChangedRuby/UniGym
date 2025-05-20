@@ -104,7 +104,7 @@ class SolicitationsPersonal : Fragment() {
 
     private fun dataInitialize(){
 
-//        requestsArrayList = arrayListOf<RequestsData>()
+        requestsArrayList = arrayListOf<RequestsData>()
 
         db = FirebaseFirestore.getInstance()
         val personalIdAtual = FirebaseAuth.getInstance().currentUser?.uid

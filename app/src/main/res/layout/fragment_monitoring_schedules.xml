@@ -179,19 +179,15 @@
                     android:paddingStart="12dp"
                     android:paddingEnd="12dp">
 
-                    <AutoCompleteTextView
-                        android:id="@+id/autoCompleteServico"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:background="@null"
-                        android:drawableEnd="@drawable/baseline_keyboard_arrow_down_24"
-                        android:drawablePadding="12dp"
-                        android:focusable="false"
-                        android:hint="Pesquisar"
-                        android:inputType="none"
-                        android:paddingEnd="36dp"
-                        android:textColor="@android:color/white"
-                        android:textColorHint="#88FFFFFF" />
+                    <Spinner
+                        android:id="@+id/spinner"
+                        android:layout_width="219dp"
+                        android:layout_height="35dp"
+                        android:layout_alignParentStart="true"
+                        android:layout_alignParentTop="true"
+                        android:layout_marginStart="18dp"
+                        android:layout_marginTop="8dp"
+                        android:background="@color/light_grey" />
                 </RelativeLayout>
             </LinearLayout>
 
