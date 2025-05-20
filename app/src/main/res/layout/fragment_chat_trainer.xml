@@ -20,6 +20,8 @@
                 android:layout_width="290dp"
                 android:layout_height="40dp"
                 android:layout_weight="1"
+                android:clickable="false"
+                android:gravity="center_vertical"
                 android:text="Pesquisar"
                 app:layout_constraintBottom_toBottomOf="@+id/conversasSearchView"
                 app:layout_constraintEnd_toEndOf="@+id/conversasSearchView"
