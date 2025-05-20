@@ -46,7 +46,7 @@ class ListaUsuariosAdapter(private val dataList: MutableList<ListaPersonaisItem>
             communicator.replaceFragment(ChatMain())
         }
 
-        Guif (currentItem.userId == "BROK_AI_AGENT") {
+        if (currentItem.userId == "BROK_AI_AGENT") {
             holder.visualizarPerfilBtn.visibility = View.GONE
             holder.nameView.text = "Brok"
             holder.descriptionView.text = "Converse com um agente de IA"
