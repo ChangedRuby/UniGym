@@ -109,6 +109,7 @@
             android:text="Email: treinador@gmail.com"
             android:textColor="#FBFBFB"
             android:textSize="12sp"
+            android:visibility="invisible"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.79"
@@ -125,6 +126,25 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.45" />
+
+
+            <EditText
+                android:id = "@+id/editTextTextTreinadorEmailAddress"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:hint="treinador@gmail.com"
+                android:inputType="textEmailAddress"
+                android:textColor="@color/input_field_bg"
+                android:textColorHint="@color/hint_grey"
+                android:textSize="20sp"
+                app:layout_constraintTop_toBottomOf="@id/AlterarSenhaEditPersonal"
+                app:layout_constraintBottom_toTopOf="@+id/lineView"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintVertical_bias="1.0" />
+
+
+
 
         <com.google.android.material.imageview.ShapeableImageView
             android:id="@+id/profilePersonalEditImage"
@@ -423,10 +443,10 @@
             android:textStyle="bold"
             app:layout_constraintBottom_toTopOf="@+id/userProfileEmail"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.512"
+            app:layout_constraintHorizontal_bias="0.521"
             app:layout_constraintStart_toEndOf="@+id/editTextUsername"
             app:layout_constraintTop_toBottomOf="@+id/profileSecondaryColor"
-            app:layout_constraintVertical_bias="0.914" />
+            app:layout_constraintVertical_bias="0.913" />
 
         <TextView
             android:id="@+id/ConfirmarEditPersonal"

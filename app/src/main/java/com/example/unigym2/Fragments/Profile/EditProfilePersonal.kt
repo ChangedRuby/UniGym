@@ -7,6 +7,7 @@ package com.example.unigym2.Fragments.Profile
     import android.view.View
     import android.view.ViewGroup
     import android.widget.Button
+    import android.widget.EditText
     import android.widget.TextView
     import androidx.fragment.app.Fragment
     import androidx.lifecycle.lifecycleScope
@@ -26,6 +27,7 @@ class EditProfilePersonal : Fragment() {
         private lateinit var saveButton: TextView
         private lateinit var usernameEditText: TextInputEditText
         private lateinit var userProfileEmail: TextView
+        private var inputTreinadorEmail: EditText ?= null
         private lateinit var crefTextView: TextView
         private lateinit var imageView: ShapeableImageView
         private lateinit var specialtyET1: TextInputEditText
@@ -69,6 +71,8 @@ class EditProfilePersonal : Fragment() {
             servicePriceET2 = view.findViewById(R.id.editText10)
             servicePriceET3 = view.findViewById(R.id.editText11)
             servicePriceET4 = view.findViewById(R.id.editText12)
+            inputTreinadorEmail = view.findViewById(R.id.editTextTextTreinadorEmailAddress)
+
             db.collection("Usuarios").document(communicator.getAuthUser())
                 .get()
                 .addOnSuccessListener { result ->
@@ -132,6 +136,10 @@ class EditProfilePersonal : Fragment() {
 
     private fun saveProfileChanges() {
         val username = usernameEditText.text.toString()
+        val newEmail = inputTreinadorEmail?.text?.toString()?.trim().orEmpty()
+        val currentEmail = communicator.getAuthUserEmail()
+        val currentUser = communicator.getAuthInstance().currentUser
+
         val userRef = db.collection("Usuarios").document(communicator.getAuthUser())
         val updates = hashMapOf<String, Any>()
 
@@ -157,6 +165,68 @@ class EditProfilePersonal : Fragment() {
         prices.add(if (servicePriceET2.text.toString().isNotEmpty()) servicePriceET2.text.toString() else servicePriceET2.hint.toString())
         prices.add(if (servicePriceET3.text.toString().isNotEmpty()) servicePriceET3.text.toString() else servicePriceET3.hint.toString())
         prices.add(if (servicePriceET4.text.toString().isNotEmpty()) servicePriceET4.text.toString() else servicePriceET4.hint.toString())
+
+
+
+        if(newEmail.isNotEmpty() && newEmail != currentEmail){
+            @Suppress("DEPRECATION")
+            currentUser?.updateEmail(newEmail)
+                ?.addOnSuccessListener{
+                    userRef.update("email",newEmail)
+                        .addOnSuccessListener{
+                            Log.d("firestore", "Email atualizado com sucesso no Firestore.")
+                        }
+                        .addOnFailureListener{ e->
+                            Log.w("firestore", "Erro ao atualizar email no Firestore", e)
+                        }
+                            Log.d("firebaseAuth", "Email atualizado com sucesso.")
+                }
+                ?.addOnFailureListener { e ->
+                    Log.e("firebaseAuth", "Erro ao atualizar o email. Tentando reautenticar.", e)
+
+                        val builder = android.app.AlertDialog.Builder(requireContext())
+                        builder.setTitle("Reautenticação necessária")
+                        builder.setMessage("Aperte em confirmar para que haja a mudança de email")
+
+                        val input = android.widget.EditText(requireContext())
+                        input.inputType = android.text.InputType.TYPE_CLASS_TEXT or android.text.InputType.TYPE_TEXT_VARIATION_PASSWORD
+                        builder.setView(input)
+
+                    builder.setPositiveButton("Confirmar"){_,_ ->
+                        val password = input.text.toString()
+                        val credential = com.google.firebase.auth.EmailAuthProvider.getCredential(currentEmail, password)
+
+                        currentUser.reauthenticate(credential)
+                            .addOnSuccessListener{
+                                Log.d("firebaseAuth", "Reautenticado com sucesso.")
+                                    @Suppress("DEPRECATION")
+                                    currentUser.updateEmail(newEmail)
+                                        .addOnSuccessListener{
+                                            userRef.update("email",newEmail)
+                                                .addOnSuccessListener{
+                                                    Log.d("firestore", "Email atualizado com sucesso no Firestore após reautenticação.")
+                                                }
+                                                .addOnFailureListener{ e2->
+                                                    Log.w("firestore", "Erro ao atualizar email no Firestore após reautenticação", e2)
+                                                }
+                                            Log.d("firebaseAuth", "Email atualizado com sucesso após reautenticação.")
+                                        }
+                                        .addOnFailureListener{ e2 ->
+                                            Log.e("firebaseAuth", "Falha ao atualizar email após a reautenticação", e2)
+                                        }
+                            }
+                            .addOnFailureListener{ e2 ->
+                                Log.e("firebaseAuth", "Erro ao reutenticar o usuário", e2)
+
+                            }
+                    }
+                            builder.setNegativeButton("Cancelar"){ dialog,_ -> dialog.cancel()}
+                            builder.show()
+                }
+
+
+
+        }
 
         updates["specialties"] = specialties
         updates["services"] = services
