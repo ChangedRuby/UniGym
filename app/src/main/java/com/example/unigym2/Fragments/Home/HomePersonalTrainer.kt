@@ -68,18 +68,18 @@ class HomePersonalTrainer : Fragment() {
             Log.d("personalLog", "Clicked")
             // this.parentFragmentManager.beginTransaction().replace(R.id.frame_layout, HomeUser()).commit()
         }
-        db.collection("Agendamentos")
-            .whereEqualTo("personalID", personalID )
-            .whereEqualTo("status", "pendente")
-            .get()
-            .addOnSuccessListener { documents ->
-                val solicitacoesPendentes = documents.size()
-                solicitationsView.text = "$solicitacoesPendentes + solicitações pendentes!"
-
-            }
-            .addOnFailureListener {
-                solicitationsView.text = "Erro de valor"
-            }
+//        db.collection("Agendamentos")
+//            .whereEqualTo("personalID", personalID )
+//            .whereEqualTo("status", "pendente")
+//            .get()
+//            .addOnSuccessListener { documents ->
+//                val solicitacoesPendentes = documents.size()
+//                solicitationsView.text = "$solicitacoesPendentes + solicitações pendentes!"
+//
+//            }
+//            .addOnFailureListener {
+//                solicitationsView.text = "Erro de valor"
+//            }
 
         db.collection("Usuarios").document(communicator.getAuthUser())
             .get()

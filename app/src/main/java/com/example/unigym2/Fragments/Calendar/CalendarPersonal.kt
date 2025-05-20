@@ -1,6 +1,7 @@
 package com.example.unigym2.Fragments.Calendar
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -76,6 +77,39 @@ class CalendarPersonal : Fragment() {
             val dataSelecionada = "$dayOfMonth/${month + 1}/$year"
 
         programacoesContainer.visibility = View.VISIBLE
+//            schedulesArrayList.clear()
+//
+//            dataBase.collection("Agendamentos")
+//                .whereEqualTo("personalID", personalID)
+//                .whereEqualTo("data", dataSelecionada)
+//                .whereEqualTo("status", "aceito")
+//                .get()
+//                .addOnSuccessListener{ documents ->
+//                    for(document in documents){
+//                        val clienteID = document.getString("clienteID")
+//                        val horario = document.getString("horario")
+//                        val servico = document.getString("servico")
+//
+//                        dataBase.collection("Usuarios")
+//                            .document(clienteID!!)
+//                            .get()
+//                            .addOnSuccessListener { result ->
+//                                val nomeCliente = result.getString("name")
+//
+//                                val programacao = CalendarPersonalItem(
+//                                    nomeCliente = nomeCliente,
+//                                    horario = horario,
+//                                    servico = servico
+//                                )
+//                                schedulesArrayList.add(programacao)
+//                                adapter.notifyDataSetChanged()
+//                            }
+//                    }
+//
+//
+//                }
+//                .addOnFailureListener {  }
+
 
         /*programacoesConteudo.text = "Carregando Programação..."
             dataBase.collection("Agendamentos")
@@ -110,9 +144,6 @@ class CalendarPersonal : Fragment() {
     }
 
     fun dataInitialize(){
-        schedulesArrayList = arrayListOf(
-            CalendarPersonalItem("dfhjgfdkjghdf"),
-            CalendarPersonalItem("sdfijhgflikfdjhgiol"),
-        )
+        schedulesArrayList = arrayListOf()
     }
 }

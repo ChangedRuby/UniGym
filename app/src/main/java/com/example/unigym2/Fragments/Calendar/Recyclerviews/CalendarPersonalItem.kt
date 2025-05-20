@@ -1,5 +1,8 @@
 package com.example.unigym2.Fragments.Calendar.Recyclerviews
 
 data class CalendarPersonalItem(
-    var nomePersonal: String ?= null
+    var nomeCliente: String ?= null,
+    var horario: String? = null,
+    var servico: String? = null
+
 )

@@ -24,15 +24,20 @@ class CalendarPersonalAdapter(private val scheduleList: ArrayList<CalendarPerson
     }
 
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
-        val db = FirebaseFirestore.getInstance()
+        val database = FirebaseFirestore.getInstance()
         val currentItem = scheduleList[position]
 
-        holder.nameView.text = currentItem.nomePersonal
+            holder.nameClient.text = currentItem.nomeCliente
+            holder.hourView.text = currentItem.horario
+            holder.service.text = currentItem.servico
+
 
     }
 
     class MyViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView){
 
-        var nameView : TextView = itemView.findViewById(R.id.calendarioUserNameView)
+        var nameClient: TextView = itemView.findViewById(R.id.nomeClienteView)
+        var hourView: TextView = itemView.findViewById(R.id.horarioView)
+        var service: TextView = itemView.findViewById(R.id.serviceView)
     }
 }

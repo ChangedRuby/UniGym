@@ -48,8 +48,8 @@ class SolicitationsPersonal : Fragment() {
     private lateinit var recyclerView: RecyclerView
     private lateinit var requestsArrayList: ArrayList<RequestsData>
 
-    lateinit var names: Array<String>
-    lateinit var requests: Array<String>
+//    lateinit var names: Array<String>
+//    lateinit var requests: Array<String>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -104,7 +104,7 @@ class SolicitationsPersonal : Fragment() {
 
     private fun dataInitialize(){
 
-        requestsArrayList = arrayListOf<RequestsData>()
+//        requestsArrayList = arrayListOf<RequestsData>()
 
         db = FirebaseFirestore.getInstance()
         val personalIdAtual = FirebaseAuth.getInstance().currentUser?.uid
