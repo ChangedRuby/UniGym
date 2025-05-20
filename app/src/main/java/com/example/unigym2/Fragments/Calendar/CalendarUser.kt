@@ -1,6 +1,7 @@
 package com.example.unigym2.Fragments.Calendar
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,6 +12,7 @@ import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.unigym2.Activities.Communicator
 import com.example.unigym2.Fragments.Calendar.Recyclerviews.CalendarUserAdapter
 import com.example.unigym2.Fragments.Calendar.Recyclerviews.CalendarUserItem
 import com.example.unigym2.Fragments.Home.Recyclerviews.RequestsRecyclerAdapter
@@ -34,6 +36,7 @@ class CalendarUser : Fragment() {
     private var param2: String? = null
     lateinit var recyclerView: RecyclerView
     lateinit var adapter: CalendarUserAdapter
+    lateinit var communicator: Communicator
     lateinit var schedulesArrayList: ArrayList<CalendarUserItem>
 
 
@@ -66,37 +69,40 @@ class CalendarUser : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        communicator = activity as Communicator
         val calendarView = view.findViewById<CalendarView>(R.id.calendarView)
         val programacoesContainer = view.findViewById<LinearLayout>(R.id.programacoes_container)
         var dataBase = FirebaseFirestore.getInstance()
         var auth = FirebaseAuth.getInstance()
-        var userId = auth.currentUser?.uid
+        var userId = communicator.getAuthUser()
 
         calendarView.setOnDateChangeListener{_, year, month, dayOfMonth ->
-            val dataSelecionada = "$dayOfMonth/${month + 1}/$year"
+            val dataSelecionada = String.format("%02d/%02d/%04d", dayOfMonth, month+1, year)
+            Log.d("data_selecionada", dataSelecionada)
 
             programacoesContainer.visibility = View.VISIBLE
             schedulesArrayList.clear()
 
             dataBase.collection("Agendamentos")
-                .whereEqualTo("personalID", userId)
+                .whereEqualTo("clienteID", userId)
                 .whereEqualTo("data", dataSelecionada)
                 .whereEqualTo("status", "aceito")
                 .get()
                 .addOnSuccessListener{ documents ->
                     for(document in documents){
                         val clienteID = document.getString("clienteID")
-                        val horario = document.getString("horario")
+                        val personalID = document.getString("personalID")
+                        val horario = document.getString("hora")
                         val servico = document.getString("servico")
 
                         dataBase.collection("Usuarios")
-                            .document(clienteID!!)
+                            .document(personalID!!)
                             .get()
                             .addOnSuccessListener { result ->
-                                val nomeCliente = result.getString("name")
+                                val nomePersonal = result.getString("name")
 
                                 val programacao = CalendarUserItem(
-                                    nomePersonal = nomeCliente,
+                                    nomePersonal = nomePersonal,
                                     horario = horario,
                                     servico = servico
                                 )
@@ -104,10 +110,12 @@ class CalendarUser : Fragment() {
                                 adapter.notifyDataSetChanged()
                             }
                     }
-
+                    adapter.notifyDataSetChanged()
 
                 }
-                .addOnFailureListener {  }
+                .addOnFailureListener { e ->
+                    Log.d("data_selecionada", e.toString())
+                }
 
             /*programacoesConteudo.text = when (dataSelecionada){
                 "11/8/2025" -> "Reunião com cliente às 10h"

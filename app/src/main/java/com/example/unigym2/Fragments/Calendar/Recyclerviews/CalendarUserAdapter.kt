@@ -28,7 +28,7 @@ class CalendarUserAdapter(private val scheduleList: ArrayList<CalendarUserItem>)
         val currentItem = scheduleList[position]
 
         holder.nomePersonal.text = currentItem.nomePersonal
-        holder.horario.text = currentItem.nomePersonal
+        holder.horario.text = currentItem.horario
         holder.servico.text = currentItem.servico
 
 

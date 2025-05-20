@@ -11,6 +11,7 @@ import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.unigym2.Activities.Communicator
 import com.example.unigym2.Fragments.Calendar.Recyclerviews.CalendarPersonalAdapter
 import com.example.unigym2.Fragments.Calendar.Recyclerviews.CalendarPersonalItem
 import com.example.unigym2.Fragments.Calendar.Recyclerviews.CalendarUserAdapter
@@ -35,6 +36,7 @@ class CalendarPersonal : Fragment() {
     private var param2: String? = null
     lateinit var recyclerView: RecyclerView
     lateinit var adapter: CalendarPersonalAdapter
+    lateinit var communicator: Communicator
     lateinit var schedulesArrayList: ArrayList<CalendarPersonalItem>
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -52,7 +54,7 @@ class CalendarPersonal : Fragment() {
         // Inflate the layout for this fragment
         val v = inflater.inflate(R.layout.fragment_calendar_personal, container, false)
 
-        dataInitialize()
+        schedulesArrayList = arrayListOf()
         val layoutManager = LinearLayoutManager(context)
         recyclerView = v.findViewById(R.id.calendarPersonalRecyclerView)
         recyclerView.layoutManager = layoutManager
@@ -68,47 +70,53 @@ class CalendarPersonal : Fragment() {
 
         val calendarView = view.findViewById<CalendarView>(R.id.calendarView4)
         val programacoesContainer = view.findViewById<LinearLayout>(R.id.programacoes_container)
+        programacoesContainer.visibility = View.GONE
+        communicator = activity as Communicator
 
         val auth = FirebaseAuth.getInstance()
-        var personalID = auth.currentUser?.uid
+        var personalID = communicator.getAuthUser()
         val dataBase = FirebaseFirestore.getInstance()
 
         calendarView.setOnDateChangeListener{ _,year, month, dayOfMonth ->
-            val dataSelecionada = "$dayOfMonth/${month + 1}/$year"
+            val dataSelecionada = String.format("%02d/%02d/%04d", dayOfMonth, month+1, year)
+            Log.d("data_selecionada", dataSelecionada)
 
-        programacoesContainer.visibility = View.VISIBLE
-//            schedulesArrayList.clear()
-//
-//            dataBase.collection("Agendamentos")
-//                .whereEqualTo("personalID", personalID)
-//                .whereEqualTo("data", dataSelecionada)
-//                .whereEqualTo("status", "aceito")
-//                .get()
-//                .addOnSuccessListener{ documents ->
-//                    for(document in documents){
-//                        val clienteID = document.getString("clienteID")
-//                        val horario = document.getString("horario")
-//                        val servico = document.getString("servico")
-//
-//                        dataBase.collection("Usuarios")
-//                            .document(clienteID!!)
-//                            .get()
-//                            .addOnSuccessListener { result ->
-//                                val nomeCliente = result.getString("name")
-//
-//                                val programacao = CalendarPersonalItem(
-//                                    nomeCliente = nomeCliente,
-//                                    horario = horario,
-//                                    servico = servico
-//                                )
-//                                schedulesArrayList.add(programacao)
-//                                adapter.notifyDataSetChanged()
-//                            }
-//                    }
-//
-//
-//                }
-//                .addOnFailureListener {  }
+            programacoesContainer.visibility = View.VISIBLE
+            recyclerView.visibility = View.VISIBLE
+
+            dataBase.collection("Agendamentos")
+                .whereEqualTo("personalID", personalID)
+                .whereEqualTo("data", dataSelecionada)
+                .whereEqualTo("status", "aceito")
+                .get()
+                .addOnSuccessListener{ documents ->
+                    for(document in documents){
+                        val clienteID = document.getString("clienteID")
+                        val horario = document.getString("hora")
+                        val servico = document.getString("servico")
+
+                        dataBase.collection("Usuarios")
+                            .document(clienteID!!)
+                            .get()
+                            .addOnSuccessListener { result ->
+                                val nomeCliente = result.getString("name")
+
+                                val programacao = CalendarPersonalItem(
+                                    nomeCliente = nomeCliente,
+                                    horario = horario,
+                                    servico = servico
+                                )
+                                schedulesArrayList.add(programacao)
+                                Log.d("data_selecionada", "$programacao")
+                                adapter.notifyDataSetChanged()
+                            }
+                    }
+                    adapter.notifyDataSetChanged()
+
+                }
+                .addOnFailureListener { e ->
+                    Log.d("data_selecionada", e.toString())
+                }
 
 
         /*programacoesConteudo.text = "Carregando Programação..."
