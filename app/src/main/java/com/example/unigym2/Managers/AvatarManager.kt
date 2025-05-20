@@ -16,6 +16,7 @@ import java.net.HttpURLConnection
 import java.net.URI
 import java.net.URL
 import java.security.MessageDigest
+import kotlin.random.Random
 
 object AvatarManager {
     public var imageCache: HashMap<String, Bitmap> = hashMapOf()
@@ -43,7 +44,8 @@ object AvatarManager {
         // essa função obtem a foto de usuario pelo hash SHA-256 do email utilizando a API do Gravatar
         val hashedEmail = generateHash(email.lowercase().trim())
         // val apiUrl = "https://gravatar.com/avatar/$hashedEmail?s=$size&d=initials&name=${userName.trim().replace(" ", "+")}"
-        val apiUrl = "https://gravatar.com/avatar/000000000000000000000000000000000000000000000000000000?s=$size&d=initials&name=${userName.trim().replace(" ", "+")}"
+        // val apiUrl = "https://gravatar.com/avatar/000000000000000000000000000000000000000000000000000000?s=$size&d=initials&name=${userName.trim().replace(" ", "+")}"
+        val apiUrl = "https://gravatar.com/avatar/${Random.nextInt(50, 55)}?s=$size&d=initials&name=${userName.trim().replace(" ", "+")}"
         var profileBitmap: Bitmap? = null
 
         if(imageCache.contains(hashedEmail)){

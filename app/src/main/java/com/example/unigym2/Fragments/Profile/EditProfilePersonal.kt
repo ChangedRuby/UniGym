@@ -12,11 +12,13 @@ package com.example.unigym2.Fragments.Profile
     import androidx.fragment.app.Fragment
     import androidx.lifecycle.lifecycleScope
     import com.example.unigym2.Activities.Communicator
+    import com.example.unigym2.Activities.LoginMenu
     import com.example.unigym2.Activities.ResetPassword
     import com.example.unigym2.Managers.AvatarManager
     import com.example.unigym2.R
     import com.google.android.material.imageview.ShapeableImageView
     import com.google.android.material.textfield.TextInputEditText
+    import com.google.firebase.auth.FirebaseAuth
     import com.google.firebase.firestore.FieldValue
     import com.google.firebase.firestore.FirebaseFirestore
     import kotlin.reflect.typeOf
@@ -24,6 +26,7 @@ package com.example.unigym2.Fragments.Profile
 class EditProfilePersonal : Fragment() {
         private lateinit var communicator: Communicator
         private lateinit var db: FirebaseFirestore
+        private lateinit var auth : FirebaseAuth
         private lateinit var saveButton: TextView
         private lateinit var usernameEditText: TextInputEditText
         private lateinit var userProfileEmail: TextView
@@ -53,6 +56,7 @@ class EditProfilePersonal : Fragment() {
             val view = inflater.inflate(R.layout.fragment_edit_profile_personal, container, false)
 
             db = FirebaseFirestore.getInstance()
+            auth = FirebaseAuth.getInstance()
             communicator = activity as Communicator
 
             usernameEditText = view.findViewById(R.id.editTextUsername)
@@ -210,7 +214,14 @@ class EditProfilePersonal : Fragment() {
                                                     Log.w("firestore", "Erro ao atualizar email no Firestore após reautenticação", e2)
                                                 }
                                             Log.d("firebaseAuth", "Email atualizado com sucesso após reautenticação.")
+
+                                            FirebaseAuth.getInstance().signOut()
+                                            val intent = Intent(requireContext(), LoginMenu::class.java)
+                                            intent.putExtra("email_alterado",true)
+                                            startActivity(intent)
+
                                         }
+
                                         .addOnFailureListener{ e2 ->
                                             Log.e("firebaseAuth", "Falha ao atualizar email após a reautenticação", e2)
                                         }
@@ -223,6 +234,9 @@ class EditProfilePersonal : Fragment() {
                             builder.setNegativeButton("Cancelar"){ dialog,_ -> dialog.cancel()}
                             builder.show()
                 }
+
+
+
 
 
 

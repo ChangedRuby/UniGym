@@ -237,13 +237,14 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"
+            android:layout_marginEnd="16dp"
             android:src="@drawable/ic_edit"
             app:layout_constraintBottom_toTopOf="@+id/AcessibilidadeUser"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.848"
-            app:layout_constraintStart_toEndOf="@+id/profileListaImage"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintStart_toEndOf="@+id/deleteUserBtn"
             app:layout_constraintTop_toBottomOf="@+id/profileSecondaryColor"
-            app:layout_constraintVertical_bias="0.416" />
+            app:layout_constraintVertical_bias="0.333" />
 
         <ImageView
             android:id="@+id/ExitButton"
@@ -252,10 +253,20 @@
             android:src="@drawable/ic_logout"
             app:layout_constraintBottom_toTopOf="@+id/AcessibilidadeUser"
             app:layout_constraintEnd_toStartOf="@+id/EditProfileUser"
-            app:layout_constraintHorizontal_bias="0.915"
+            app:layout_constraintHorizontal_bias="0.912"
             app:layout_constraintStart_toEndOf="@+id/userProfileImageView"
-            app:layout_constraintTop_toBottomOf="@+id/profileSecondaryColor"
-            app:layout_constraintVertical_bias="0.541" />
+            app:layout_constraintTop_toBottomOf="@+id/profileSecondaryColor" />
+
+        <ImageView
+            android:id="@+id/deleteUserBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:src="@drawable/baseline_delete_forever_icon"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.569"
+            app:layout_constraintStart_toEndOf="@+id/profileUserImage"
+            app:layout_constraintTop_toBottomOf="@+id/profileSecondaryColor" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

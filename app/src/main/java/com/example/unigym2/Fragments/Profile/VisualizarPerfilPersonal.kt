@@ -29,6 +29,7 @@ class VisualizarPerfilPersonal() : Fragment() {
     private lateinit var nameTextView : TextView
     private lateinit var emailTextView: TextView
     private lateinit var crefTextView: TextView
+    private lateinit var personalID: String
     private lateinit var specialty1 : TextView
     private lateinit var specialty2 : TextView
     private lateinit var specialty3 : TextView
@@ -85,6 +86,10 @@ class VisualizarPerfilPersonal() : Fragment() {
         backBtn = v.findViewById(R.id.SairPersonal)
 
         agendamentoTreinoBtn.setOnClickListener {
+            /*val bundle = Bundle().apply {
+                putString("personal_id", personalID)
+            }
+            parentFragmentManager.setFragmentResult("personal_info_key", bundle)*/
             communicator.replaceFragment(MonitoringSchedules())
             Log.d("personalLog", "Clicked")
         }
@@ -94,7 +99,7 @@ class VisualizarPerfilPersonal() : Fragment() {
         }
 
         parentFragmentManager.setFragmentResultListener("personal_info_key", viewLifecycleOwner) { _, bundle ->
-            val personalID = bundle.getString("personal_id").toString()
+            personalID = bundle.getString("personal_id").toString()
             db.collection("Usuarios").document(personalID)
                 .get()
                 .addOnSuccessListener { result ->

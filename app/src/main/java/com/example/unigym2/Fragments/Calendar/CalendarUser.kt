@@ -15,6 +15,8 @@ import com.example.unigym2.Fragments.Calendar.Recyclerviews.CalendarUserAdapter
 import com.example.unigym2.Fragments.Calendar.Recyclerviews.CalendarUserItem
 import com.example.unigym2.Fragments.Home.Recyclerviews.RequestsRecyclerAdapter
 import com.example.unigym2.R
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FirebaseFirestore
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -66,11 +68,46 @@ class CalendarUser : Fragment() {
 
         val calendarView = view.findViewById<CalendarView>(R.id.calendarView)
         val programacoesContainer = view.findViewById<LinearLayout>(R.id.programacoes_container)
+        var dataBase = FirebaseFirestore.getInstance()
+        var auth = FirebaseAuth.getInstance()
+        var userId = auth.currentUser?.uid
 
         calendarView.setOnDateChangeListener{_, year, month, dayOfMonth ->
             val dataSelecionada = "$dayOfMonth/${month + 1}/$year"
 
             programacoesContainer.visibility = View.VISIBLE
+            schedulesArrayList.clear()
+
+            dataBase.collection("Agendamentos")
+                .whereEqualTo("personalID", userId)
+                .whereEqualTo("data", dataSelecionada)
+                .whereEqualTo("status", "aceito")
+                .get()
+                .addOnSuccessListener{ documents ->
+                    for(document in documents){
+                        val clienteID = document.getString("clienteID")
+                        val horario = document.getString("horario")
+                        val servico = document.getString("servico")
+
+                        dataBase.collection("Usuarios")
+                            .document(clienteID!!)
+                            .get()
+                            .addOnSuccessListener { result ->
+                                val nomeCliente = result.getString("name")
+
+                                val programacao = CalendarUserItem(
+                                    nomePersonal = nomeCliente,
+                                    horario = horario,
+                                    servico = servico
+                                )
+                                schedulesArrayList.add(programacao)
+                                adapter.notifyDataSetChanged()
+                            }
+                    }
+
+
+                }
+                .addOnFailureListener {  }
 
             /*programacoesConteudo.text = when (dataSelecionada){
                 "11/8/2025" -> "Reunião com cliente às 10h"

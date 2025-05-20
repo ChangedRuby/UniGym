@@ -27,10 +27,16 @@ class CalendarUserAdapter(private val scheduleList: ArrayList<CalendarUserItem>)
         val db = FirebaseFirestore.getInstance()
         val currentItem = scheduleList[position]
 
+        holder.nomePersonal.text = currentItem.nomePersonal
+        holder.horario.text = currentItem.nomePersonal
+        holder.servico.text = currentItem.servico
+
+
     }
 
     class MyViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView){
-
-        var nameView : TextView = itemView.findViewById(R.id.calendarioUserNameView)
+        var nomePersonal: TextView = itemView.findViewById(R.id.nomePersonalView)
+        var horario: TextView = itemView.findViewById(R.id.horarioUserView)
+        var servico: TextView = itemView.findViewById(R.id.tipoDeServicoView)
     }
 }

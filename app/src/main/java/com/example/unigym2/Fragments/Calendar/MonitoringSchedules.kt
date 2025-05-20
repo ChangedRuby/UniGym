@@ -42,6 +42,7 @@ class MonitoringSchedules : Fragment() {
     private var param2: String? = null
 
     lateinit var personalName : String
+    lateinit var personalID: String
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
@@ -61,12 +62,6 @@ class MonitoringSchedules : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        var personalID = arguments?.getString("personalID")
-
-        parentFragmentManager.setFragmentResultListener("personal_monitoring_key", viewLifecycleOwner) { _, bundle ->
-            personalID = bundle.getString("personal_id").toString()
-            personalName = bundle.getString("personal_name").toString()
-        }
 
         val calendarView = view.findViewById<CalendarView>(R.id.calendarView3)
         val blocoNovaSessao = view.findViewById<LinearLayout>(R.id.nova_sessao)
@@ -77,6 +72,47 @@ class MonitoringSchedules : Fragment() {
         val spinnerServico = view.findViewById<Spinner>(R.id.spinner)
 
         val firestore = FirebaseFirestore.getInstance()
+
+        /*parentFragmentManager.setFragmentResultListener("personal_info_key", viewLifecycleOwner) { _, bundle ->
+            personalID = bundle.getString("personal_id").toString()
+            Log.d("personal_id", "$personalID")
+
+        }*/
+
+        parentFragmentManager.setFragmentResultListener("personal_monitoring_key", viewLifecycleOwner) { _, bundle ->
+            personalID = bundle.getString("personal_id").toString()
+            personalName = bundle.getString("personal_name").toString()
+            Log.d("personal_id", "$personalID")
+
+            firestore.collection("Usuarios").document(personalID)
+                .get()
+                .addOnSuccessListener { document ->
+                    val servicosList = document.get("services") as? ArrayList<*>
+                    val servicosFiltrados = servicosList?.filterIsInstance<String>()?: emptyList()
+                    val servicos = listOf("Selecione um serviço") + servicosFiltrados
+
+                    val adapter = object: ArrayAdapter<String>(requireContext(), android.R.layout.simple_spinner_item, servicos){
+                        override fun isEnabled(position: Int): Boolean {
+                            return position != 0
+                        }
+
+                        override fun getDropDownView(position: Int, convertView: View?, parent: ViewGroup): View {
+                            val view = super.getDropDownView(position, convertView, parent)
+                            val textView = view as TextView
+                            textView.setTextColor(if (position == 0) Color.LTGRAY else Color.WHITE)
+                            return view
+                        }
+                    }
+
+                    adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+                    spinnerServico.adapter = adapter
+
+
+                }
+                .addOnFailureListener {
+                    Toast.makeText(requireContext(), "Erro ao carregar serviços", Toast.LENGTH_SHORT)
+                }
+        }
 
 
 
@@ -97,34 +133,6 @@ class MonitoringSchedules : Fragment() {
 
             dataSelecionada = String.format("%02d/%02d/%04d", dayOfMonth, month+1, year)
         }
-
-
-        firestore.collection("Usuarios").document(personalID!!)
-            .get()
-            .addOnSuccessListener { document ->
-                val servicosList = document.get("services") as? ArrayList<*>
-                val servicosFiltrados = servicosList?.filterIsInstance<String>()?: emptyList()
-                val servicos = listOf("Selecione um serviço") + servicosFiltrados
-
-                val adapter = object: ArrayAdapter<String>(requireContext(), android.R.layout.simple_spinner_item, servicos){
-                    override fun isEnabled(position: Int): Boolean {
-                        return position != 0
-                    }
-
-                    override fun getDropDownView(position: Int, convertView: View?, parent: ViewGroup): View {
-                        val view = super.getDropDownView(position, convertView, parent)
-                        val textView = view as TextView
-                        textView.setTextColor(if (position == 0) Color.LTGRAY else Color.WHITE)
-                        return view
-                    }
-                }
-
-                adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-                spinnerServico.adapter = adapter
-
-
-            }
-            .addOnFailureListener { Toast.makeText(requireContext(), "Erro ao carregar serviços", Toast.LENGTH_SHORT) }
 
         btnAgendar.setOnClickListener {
 

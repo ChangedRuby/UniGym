@@ -19,6 +19,7 @@ import com.example.unigym2.Activities.Communicator
 import com.example.unigym2.Fragments.Chat.Recyclerviews.ListaPersonaisItem
 import com.example.unigym2.Fragments.Chat.Recyclerviews.ListaUsuariosItem
 import com.example.unigym2.Fragments.Chat.Recyclerviews.ListaUsuariosAdapter
+import com.example.unigym2.Fragments.Treinos.Recyclerviews.ListaTreinosItem
 import com.example.unigym2.Managers.AvatarManager
 import com.example.unigym2.R
 import com.google.firebase.firestore.FirebaseFirestore

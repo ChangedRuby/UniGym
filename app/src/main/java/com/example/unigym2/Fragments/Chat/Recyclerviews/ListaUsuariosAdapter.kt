@@ -35,8 +35,7 @@ class ListaUsuariosAdapter(private val dataList: MutableList<ListaPersonaisItem>
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
         val currentItem = dataList[position]
         holder.nameView.text = currentItem.name
-        holder.personalImage.setImageBitmap(currentItem.image)
-
+        holder.usuarioImage.setImageBitmap(currentItem.image)
         holder.itemView.setOnClickListener {
             val bundle = Bundle().apply {
                 putString("name", currentItem.name)
@@ -47,7 +46,7 @@ class ListaUsuariosAdapter(private val dataList: MutableList<ListaPersonaisItem>
             communicator.replaceFragment(ChatMain())
         }
 
-        if (currentItem.userId == "BROK_AI_AGENT") {
+        Guif (currentItem.userId == "BROK_AI_AGENT") {
             holder.visualizarPerfilBtn.visibility = View.GONE
             holder.nameView.text = "Brok"
             holder.descriptionView.text = "Converse com um agente de IA"
@@ -74,6 +73,6 @@ class ListaUsuariosAdapter(private val dataList: MutableList<ListaPersonaisItem>
         val visualizarPerfilBtn : AppCompatImageView = itemView.findViewById(R.id.visualizarPerfilBtn)
         val nameView : TextView = itemView.findViewById(R.id.textViewUsername)
         val descriptionView: TextView = itemView.findViewById(R.id.userDescription)
-        val personalImage: ShapeableImageView = itemView.findViewById(R.id.profileChatListaImage)
+        val usuarioImage: ShapeableImageView = itemView.findViewById(R.id.profileChatListaImage)
     }
 }
