@@ -78,7 +78,7 @@ class HomePersonalTrainer : Fragment() {
                     solicitacoesPendentes++
                 }
 
-                solicitationsView.text = "$solicitacoesPendentes + solicitações pendentes!"
+                solicitationsView.text = "$solicitacoesPendentes solicitações pendentes!"
 
             }
             .addOnFailureListener {
