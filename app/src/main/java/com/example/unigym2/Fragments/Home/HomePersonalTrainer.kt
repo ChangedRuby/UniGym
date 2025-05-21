@@ -68,18 +68,22 @@ class HomePersonalTrainer : Fragment() {
             Log.d("personalLog", "Clicked")
             // this.parentFragmentManager.beginTransaction().replace(R.id.frame_layout, HomeUser()).commit()
         }
-//        db.collection("Agendamentos")
-//            .whereEqualTo("personalID", personalID )
-//            .whereEqualTo("status", "pendente")
-//            .get()
-//            .addOnSuccessListener { documents ->
-//                val solicitacoesPendentes = documents.size()
-//                solicitationsView.text = "$solicitacoesPendentes + solicitações pendentes!"
-//
-//            }
-//            .addOnFailureListener {
-//                Log.e("Erro de valor", "Nao foi calculado a qtd")
-//            }
+        db.collection("Agendamentos")
+            .whereEqualTo("personalID", personalID )
+            .whereEqualTo("status", "pendente")
+            .get()
+            .addOnSuccessListener { documents ->
+                var solicitacoesPendentes = 1
+                for(document in documents){
+                    solicitacoesPendentes++
+                }
+
+                solicitationsView.text = "$solicitacoesPendentes + solicitações pendentes!"
+
+            }
+            .addOnFailureListener {
+                Log.e("Erro de valor", "Nao foi calculado a qtd")
+            }
 
         db.collection("Usuarios").document(communicator.getAuthUser())
             .get()
