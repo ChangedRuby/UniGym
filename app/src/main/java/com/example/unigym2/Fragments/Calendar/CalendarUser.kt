@@ -13,6 +13,7 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.unigym2.Activities.Communicator
+import com.example.unigym2.Fragments.Calendar.Recyclerviews.CalendarPersonalItem
 import com.example.unigym2.Fragments.Calendar.Recyclerviews.CalendarUserAdapter
 import com.example.unigym2.Fragments.Calendar.Recyclerviews.CalendarUserItem
 import com.example.unigym2.Fragments.Home.Recyclerviews.RequestsRecyclerAdapter
@@ -89,29 +90,44 @@ class CalendarUser : Fragment() {
                 .whereEqualTo("status", "aceito")
                 .get()
                 .addOnSuccessListener{ documents ->
-                    for(document in documents){
-                        val clienteID = document.getString("clienteID")
-                        val personalID = document.getString("personalID")
-                        val horario = document.getString("hora")
-                        val servico = document.getString("servico")
-
-                        dataBase.collection("Usuarios")
-                            .document(personalID!!)
-                            .get()
-                            .addOnSuccessListener { result ->
-                                val nomePersonal = result.getString("name")
-
-                                val programacao = CalendarUserItem(
-                                    nomePersonal = nomePersonal,
-                                    horario = horario,
-                                    servico = servico
-                                )
-                                schedulesArrayList.add(programacao)
-                                adapter.notifyDataSetChanged()
-                            }
+                    var cont =0
+                    for (doc in documents){
+                        cont = cont+1
                     }
-                    adapter.notifyDataSetChanged()
+                    if(cont<=1) {
+                        val programacao = CalendarUserItem(
+                            nomePersonal = "Sem agendamentos",
+                            horario = "",
+                            servico = ""
+                        )
+                        schedulesArrayList.clear()
+                        schedulesArrayList.add(programacao)
+                        adapter.notifyDataSetChanged()
+                    } else {
+                        schedulesArrayList.clear()
+                        for (document in documents) {
+                            val clienteID = document.getString("clienteID")
+                            val personalID = document.getString("personalID")
+                            val horario = document.getString("hora")
+                            val servico = document.getString("servico")
 
+                            dataBase.collection("Usuarios")
+                                .document(personalID!!)
+                                .get()
+                                .addOnSuccessListener { result ->
+                                    val nomePersonal = result.getString("name")
+
+                                    val programacao = CalendarUserItem(
+                                        nomePersonal = nomePersonal,
+                                        horario = horario,
+                                        servico = servico
+                                    )
+                                    schedulesArrayList.add(programacao)
+                                    adapter.notifyDataSetChanged()
+                                }
+                        }
+                        adapter.notifyDataSetChanged()
+                    }
                 }
                 .addOnFailureListener { e ->
                     Log.d("data_selecionada", e.toString())
