@@ -9,6 +9,7 @@ package com.example.unigym2.Fragments.Profile
     import android.widget.Button
     import android.widget.EditText
     import android.widget.TextView
+    import android.widget.Toast
     import androidx.fragment.app.Fragment
     import androidx.lifecycle.lifecycleScope
     import com.example.unigym2.Activities.Communicator
@@ -178,42 +179,60 @@ class EditProfilePersonal : Fragment() {
                 ?.addOnSuccessListener{
                     userRef.update("email",newEmail)
                         .addOnSuccessListener{
+                            Toast.makeText(requireContext(),"Email atualizado com sucesso!", Toast.LENGTH_SHORT).show()
                             Log.d("firestore", "Email atualizado com sucesso no Firestore.")
                         }
                         .addOnFailureListener{ e->
                             Log.w("firestore", "Erro ao atualizar email no Firestore", e)
+                            Toast.makeText(requireContext(), "Erro ao atualizar no banco de dados", Toast.LENGTH_LONG).show()
                         }
+                            currentUser.sendEmailVerification()
                             Log.d("firebaseAuth", "Email atualizado com sucesso.")
+                    Toast.makeText(requireContext(), "Verifique seu novo e-mail para continuar.", Toast.LENGTH_LONG).show()
+
                 }
                 ?.addOnFailureListener { e ->
                     Log.e("firebaseAuth", "Erro ao atualizar o email. Tentando reautenticar.", e)
 
                         val builder = android.app.AlertDialog.Builder(requireContext())
                         builder.setTitle("Reautenticação necessária")
-                        builder.setMessage("Aperte em confirmar para que haja a mudança de email")
+                        builder.setMessage("Digite sua senha atual para confirmar a mudança de e-mail.")
+                      //  builder.setMessage("Aperte em confirmar para que haja a mudança de email")
 
                         val input = android.widget.EditText(requireContext())
                         input.inputType = android.text.InputType.TYPE_CLASS_TEXT or android.text.InputType.TYPE_TEXT_VARIATION_PASSWORD
                         builder.setView(input)
 
                     builder.setPositiveButton("Confirmar"){_,_ ->
-                        val password = input.text.toString()
+                        val password = input.text.toString().trim()
+
+                        if(password.isEmpty()){
+                            Toast.makeText(requireContext(), "Senha não pode estar vazia", Toast.LENGTH_SHORT).show()
+                            return@setPositiveButton
+                        }
+
                         val credential = com.google.firebase.auth.EmailAuthProvider.getCredential(currentEmail, password)
 
                         currentUser.reauthenticate(credential)
                             .addOnSuccessListener{
                                 Log.d("firebaseAuth", "Reautenticado com sucesso.")
+                                Toast.makeText(requireContext(), "Reautenticação bem-sucedida", Toast.LENGTH_SHORT).show()
+
                                     @Suppress("DEPRECATION")
                                     currentUser.updateEmail(newEmail)
                                         .addOnSuccessListener{
                                             userRef.update("email",newEmail)
                                                 .addOnSuccessListener{
                                                     Log.d("firestore", "Email atualizado com sucesso no Firestore após reautenticação.")
+                                                    Toast.makeText(requireContext(), "Email alterado com sucesso!", Toast.LENGTH_SHORT).show()
                                                 }
                                                 .addOnFailureListener{ e2->
                                                     Log.w("firestore", "Erro ao atualizar email no Firestore após reautenticação", e2)
+                                                    Toast.makeText(requireContext(), "Erro ao salvar email no banco de dados", Toast.LENGTH_LONG).show()
                                                 }
+                                            currentUser.sendEmailVerification()
                                             Log.d("firebaseAuth", "Email atualizado com sucesso após reautenticação.")
+                                            Toast.makeText(requireContext(), "Verifique seu novo e-mail.", Toast.LENGTH_LONG).show()
 
                                             FirebaseAuth.getInstance().signOut()
                                             val intent = Intent(requireContext(), LoginMenu::class.java)
@@ -224,10 +243,12 @@ class EditProfilePersonal : Fragment() {
 
                                         .addOnFailureListener{ e2 ->
                                             Log.e("firebaseAuth", "Falha ao atualizar email após a reautenticação", e2)
+                                            Toast.makeText(requireContext(), "Falha ao alterar e-mail", Toast.LENGTH_LONG).show()
                                         }
                             }
                             .addOnFailureListener{ e2 ->
                                 Log.e("firebaseAuth", "Erro ao reutenticar o usuário", e2)
+                                Toast.makeText(requireContext(), "Senha incorreta. Não foi possível reautenticar.", Toast.LENGTH_LONG).show()
 
                             }
                     }

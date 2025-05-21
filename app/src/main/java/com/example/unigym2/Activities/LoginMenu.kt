@@ -37,6 +37,11 @@ class LoginMenu : AppCompatActivity() {
         foreground = findViewById(R.id.foreground)
         progressBar = findViewById(R.id.loadingProgressBar)
 
+        val emailAlterado = intent.getBooleanExtra("email_alterado", false)
+        if (emailAlterado) {
+            Toast.makeText(this, "Email alterado com sucesso! Use o novo e-mail para login.", Toast.LENGTH_LONG).show()
+        } //isso é novo
+
         val senhaAlterada = intent.getBooleanExtra("senha_alterada", false)
         if(senhaAlterada){
             Toast.makeText(this, "Senha alterada com sucesso!", Toast.LENGTH_SHORT).show()
@@ -79,6 +84,9 @@ class LoginMenu : AppCompatActivity() {
 
             startActivity(intent)
         }
+
+        foreground.visibility = View.GONE//isso é novo
+        progressBar.visibility = View.GONE//isso é novo
     }
 
     fun authLogin(email: String, password: String){
@@ -118,10 +126,7 @@ class LoginMenu : AppCompatActivity() {
             Toast.makeText(this, "Preencha todos os campos!", Toast.LENGTH_SHORT).show()
         }
 
-        val emailAlterado = intent.getBooleanExtra("email_alterado", false)
-        if (emailAlterado){
-            Toast.makeText(this,"Email alterado com sucesso! Use o novo e-mail para login.", Toast.LENGTH_LONG).show()
-        }
+
 
 
     }
