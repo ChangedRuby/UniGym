@@ -1,7 +1,6 @@
 package com.example.unigym2.Fragments.Chat
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -78,65 +77,53 @@ class ChatMain : Fragment() {
     private fun setupChat() {
         if (senderUid == null || receiverUid == null) return
 
-        // Gera um ID de sala único baseado nos UIDs
         chatRoomId = if (senderUid!! < receiverUid!!) {
             senderUid + receiverUid
         } else {
             receiverUid + senderUid
         }
 
-        // Ouve as mensagens em tempo real
-        listenerRegistration = db.collection("Chats")
+        val messagesRef = db.collection("Chats")
             .document(chatRoomId!!)
             .collection("messages")
-            .addSnapshotListener { snapshot, e ->
-                if (e != null) {
-                    return@addSnapshotListener
-                }
+            .orderBy("timestamp")
 
-                messageList.clear()
-                if (snapshot != null) {
-                    for (doc in snapshot.documents) {
-                        val message = doc.toObject(Message::class.java)
-                        if (message != null) {
-                            messageList.add(message)
-                        }
-                    }
-                    messageAdapter.notifyDataSetChanged()
-                }
+        // Listener para receber mensagens antigas e novas em tempo real
+        listenerRegistration = messagesRef.addSnapshotListener { snapshots, error ->
+            if (error != null) {
+                return@addSnapshotListener
             }
 
-        // Envia mensagem
+            if (snapshots != null && !snapshots.isEmpty) {
+                messageList.clear()
+                for (doc in snapshots.documents) {
+                    val msg = doc.toObject(Message::class.java)
+                    if (msg != null) {
+                        messageList.add(msg)
+                    }
+                }
+                messageAdapter.notifyDataSetChanged()
+                mainChatRecyclerView.scrollToPosition(messageList.size - 1)
+            }
+        }
+
+        // Enviar nova mensagem
         sendButton.setOnClickListener {
-            Log.d("porra","não foi clicado")
-            val messageText = messageBox.text.toString().trim()
-            if (messageText.isNotEmpty()) {
-                val messageData = hashMapOf(
-                    "message" to messageText,
+            val msgText = messageBox.text.toString().trim()
+            if (msgText.isNotEmpty()) {
+                val msgMap = hashMapOf(
+                    "message" to msgText,
                     "senderId" to senderUid,
                     "receiverId" to receiverUid,
                     "timestamp" to System.currentTimeMillis()
                 )
 
-                // Cria documento da sala se não existir
                 db.collection("Chats")
                     .document(chatRoomId!!)
-                    .get()
-                    .addOnSuccessListener { document ->
-                        if (!document.exists()) {
-                            db.collection("Chats")
-                                .document(chatRoomId!!)
-                                .set(hashMapOf("users" to listOf(senderUid, receiverUid)))
-                        }
-
-                        // Adiciona a mensagem
-                        db.collection("Chats")
-                            .document(chatRoomId!!)
-                            .collection("messages")
-                            .add(messageData)
-                            .addOnSuccessListener {
-                                messageBox.text.clear()
-                            }
+                    .collection("messages")
+                    .add(msgMap)
+                    .addOnSuccessListener {
+                        messageBox.text.clear()
                     }
             }
         }
