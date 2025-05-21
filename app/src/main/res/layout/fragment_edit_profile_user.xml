@@ -106,7 +106,7 @@
             android:layout_height="wrap_content"
             android:editable="true"
             android:ems="10"
-            android:hint="treinador@gmail.com"
+            android:hint="Email"
             android:inputType="textEmailAddress"
             android:textColor="@color/input_field_bg"
             android:textColorHint="@color/hint_grey"
@@ -140,6 +140,8 @@
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.083"
             app:shapeAppearanceOverlay="@style/roundedImageView"
+            app:tint="@color/transparent_black"
+            app:tintMode="src_over"
             tools:src="@tools:sample/avatars" />
 
         <View
@@ -233,18 +235,21 @@
             app:layout_constraintVertical_bias="0.412" />
 
 
-
-
-
         <Button
             android:id="@+id/changeUserImageBtn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="28dp"
-            android:text="Foto"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.125"
-            app:layout_constraintStart_toEndOf="@+id/profileUserEditImage"
+            android:layout_marginTop="16dp"
+            android:background="@color/transparent"
+            android:paddingLeft="0dp"
+            android:paddingRight="0dp"
+            app:icon="@drawable/ic_edit"
+            app:iconGravity="textStart"
+            app:iconPadding="0dp"
+            app:iconSize="40dp"
+            app:layout_constraintEnd_toEndOf="@+id/profileUserEditImage"
+            app:layout_constraintHorizontal_bias="0.642"
+            app:layout_constraintStart_toStartOf="@+id/profileUserEditImage"
             app:layout_constraintTop_toBottomOf="@+id/profileSecondaryColor" />
 
         <TextView

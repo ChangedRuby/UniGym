@@ -1,6 +1,7 @@
 package com.example.unigym2.Fragments.Profile
 
     import android.content.Intent
+    import android.net.Uri
     import android.os.Bundle
     import android.util.Log
     import android.view.LayoutInflater
@@ -10,6 +11,8 @@ package com.example.unigym2.Fragments.Profile
     import android.widget.EditText
     import android.widget.TextView
     import android.widget.Toast
+    import androidx.activity.result.ActivityResultLauncher
+    import androidx.activity.result.contract.ActivityResultContracts
     import androidx.fragment.app.Fragment
     import androidx.lifecycle.lifecycleScope
     import com.example.unigym2.Activities.Communicator
@@ -33,7 +36,11 @@ class EditProfilePersonal : Fragment() {
         private lateinit var userProfileEmail: TextView
         private var inputTreinadorEmail: EditText ?= null
         private lateinit var crefTextView: TextView
-        private lateinit var imageView: ShapeableImageView
+        private lateinit var imagePersonal: ShapeableImageView
+        private lateinit var imageConverted: String
+        private lateinit var galleryLauncher: ActivityResultLauncher<String>
+        private var changedImage: Boolean = false
+        private lateinit var changeImageButton: Button
         private lateinit var specialtyET1: TextInputEditText
         private lateinit var specialtyET2: TextInputEditText
         private lateinit var specialtyET3: TextInputEditText
@@ -49,6 +56,26 @@ class EditProfilePersonal : Fragment() {
 
         private lateinit var alterarSenha: TextView
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+        galleryLauncher = registerForActivityResult(ActivityResultContracts.GetContent()) { uri ->
+            if (uri != null) {
+                var imageUri: Uri?
+
+                // uri to base 64
+                imageUri = uri
+                imageConverted = AvatarManager.uriToBase64(imageUri, 20, requireContext())
+                changedImage = true
+//            imageUser.setImageURI(imageUri)
+                Log.d("userlog", "Image converted to base 64")
+
+                // base 64 to bitmap
+                imagePersonal.setImageBitmap(AvatarManager.base64ToBitmap(imageConverted))
+            }
+        }
+    }
+
         override fun onCreateView(
             inflater: LayoutInflater,
             container: ViewGroup?,
@@ -63,7 +90,8 @@ class EditProfilePersonal : Fragment() {
             usernameEditText = view.findViewById(R.id.editTextUsername)
             userProfileEmail = view.findViewById(R.id.userProfileEmail)
             crefTextView = view.findViewById(R.id.userCREF)
-            imageView = view.findViewById(R.id.profilePersonalEditImage)
+            imagePersonal = view.findViewById(R.id.profilePersonalEditImage)
+            changeImageButton = view.findViewById(R.id.changePerfilPersonalImageBtn)
             specialtyET1 = view.findViewById(R.id.editEspecialidade1)
             specialtyET2 = view.findViewById(R.id.editEspecialidade2)
             specialtyET3 = view.findViewById(R.id.editEspecialidade3)
@@ -132,8 +160,13 @@ class EditProfilePersonal : Fragment() {
                 startActivity(intent)
             }
 
+            changeImageButton.setOnClickListener {
+
+                galleryLauncher.launch("image/*")
+            }
+
             AvatarManager.getUserAvatar(communicator.getAuthUser(), communicator.getAuthUserEmail(), communicator.getAuthUser(), 80, lifecycleScope) { bitmap ->
-                imageView.setImageBitmap(bitmap)
+                imagePersonal.setImageBitmap(bitmap)
             }
 
             return view
@@ -150,6 +183,10 @@ class EditProfilePersonal : Fragment() {
 
         if (username.isNotEmpty()) {
             updates["name"] = username
+        }
+
+        if(changedImage){
+            AvatarManager.storeAvatarForUser(communicator.getAuthUser(), imageConverted)
         }
 
         val specialties = ArrayList<String>()

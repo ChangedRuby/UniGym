@@ -144,8 +144,6 @@
                 app:layout_constraintVertical_bias="1.0" />
 
 
-
-
         <com.google.android.material.imageview.ShapeableImageView
             android:id="@+id/profilePersonalEditImage"
             android:layout_width="130sp"
@@ -156,6 +154,8 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:shapeAppearanceOverlay="@style/roundedImageView"
+            app:tint="@color/transparent_black"
+            app:tintMode="src_over"
             tools:src="@tools:sample/avatars" />
 
         <View
@@ -168,6 +168,23 @@
             app:layout_constraintHorizontal_bias="0.12"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="@+id/profileSecondaryColor" />
+
+        <Button
+            android:id="@+id/changePerfilPersonalImageBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:background="@color/transparent"
+            android:paddingLeft="0dp"
+            android:paddingRight="0dp"
+            app:icon="@drawable/ic_edit"
+            app:iconGravity="textStart"
+            app:iconPadding="0dp"
+            app:iconSize="40dp"
+            app:layout_constraintEnd_toEndOf="@+id/profilePersonalEditImage"
+            app:layout_constraintHorizontal_bias="0.642"
+            app:layout_constraintStart_toStartOf="@+id/profilePersonalEditImage"
+            app:layout_constraintTop_toBottomOf="@+id/profileSecondaryColor" />
 
         <TextView
             android:id="@+id/servico1"
