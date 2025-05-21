@@ -26,6 +26,7 @@
             android:layout_height="35dp"
             android:layout_marginStart="36dp"
             android:background="@drawable/rectangle_light_gradient"
+            android:backgroundTint="#B10F0F"
             android:gravity="center"
             android:text="Sim"
             android:textColor="#040000"

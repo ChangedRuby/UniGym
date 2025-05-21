@@ -327,25 +327,38 @@
             android:id="@+id/EditProfilePersonal"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginEnd="16dp"
             android:src="@drawable/ic_edit"
             app:layout_constraintBottom_toTopOf="@+id/AcessibilidadePersonal"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.857"
             app:layout_constraintStart_toEndOf="@+id/profileListaImage"
             app:layout_constraintTop_toBottomOf="@+id/profileSecondaryColor"
-            app:layout_constraintVertical_bias="0.391" />
+            app:layout_constraintVertical_bias="0.4" />
 
         <ImageView
             android:id="@+id/SairPersonal"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginEnd="68dp"
             android:src="@drawable/ic_logout"
             app:layout_constraintBottom_toTopOf="@+id/AcessibilidadePersonal"
             app:layout_constraintEnd_toStartOf="@+id/EditProfilePersonal"
             app:layout_constraintHorizontal_bias="0.891"
             app:layout_constraintStart_toEndOf="@+id/profileListaImage"
             app:layout_constraintTop_toBottomOf="@+id/profileSecondaryColor"
-            app:layout_constraintVertical_bias="0.363" />
+            app:layout_constraintVertical_bias="0.4" />
+
+        <ImageView
+            android:id="@+id/deleteUserBtn2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:src="@drawable/baseline_delete_forever_icon"
+            app:layout_constraintEnd_toStartOf="@+id/EditProfilePersonal"
+            app:layout_constraintHorizontal_bias="0.477"
+            app:layout_constraintStart_toEndOf="@+id/SairPersonal"
+            app:layout_constraintTop_toBottomOf="@+id/profileSecondaryColor" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>
