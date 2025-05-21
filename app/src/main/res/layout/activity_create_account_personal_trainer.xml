@@ -28,6 +28,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/standard_margin"
             android:layout_marginEnd="@dimen/standard_margin"
+            android:layout_marginTop="8dp"
             android:hint="CREF"
             app:boxBackgroundColor="@color/input_field_bg"
             app:boxCornerRadiusBottomEnd="@dimen/input_corner_radius"
@@ -37,11 +38,9 @@
             app:boxStrokeWidth="0dp"
             app:boxStrokeWidthFocused="0dp"
             app:hintTextColor="@color/hint_grey"
-            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.553">
+            app:layout_constraintTop_toBottomOf="@+id/namePersonalInputLayout">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/CrefEditText"
@@ -71,11 +70,10 @@
             app:boxStrokeWidth="0dp"
             app:boxStrokeWidthFocused="0dp"
             app:hintTextColor="@color/hint_grey"
-            app:layout_constraintBottom_toTopOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="parent"
-            app:layout_constraintVertical_bias="0.543">
+            app:layout_constraintTop_toBottomOf="@id/emailPersonalInputLayout"
+            app:layout_constraintVertical_bias="0.0">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/namePersonalEditText"
@@ -104,7 +102,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/standard_margin"
-            android:layout_marginTop="50dp"
+            android:layout_marginTop="40dp"
             android:layout_marginEnd="@dimen/standard_margin"
             android:hint="Email"
             app:boxBackgroundColor="@color/input_field_bg"
@@ -137,7 +135,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/standard_margin"
-            android:layout_marginTop="12dp"
+            android:layout_marginTop="8dp"
             android:layout_marginEnd="@dimen/standard_margin"
             android:hint="Senha"
             app:boxBackgroundColor="@color/input_field_bg"
@@ -170,6 +168,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/standard_margin"
+            android:layout_marginTop="8dp"
             android:layout_marginEnd="@dimen/standard_margin"
             android:hint="Confirme sua senha"
             app:boxBackgroundColor="@color/input_field_bg"
@@ -182,11 +181,9 @@
             app:endIconMode="password_toggle"
             app:endIconTint="@color/hint_grey"
             app:hintTextColor="@color/hint_grey"
-            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/passwordPersonalInputLayout"
-            app:layout_constraintVertical_bias="0.06">
+            app:layout_constraintTop_toBottomOf="@+id/passwordPersonalInputLayout">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/confirmPasswordPersonalEditText"
@@ -202,6 +199,7 @@
             android:id="@+id/concludePersonalAccountButton"
             android:layout_width="369dp"
             android:layout_height="58dp"
+            android:layout_marginTop="100dp"
             android:background="@drawable/rounded_corners"
             android:backgroundTint="@android:color/white"
             android:paddingTop="12dp"
@@ -211,9 +209,7 @@
             android:textColor="@color/black"
             android:textSize="16sp"
             app:backgroundTintMode="add"
-            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.454"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/confirmPasswordPersonalInputLayout" />
 
