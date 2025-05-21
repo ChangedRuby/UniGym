@@ -20,6 +20,7 @@ import com.example.unigym2.Fragments.Home.Recyclerviews.RequestsRecyclerAdapter
 import com.example.unigym2.R
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.Query;
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -85,6 +86,7 @@ class CalendarUser : Fragment() {
             schedulesArrayList.clear()
 
             dataBase.collection("Agendamentos")
+                .orderBy("horario", Query.Direction.ASCENDING)
                 .whereEqualTo("clienteID", userId)
                 .whereEqualTo("data", dataSelecionada)
                 .whereEqualTo("status", "aceito")
