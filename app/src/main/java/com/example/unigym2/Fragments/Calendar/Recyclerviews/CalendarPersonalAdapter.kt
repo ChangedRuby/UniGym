@@ -14,7 +14,7 @@ class CalendarPersonalAdapter(private val scheduleList: ArrayList<CalendarPerson
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
         val itemView = LayoutInflater.from(parent.context).inflate(
-            R.layout.calendario_user_recycler_layout,
+            R.layout.calendario_personal_recycler_layout,
             parent, false)
         return MyViewHolder(itemView)
     }
@@ -38,6 +38,6 @@ class CalendarPersonalAdapter(private val scheduleList: ArrayList<CalendarPerson
 
         var nameClient: TextView = itemView.findViewById(R.id.nomeClienteView)
         var hourView: TextView = itemView.findViewById(R.id.horarioView)
-        var service: TextView = itemView.findViewById(R.id.serviceView)
+        var service: TextView = itemView.findViewById(R.id.servicoPersonalView)
     }
 }

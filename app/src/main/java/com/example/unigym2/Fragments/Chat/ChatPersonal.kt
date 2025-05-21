@@ -2,22 +2,28 @@ package com.example.unigym2.Fragments.Chat
 
 import android.graphics.BitmapFactory
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.widget.SearchView
+import androidx.compose.ui.text.toLowerCase
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.unigym2.Activities.Communicator
-import com.example.unigym2.Fragments.Chat.Recyclerviews.ListaPersonaisAdapter
 import com.example.unigym2.Fragments.Chat.Recyclerviews.ListaPersonaisItem
+import com.example.unigym2.Fragments.Chat.Recyclerviews.ListaUsuariosItem
 import com.example.unigym2.Fragments.Chat.Recyclerviews.ListaUsuariosAdapter
 import com.example.unigym2.Fragments.Treinos.Recyclerviews.ListaTreinosItem
 import com.example.unigym2.Managers.AvatarManager
 import com.example.unigym2.R
 import com.google.firebase.firestore.FirebaseFirestore
+import java.util.Locale
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -34,12 +40,15 @@ class ChatPersonal : Fragment() {
     private var param1: String? = null
     private var param2: String? = null
 
+    lateinit var adapter: ListaUsuariosAdapter
     lateinit var communicator: Communicator
     private lateinit var recyclerView: RecyclerView
     lateinit var db: FirebaseFirestore
-    lateinit var adapter: ListaUsuariosAdapter
+    private lateinit var searchView: SearchView
 
-    private lateinit var itemArray: MutableList<ListaPersonaisItem>
+    private lateinit var originalItemArray: MutableList<ListaPersonaisItem>
+    private lateinit var displayedItemArray: MutableList<ListaPersonaisItem>
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -55,19 +64,57 @@ class ChatPersonal : Fragment() {
     ): View? {
 
         // Inflate the layout for this fragment
-        var v = inflater.inflate(R.layout.fragment_chat_trainer, container, false)
+        val v = inflater.inflate(R.layout.fragment_chat_trainer, container, false)
         db = FirebaseFirestore.getInstance()
 
         recyclerView = v.findViewById(R.id.listaUsuariosRecyclerview)
         communicator = activity as Communicator
+        searchView = v.findViewById(R.id.conversasSearchView)
 
+
+        originalItemArray = mutableListOf()
+        displayedItemArray = mutableListOf()
+
+        setupSearchView()
         createItems()
+
         val layoutManager = LinearLayoutManager(context)
-        adapter = ListaUsuariosAdapter(itemArray, communicator, parentFragmentManager)
+        adapter = ListaUsuariosAdapter(displayedItemArray, communicator, parentFragmentManager)
         recyclerView.layoutManager = layoutManager
         recyclerView.adapter = adapter
 
         return v
+    }
+
+    private fun setupSearchView() {
+        searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                return false
+            }
+
+            override fun onQueryTextChange(newText: String?): Boolean {
+                filter(newText.orEmpty())
+                return true
+            }
+        })
+    }
+
+    private fun filter(query: String) {
+        displayedItemArray.clear()
+        val lowerCaseQuery = (query as java.lang.String).toLowerCase(Locale.ROOT) // Simplified toLowerCase
+
+        if (query.isEmpty()) {
+            displayedItemArray.addAll(originalItemArray)
+        } else {
+            for (item in originalItemArray) {
+                val itemNameLowerCase = (item.name as java.lang.String?)?.toLowerCase(Locale.ROOT) ?: ""
+                if (itemNameLowerCase.contains(lowerCaseQuery)) {
+                    displayedItemArray.add(item)
+                }
+            }
+        }
+        //displayedItemArray.sortBy { (it.name as java.lang.String?)?.toLowerCase(Locale.ROOT) }
+        adapter.notifyDataSetChanged()
     }
 
     companion object {
@@ -91,21 +138,49 @@ class ChatPersonal : Fragment() {
     }
 
     private fun createItems(){
-        itemArray = arrayListOf()
         val userCollection = db.collection("Usuarios")
         userCollection.whereEqualTo("isPersonal", false).get().addOnSuccessListener { documents ->
-            for(document in documents){
+            originalItemArray.clear()
 
-                AvatarManager.getUserAvatar(document.get("id").toString(), document.get("email").toString(), document.get("name").toString(), 40, lifecycleScope) { bitmap ->
-                    itemArray.add(ListaPersonaisItem(name = document.getString("name").toString(),
-                        userId = document.getString("id").toString(),
-                        image = bitmap))
-                    adapter.notifyDataSetChanged()
-                    Log.d("ChatUser", "Item added: ${document.getString("name")}")
+            val brokImageBitmap = context?.resources?.let {res ->
+                BitmapFactory.decodeResource(res, R.drawable.brok_logo)
+        } ?: run {
+            Log.e("ChatPersonal", "Failed to decode brok_logo")
+                null
+            }
+
+            if (brokImageBitmap != null) {
+                originalItemArray.add(
+                    ListaPersonaisItem(name = "Brok", userId = "BROK_AI_AGENT", image = brokImageBitmap)
+                )
+            } else {
+                Log.w("ChatPersonal", "Brok item not added due to missing image resouce")
+            }
+
+            if (documents.isEmpty()) {
+                Handler(Looper.getMainLooper()).post {
+                    filter("")
+                }
+                return@addOnSuccessListener
+            }
+
+            var itemsProcessed = 0
+            val totalItemsToProcess = documents.size()
+            val fetchedFirestoreItems = mutableListOf<ListaPersonaisItem>()
+
+            for (document in documents) {
+                AvatarManager.getUserAvatar(document.getString("id").orEmpty(), document.getString("email").orEmpty(), document.getString("name").orEmpty(), 40, lifecycleScope
+                ) {bitmap ->
+                    val newItem = ListaPersonaisItem(name = document.getString("name"), userId = document.getString("id"), image = bitmap)
+                    fetchedFirestoreItems.add(newItem)
+
+                    itemsProcessed++
+                    if (itemsProcessed == totalItemsToProcess) {originalItemArray.addAll(fetchedFirestoreItems)
+                    Handler(Looper.getMainLooper()).post {
+                        filter("")
+                    }}
                 }
             }
-            itemArray.add(0, ListaPersonaisItem(name = "Brok", userId = "", image = BitmapFactory.decodeResource(context?.resources, R.drawable.brok_logo)))
-            adapter.notifyDataSetChanged()
         }
     }
 }

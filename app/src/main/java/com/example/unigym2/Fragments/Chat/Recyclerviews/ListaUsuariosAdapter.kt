@@ -14,15 +14,17 @@ import com.example.unigym2.Fragments.Profile.VisualizarPerfilPersonal
 import com.example.unigym2.Fragments.Profile.VisualizarPerfilUser
 import com.example.unigym2.R
 import com.google.android.material.imageview.ShapeableImageView
+import com.google.firebase.firestore.FirebaseFirestore
 
 class ListaUsuariosAdapter(private val dataList: MutableList<ListaPersonaisItem>, var communicator: Communicator, val fragmentManager : FragmentManager) : RecyclerView.Adapter<ListaUsuariosAdapter.MyViewHolder>(){
 
-
+    lateinit var db: FirebaseFirestore
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
         val itemView = LayoutInflater.from(parent.context).inflate(
             R.layout.usuarios_chat_recycler_layout,
             parent, false)
+        db = FirebaseFirestore.getInstance()
         return MyViewHolder(itemView)
     }
 
@@ -44,13 +46,21 @@ class ListaUsuariosAdapter(private val dataList: MutableList<ListaPersonaisItem>
             communicator.replaceFragment(ChatMain())
         }
 
-        if(position == 0){
+        if (currentItem.userId == "BROK_AI_AGENT") {
             holder.visualizarPerfilBtn.visibility = View.GONE
-            holder.descriptionView.text = "Converse com um agente de IA."
+            holder.nameView.text = "Brok"
+            holder.descriptionView.text = "Converse com um agente de IA"
+        } else {
+            holder.visualizarPerfilBtn.visibility = View.VISIBLE
+            holder.descriptionView.text = "Treino com personal"
         }
 
         holder.visualizarPerfilBtn.setOnClickListener {
             fragmentManager.setFragmentResult("user_info_key", Bundle().apply {
+                putString("user_name", currentItem.name)
+                putString("user_id", currentItem.userId)
+            })
+            fragmentManager.setFragmentResult("user_monitoring_key", Bundle().apply {
                 putString("user_name", currentItem.name)
                 putString("user_id", currentItem.userId)
             })

@@ -5,6 +5,7 @@ import android.util.Log
 import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
+import com.example.unigym2.Fragments.Calendar.CalendarPersonal
 import com.example.unigym2.Fragments.Calendar.CalendarUser
 import com.example.unigym2.Fragments.Chat.ChatPersonal
 import com.example.unigym2.Fragments.Chat.ChatUser
@@ -60,7 +61,7 @@ class MainActivity : AppCompatActivity(), Communicator{
                     R.id.home -> replaceFragment(HomePersonalTrainer())
                     R.id.chat -> replaceFragment(ChatPersonal())
                     R.id.profile -> replaceFragment(ProfilePersonal())
-                    R.id.calendar -> replaceFragment(CalendarUser())
+                    R.id.calendar -> replaceFragment(CalendarPersonal())
                     R.id.treinos -> replaceFragment(TreinosPersonal())
 
                     else -> {

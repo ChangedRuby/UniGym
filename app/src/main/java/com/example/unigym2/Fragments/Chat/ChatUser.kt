@@ -2,10 +2,13 @@ package com.example.unigym2.Fragments.Chat
 
 import android.graphics.BitmapFactory
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.lifecycleScope
@@ -17,19 +20,12 @@ import com.example.unigym2.Fragments.Chat.Recyclerviews.ListaPersonaisItem
 import com.example.unigym2.Managers.AvatarManager
 import com.example.unigym2.R
 import com.google.firebase.firestore.FirebaseFirestore
+import java.util.Locale
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
 private const val ARG_PARAM1 = "param1"
 private const val ARG_PARAM2 = "param2"
 
-/**
- * A simple [Fragment] subclass.
- * Use the [ChatUser.newInstance] factory method to
- * create an instance of this fragment.
- */
 class ChatUser : Fragment() {
-    // TODO: Rename and change types of parameters
     private var param1: String? = null
     private var param2: String? = null
 
@@ -37,8 +33,12 @@ class ChatUser : Fragment() {
     lateinit var communicator: Communicator
     private lateinit var recyclerView: RecyclerView
     lateinit var db: FirebaseFirestore
+    private lateinit var searchView: SearchView
 
-    private lateinit var itemArray: MutableList<ListaPersonaisItem>
+    private lateinit var originalItemArray: MutableList<ListaPersonaisItem>
+    private lateinit var displayedItemArray: MutableList<ListaPersonaisItem>
+
+    // private lateinit var itemArray: MutableList<ListaPersonaisItem>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -52,31 +52,68 @@ class ChatUser : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
-        var v = inflater.inflate(R.layout.fragment_chat_user, container, false)
+        val v = inflater.inflate(R.layout.fragment_chat_user, container, false)
         db = FirebaseFirestore.getInstance()
         recyclerView = v.findViewById(R.id.listaUsuariosRecyclerview)
         communicator = activity as Communicator
+        searchView = v.findViewById(R.id.conversasSearchView)
 
+        originalItemArray = mutableListOf()
+        displayedItemArray = mutableListOf()
+
+        setupSearchView()
         createItems()
+
         val layoutManager = LinearLayoutManager(context)
-        adapter = ListaPersonaisAdapter(itemArray, communicator, parentFragmentManager)
+        adapter = ListaPersonaisAdapter(displayedItemArray, communicator, parentFragmentManager)
         recyclerView.adapter = adapter
         recyclerView.layoutManager = layoutManager
 
         return v
     }
 
+    private fun setupSearchView() {
+        searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                return false
+            }
+
+            override fun onQueryTextChange(newText: String?): Boolean {
+                filter(newText.orEmpty())
+                return true
+            }
+        })
+    }
+
+    private fun filter(query: String) {
+        displayedItemArray.clear()
+        val lowerCaseQuery = (query as java.lang.String).toLowerCase(Locale.ROOT)
+
+        if (query.isEmpty()) {
+            val brokItem = originalItemArray.find { it.userId == "BROK_AI_AGENT" }
+            if (brokItem != null) {
+                displayedItemArray.add(brokItem)
+            } else {
+                Log.w("ChatUser", "Brok item with ID 'BROK_AI_AGENT' not found in originalItemArray.")
+            }
+
+            for (item in originalItemArray) {
+                if (item.userId != "BROK_AI_AGENT") {
+                    displayedItemArray.add(item)
+                }
+            }
+        } else {
+            for (item in originalItemArray) {
+                val itemNameLowerCase = (item.name as java.lang.String?)?.toLowerCase(Locale.ROOT) ?: ""
+                if (itemNameLowerCase.contains(lowerCaseQuery)) {
+                    displayedItemArray.add(item)
+                }
+            }
+        }
+        adapter.notifyDataSetChanged()
+    }
+
     companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment ChatUser.
-         */
-        // TODO: Rename and change types and number of parameters
         @JvmStatic
         fun newInstance(param1: String, param2: String) =
             ChatUser().apply {
@@ -87,22 +124,55 @@ class ChatUser : Fragment() {
             }
     }
 
-    private fun createItems(){
-        itemArray = arrayListOf()
+    private fun createItems() {
         val userCollection = db.collection("Usuarios")
         userCollection.whereEqualTo("isPersonal", true).get().addOnSuccessListener { documents ->
-            for(document in documents){
+            originalItemArray.clear()
 
-                AvatarManager.getUserAvatar(document.get("id").toString(), document.get("email").toString(), document.get("name").toString(), 40, lifecycleScope) { bitmap ->
-                    itemArray.add(ListaPersonaisItem(name = document.getString("name").toString(),
-                        userId = document.getString("id").toString(),
-                        image = bitmap))
-                    adapter.notifyDataSetChanged()
-                    Log.d("ChatUser", "Item added: ${document.getString("name")}")
+            val brokImageBitmap = context?.resources?.let { res ->
+                BitmapFactory.decodeResource(res, R.drawable.brok_logo)
+            } ?: run {
+                Log.e("ChatUser", "Failed to decode brok_logo: context or resources were null.")
+                null
+            }
+
+            if (brokImageBitmap != null) {
+                originalItemArray.add(
+                    ListaPersonaisItem(name = "Brok", userId = "BROK_AI_AGENT", image = brokImageBitmap))
+            } else {
+                Log.w("ChatUser", "Brok item not added due to missing image resource.")
+            }
+
+            if (documents.isEmpty()) {
+                Handler(Looper.getMainLooper()).post {
+                    filter("")
+                }
+                return@addOnSuccessListener
+            }
+
+            var itemsProcessed = 0
+            val totalItemsToProcess = documents.size()
+            val fetchedFirestoreItems = mutableListOf<ListaPersonaisItem>()
+
+            for (document in documents) {
+                AvatarManager.getUserAvatar(document.getString("id").orEmpty(), document.getString("email").orEmpty(), document.getString("name").orEmpty(), 40, lifecycleScope
+                ) { bitmap ->
+                    val newItem = ListaPersonaisItem(name = document.getString("name"), userId = document.getString("id"), image = bitmap)
+                    fetchedFirestoreItems.add(newItem)
+
+                    itemsProcessed++
+                    if (itemsProcessed == totalItemsToProcess) { originalItemArray.addAll(fetchedFirestoreItems)
+                        Handler(Looper.getMainLooper()).post {
+                            filter("")
+                        }
+                    }
                 }
             }
-            itemArray.add(0, ListaPersonaisItem(name = "Brok", userId = "", image = BitmapFactory.decodeResource(context?.resources, R.drawable.brok_logo)))
-            adapter.notifyDataSetChanged()
+        }.addOnFailureListener { exception ->
+            Log.e("ChatUser", "Error getting documents: ", exception)
+            Handler(Looper.getMainLooper()).post {
+                filter("")
+            }
         }
     }
 }
