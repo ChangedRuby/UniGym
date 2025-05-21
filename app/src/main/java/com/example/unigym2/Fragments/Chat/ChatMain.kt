@@ -1,6 +1,7 @@
 package com.example.unigym2.Fragments.Chat
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -18,9 +19,6 @@ import com.example.unigym2.R
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ListenerRegistration
-import java.time.Instant
-import java.time.ZoneId
-import java.time.format.DateTimeFormatter
 
 class ChatMain : Fragment() {
 
@@ -77,10 +75,6 @@ class ChatMain : Fragment() {
         return view
     }
 
-    val currentInstant: Instant = Instant.now()
-    val formatter: DateTimeFormatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm").withZone(ZoneId.of("UTC-3"))
-    val formattedTimestamp: String = formatter.format(currentInstant)
-
     private fun setupChat() {
         if (senderUid == null || receiverUid == null) return
 
@@ -114,13 +108,14 @@ class ChatMain : Fragment() {
 
         // Envia mensagem
         sendButton.setOnClickListener {
+            Log.d("porra","não foi clicado")
             val messageText = messageBox.text.toString().trim()
             if (messageText.isNotEmpty()) {
                 val messageData = hashMapOf(
                     "message" to messageText,
                     "senderId" to senderUid,
                     "receiverId" to receiverUid,
-                    "timestamp" to formatter
+                    "timestamp" to System.currentTimeMillis()
                 )
 
                 // Cria documento da sala se não existir
