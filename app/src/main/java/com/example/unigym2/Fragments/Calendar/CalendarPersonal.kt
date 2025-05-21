@@ -90,28 +90,46 @@ class CalendarPersonal : Fragment() {
                 .whereEqualTo("status", "aceito")
                 .get()
                 .addOnSuccessListener{ documents ->
-                    for(document in documents){
-                        val clienteID = document.getString("clienteID")
-                        val horario = document.getString("hora")
-                        val servico = document.getString("servico")
-
-                        dataBase.collection("Usuarios")
-                            .document(clienteID!!)
-                            .get()
-                            .addOnSuccessListener { result ->
-                                val nomeCliente = result.getString("name")
-
-                                val programacao = CalendarPersonalItem(
-                                    nomeCliente = nomeCliente,
-                                    horario = horario,
-                                    servico = servico
-                                )
-                                schedulesArrayList.add(programacao)
-                                Log.d("data_selecionada", "$programacao")
-                                adapter.notifyDataSetChanged()
-                            }
+                    var cont =0
+                    for (doc in documents){
+                        cont = cont+1
                     }
-                    adapter.notifyDataSetChanged()
+                    if(cont<=1){
+                        val programacao = CalendarPersonalItem(
+                            nomeCliente = "Sem agendamentos",
+                            horario = "",
+                            servico = ""
+                        )
+                        schedulesArrayList.clear()
+                        schedulesArrayList.add(programacao)
+                        adapter.notifyDataSetChanged()
+
+                    } else {
+                        schedulesArrayList.clear()
+
+                        for (document in documents) {
+                            val clienteID = document.getString("clienteID")
+                            val horario = document.getString("hora")
+                            val servico = document.getString("servico")
+
+                            dataBase.collection("Usuarios")
+                                .document(clienteID!!)
+                                .get()
+                                .addOnSuccessListener { result ->
+                                    val nomeCliente = result.getString("name")
+
+                                    val programacao = CalendarPersonalItem(
+                                        nomeCliente = nomeCliente,
+                                        horario = horario,
+                                        servico = servico
+                                    )
+                                    schedulesArrayList.add(programacao)
+                                    Log.d("data_selecionada", "$programacao")
+                                    adapter.notifyDataSetChanged()
+                                }
+                        }
+                        adapter.notifyDataSetChanged()
+                    }
 
                 }
                 .addOnFailureListener { e ->
