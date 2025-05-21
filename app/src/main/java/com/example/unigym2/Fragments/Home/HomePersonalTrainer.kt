@@ -53,7 +53,7 @@ class HomePersonalTrainer : Fragment() {
     ): View? {
         // Inflate the layout for this fragment
         var v = inflater.inflate(R.layout.fragment_home_personal_trainer, container, false)
-        
+        solicitationsView = v.findViewById(R.id.solicitationsView)
         db = FirebaseFirestore.getInstance()
 
         communicator = activity as Communicator
@@ -73,12 +73,12 @@ class HomePersonalTrainer : Fragment() {
             .whereEqualTo("status", "pendente")
             .get()
             .addOnSuccessListener { documents ->
-                var solicitacoesPendentes = 1
+                var solicitacoesPendentes = 0
                 for(document in documents){
                     solicitacoesPendentes++
                 }
 
-                solicitationsView.text = "$solicitacoesPendentes + solicitações pendentes!"
+                solicitationsView.text = "$solicitacoesPendentes solicitações pendentes!"
 
             }
             .addOnFailureListener {
