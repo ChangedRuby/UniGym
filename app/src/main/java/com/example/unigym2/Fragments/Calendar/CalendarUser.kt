@@ -57,7 +57,7 @@ class CalendarUser : Fragment() {
         // Inflate the layout for this fragment
         val v = inflater.inflate(R.layout.fragment_calendar_user, container, false)
 
-        dataInitialize()
+        schedulesArrayList = arrayListOf()
         val layoutManager = LinearLayoutManager(context)
         recyclerView = v.findViewById(R.id.calendarUserRecyclerView)
         recyclerView.layoutManager = layoutManager
@@ -83,10 +83,8 @@ class CalendarUser : Fragment() {
             Log.d("data_selecionada", dataSelecionada)
 
             programacoesContainer.visibility = View.VISIBLE
-            schedulesArrayList.clear()
 
             dataBase.collection("Agendamentos")
-                .orderBy("horario", Query.Direction.ASCENDING)
                 .whereEqualTo("clienteID", userId)
                 .whereEqualTo("data", dataSelecionada)
                 .whereEqualTo("status", "aceito")
@@ -165,9 +163,6 @@ class CalendarUser : Fragment() {
     }
 
     fun dataInitialize(){
-        schedulesArrayList = arrayListOf(
-            CalendarUserItem("fdsiughrfediuhg"),
-            CalendarUserItem("sdroighlsdkfjlsdkfg"),
-        )
+        schedulesArrayList = arrayListOf()
     }
 }

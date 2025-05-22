@@ -3,6 +3,7 @@ package com.example.unigym2.Activities
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
+import android.view.View
 import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
@@ -84,11 +85,28 @@ class CreateAccountUser : AppCompatActivity() {
                                 )
                             )
                         ).addOnSuccessListener { documentReference ->
-                            var intent = Intent(this, MainActivity::class.java)
-                            intent.putExtra("personalMode", "false")
-                            intent.putExtra("userId", user.uid)
-                            intent.putExtra("userEmail", user.email)
-                            startActivity(intent)
+                            auth.signInWithEmailAndPassword(email, password)
+                                .addOnCompleteListener(this) { task ->
+                                    if (task.isSuccessful) {
+                                        // Sign in success, update UI with the signed-in user's information
+                                        Log.d("login_activity", "signInWithEmail:success")
+                                        val user = auth.currentUser
+
+                                        var intent = Intent(this, MainActivity::class.java)
+                                        intent.putExtra("userId", user!!.uid)
+                                        intent.putExtra("userEmail", user.email)
+                                        startActivity(intent)
+
+                                    } else {
+                                        Log.w("login_activity", "signInWithEmail:failure", task.exception)
+                                        Toast.makeText(
+                                            baseContext,
+                                            "Authentication failed.",
+                                            Toast.LENGTH_SHORT,
+                                        ).show()
+
+                                    }
+                                }
 
                             Log.d("create_account", "DocumentSnapshot added with ID: ${user.uid}")
                         }.addOnFailureListener { e ->

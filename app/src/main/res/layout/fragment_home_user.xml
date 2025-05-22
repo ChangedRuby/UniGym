@@ -203,5 +203,46 @@
             app:layout_constraintTop_toBottomOf="@+id/imageView9"
             app:layout_constraintVertical_bias="0.0" />
 
+        <RelativeLayout
+            android:id="@+id/treinoFeitoLayout"
+            android:layout_width="match_parent"
+            android:layout_height="100sp"
+            android:layout_marginTop="20sp"
+            android:gravity="center_horizontal"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/imageView10">
+
+            <View
+                android:id="@+id/treinoFeitoBackground"
+                android:layout_width="340sp"
+                android:layout_height="80sp"
+                android:background="@drawable/rectangle_objetivos_teste" />
+
+            <TextView
+                android:id="@+id/treinoFeitoButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="100sp"
+                android:layout_marginTop="20sp"
+                android:layout_toRightOf="@id/treinoFeitoTextView"
+                android:background="@drawable/rectangle_light_gradient"
+                android:paddingLeft="30sp"
+                android:paddingTop="10sp"
+                android:paddingRight="30sp"
+                android:paddingBottom="10sp"
+                android:text="Treinei"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/treinoFeitoTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20sp"
+                android:layout_marginTop="28sp"
+                android:text="Já treinou hoje?"
+                android:textColor="@android:color/white" />
+        </RelativeLayout>
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 </FrameLayout>

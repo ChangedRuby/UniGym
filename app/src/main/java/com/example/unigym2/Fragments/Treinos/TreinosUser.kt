@@ -157,6 +157,11 @@ class TreinosUser : Fragment() {
                     val document = dc.document
                     val docId = document.id
 
+                    if(document.get("exercicios") == null){
+                        Log.d("treino_usuario_personal", "Treino não presente")
+                        return
+                    }
+
                     var exercicios = document.get("exercicios") as List<Map<String, Any>>
                     Log.d("treino_usuario_personal", exercicios.toString())
 
