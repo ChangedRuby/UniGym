@@ -75,7 +75,7 @@ class ProfileUser : Fragment() {
                 nameTextView.text = result.data?.get("name").toString()
                 emailTextView.text = communicator.getAuthUserEmail()
 
-                val objetivos = result.data?.get("objetivos") as List<*>
+                val objetivos = result.data?.get("objectives") as List<*>
 
                 for (i in 0 until objetivos.size) {
                     when (i) {
