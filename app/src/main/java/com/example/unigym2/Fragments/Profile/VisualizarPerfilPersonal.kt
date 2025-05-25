@@ -8,11 +8,14 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
 import com.example.unigym2.Activities.Communicator
 import com.example.unigym2.Fragments.Calendar.MonitoringSchedules
 import com.example.unigym2.Fragments.Chat.ChatPersonal
 import com.example.unigym2.Fragments.Chat.ChatUser
+import com.example.unigym2.Managers.AvatarManager
 import com.example.unigym2.R
+import com.google.android.material.imageview.ShapeableImageView
 import com.google.firebase.firestore.FirebaseFirestore
 
 private const val ARG_PARAM1 = "param1"
@@ -29,6 +32,7 @@ class VisualizarPerfilPersonal() : Fragment() {
     private lateinit var nameTextView : TextView
     private lateinit var emailTextView: TextView
     private lateinit var crefTextView: TextView
+    private lateinit var personalImage: ShapeableImageView
     private lateinit var personalID: String
     private lateinit var specialty1 : TextView
     private lateinit var specialty2 : TextView
@@ -61,6 +65,7 @@ class VisualizarPerfilPersonal() : Fragment() {
         nameTextView = v.findViewById(R.id.UserProfileName)
         emailTextView = v.findViewById(R.id.userProfileEmail)
         crefTextView = v.findViewById(R.id.userCREF)
+        personalImage = v.findViewById(R.id.profileVisualizarPersonalImage)
 
         specialty1 = v.findViewById(R.id.especialidade1)
         specialty2 = v.findViewById(R.id.especialidade2)
@@ -134,6 +139,10 @@ class VisualizarPerfilPersonal() : Fragment() {
                             2 -> price3.text = prices[i].toString()
                             3 -> price4.text = prices[i].toString()
                         }
+                    }
+
+                    AvatarManager.getUserAvatar(personalID, result.data?.get("email").toString(), result.data?.get("name").toString(), 40, lifecycleScope) { bitmap ->
+                        personalImage.setImageBitmap(bitmap)
                     }
                 }.addOnFailureListener { exception ->
                     Log.d("firestore", "Error getting document.", exception)

@@ -7,6 +7,7 @@ import android.net.Uri
 import android.util.Base64
 import android.util.Log
 import androidx.lifecycle.LifecycleCoroutineScope
+import com.example.unigym2.Activities.Communicator
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -20,22 +21,37 @@ import kotlin.random.Random
 
 object AvatarManager {
     public var imageCache: HashMap<String, Bitmap> = hashMapOf()
+    var communicator: Communicator ?= null
 
     public fun getUserAvatar(userId: String, email: String, userName: String, size: Int, lifecycle: LifecycleCoroutineScope, callback: (Bitmap?) -> Unit) {
         var db = FirebaseFirestore.getInstance()
 
-        db.collection("Usuarios").document(userId).get().addOnSuccessListener { document ->
-            var userImageBase64: String = document.get("avatar").toString()
-            Log.d("avatar_manager", "Image base64 retrieved")
-            if(userImageBase64 == "null" || userImageBase64 == ""){
-                Log.d("avatar_manager", "getting profile image from Gravatar")
-                getGravatarBitmap(email, userName, size, lifecycle) { bitmap ->
-                    callback(bitmap)
-                }
-            } else{
-                callback(base64ToBitmap(userImageBase64))
-            }
+        val hashedEmail = generateHash(email.lowercase().trim())
+        communicator?.showLoadingOverlay()
 
+        if(imageCache.containsKey(hashedEmail)){
+            Log.d("avatar_manager", "-> avatar already loaded, loading from cache instead")
+            communicator?.hideLoadingOverlay()
+            callback(imageCache.get(hashedEmail))
+        } else{
+            db.collection("Usuarios").document(userId).get().addOnSuccessListener { document ->
+                var userImageBase64: String = document.get("avatar").toString()
+                Log.d("avatar_manager", "Image base64 retrieved")
+                if(userImageBase64 == "null" || userImageBase64 == ""){
+                    Log.d("avatar_manager", "getting profile image from Gravatar")
+                    getGravatarBitmap(email, userName, size, lifecycle) { bitmap ->
+                        imageCache.put(hashedEmail, bitmap!!)
+                        communicator?.hideLoadingOverlay()
+                        callback(bitmap)
+                    }
+                } else{
+                    val bitmapImage = base64ToBitmap(userImageBase64)
+                    imageCache.put(hashedEmail, bitmapImage!!)
+                    communicator?.hideLoadingOverlay()
+                    callback(bitmapImage)
+                }
+
+            }
         }
     }
 
@@ -48,36 +64,30 @@ object AvatarManager {
         val apiUrl = "https://gravatar.com/avatar/${Random.nextInt(50, 55)}?s=$size&d=initials&name=${userName.trim().replace(" ", "+")}"
         var profileBitmap: Bitmap? = null
 
-        if(imageCache.contains(hashedEmail)){
-            Log.d("avatar_manager", "-> avatar already loaded, loading from cache instead")
-            callback(imageCache.get(hashedEmail))
-        } else{
-            lifecycle.launch(Dispatchers.IO) {
-                val url: URL = URI.create(apiUrl).toURL()
-                val connection: HttpURLConnection = url.openConnection() as HttpURLConnection
+        lifecycle.launch(Dispatchers.IO) {
+            val url: URL = URI.create(apiUrl).toURL()
+            val connection: HttpURLConnection = url.openConnection() as HttpURLConnection
 
-                connection.requestMethod = "GET"
-                connection.connectTimeout = 15000
-                connection.readTimeout = 10000
-                connection.setRequestProperty("Authorization", "Bearer 4182:gk-4fL9c25ISRDpREuWqFIewKMrXBB4DaHcZGLVMwQnpaEKhsh6RXzGP2hvkZhcr")
+            connection.requestMethod = "GET"
+            connection.connectTimeout = 15000
+            connection.readTimeout = 10000
+            connection.setRequestProperty("Authorization", "Bearer 4182:gk-4fL9c25ISRDpREuWqFIewKMrXBB4DaHcZGLVMwQnpaEKhsh6RXzGP2hvkZhcr")
 
-                val responseCode: Int = connection.responseCode
-                Log.d("user_profile", "Response Code: $responseCode")
+            val responseCode: Int = connection.responseCode
+            Log.d("user_profile", "Response Code: $responseCode")
 
-                if(responseCode == 200){
-                    val inputStream = connection.inputStream
-                    val bufferedInputStream = BufferedInputStream(inputStream)
-                    Log.d("user_profile", "width; $size")
+            if(responseCode == 200){
+                val inputStream = connection.inputStream
+                val bufferedInputStream = BufferedInputStream(inputStream)
+                Log.d("user_profile", "width; $size")
 
-                    profileBitmap = BitmapFactory.decodeStream(bufferedInputStream)
-                    imageCache.put(hashedEmail, profileBitmap)
-                } else{
-                    Log.d("gravatar_manager", "Error while getting data: $responseCode")
-                }
+                profileBitmap = BitmapFactory.decodeStream(bufferedInputStream)
+            } else{
+                Log.d("gravatar_manager", "Error while getting data: $responseCode")
+            }
 
-                lifecycle.launch(Dispatchers.Main) {
-                    callback(profileBitmap)
-                }
+            lifecycle.launch(Dispatchers.Main) {
+                callback(profileBitmap)
             }
         }
 
@@ -110,6 +120,10 @@ object AvatarManager {
         var db = FirebaseFirestore.getInstance()
 
         db.collection("Usuarios").document(userId).update("avatar", imageBase64)
+    }
+
+    public fun setOverlayCommunicator(communicator: Communicator){
+        this.communicator = communicator
     }
 
     private fun generateHash(input: String): String {

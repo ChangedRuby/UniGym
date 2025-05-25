@@ -3,6 +3,7 @@ package com.example.unigym2.Activities
 import android.os.Bundle
 import android.util.Log
 import android.widget.Button
+import android.widget.FrameLayout
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import com.example.unigym2.Fragments.Calendar.CalendarPersonal
@@ -15,6 +16,7 @@ import com.example.unigym2.Fragments.Profile.ProfilePersonal
 import com.example.unigym2.Fragments.Profile.ProfileUser
 import com.example.unigym2.Fragments.Treinos.TreinosPersonal
 import com.example.unigym2.Fragments.Treinos.TreinosUser
+import com.example.unigym2.Managers.AvatarManager
 import com.example.unigym2.R
 import com.example.unigym2.databinding.ActivityMainBinding
 import com.google.firebase.auth.FirebaseAuth
@@ -24,6 +26,7 @@ import com.google.firebase.firestore.FirebaseFirestore
 class MainActivity : AppCompatActivity(), Communicator{
     var personalMode : Boolean = false
     lateinit var binding: ActivityMainBinding
+    lateinit var loadingLayout: FrameLayout
     lateinit var userId: String
     lateinit var userEmail: String
     lateinit var userName: String
@@ -34,10 +37,14 @@ class MainActivity : AppCompatActivity(), Communicator{
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        loadingLayout = findViewById(R.id.loadingLayout)
+
         db = FirebaseFirestore.getInstance()
         userId = intent.getStringExtra("userId").toString()
         userEmail = intent.getStringExtra("userEmail").toString()
         Log.d("MainActivityDebug", userId)
+
+        AvatarManager.setOverlayCommunicator(this as Communicator)
 
         db.collection("Usuarios").document(userId).get().addOnSuccessListener { document ->
             if(document.get("isPersonal") == true){
@@ -128,5 +135,13 @@ class MainActivity : AppCompatActivity(), Communicator{
 
     override fun getAuthInstance(): FirebaseAuth {
         return FirebaseAuth.getInstance()
+    }
+
+    override fun hideLoadingOverlay() {
+        loadingLayout.visibility = FrameLayout.GONE
+    }
+
+    override fun showLoadingOverlay() {
+        loadingLayout.visibility = FrameLayout.VISIBLE
     }
 }

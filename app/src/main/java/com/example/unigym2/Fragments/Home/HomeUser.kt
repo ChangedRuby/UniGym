@@ -41,6 +41,23 @@ class HomeUser : Fragment() {
         }
     }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        db.collection("Usuarios").document(communicator.getAuthUser())
+            .get()
+            .addOnSuccessListener { result ->
+                val userName = result.data?.get("name").toString()
+                titleView.text = userName
+                communicator.setAuthUserName(userName)
+                communicator.hideLoadingOverlay()
+                Log.d("firestore", "${result.id} => ${result.data}")
+            }.addOnFailureListener { exception ->
+                Log.w("firestore", "Error getting document.", exception)
+            }
+
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -51,16 +68,7 @@ class HomeUser : Fragment() {
         titleView = v.findViewById(R.id.nameTitle)
         communicator = activity as Communicator
 
-        db.collection("Usuarios").document(communicator.getAuthUser())
-            .get()
-            .addOnSuccessListener { result ->
-                val userName = result.data?.get("name").toString()
-                titleView.text = userName
-                communicator.setAuthUserName(userName)
-                Log.d("firestore", "${result.id} => ${result.data}")
-            }.addOnFailureListener { exception ->
-                Log.w("firestore", "Error getting document.", exception)
-            }
+        communicator.showLoadingOverlay()
 
         return v
     }

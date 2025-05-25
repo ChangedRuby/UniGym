@@ -125,6 +125,7 @@ class ChatUser : Fragment() {
     }
 
     private fun createItems() {
+        communicator.showLoadingOverlay()
         val userCollection = db.collection("Usuarios")
         userCollection.whereEqualTo("isPersonal", true).get().addOnSuccessListener { documents ->
             originalItemArray.clear()
@@ -168,6 +169,7 @@ class ChatUser : Fragment() {
                     }
                 }
             }
+            communicator.hideLoadingOverlay()
         }.addOnFailureListener { exception ->
             Log.e("ChatUser", "Error getting documents: ", exception)
             Handler(Looper.getMainLooper()).post {

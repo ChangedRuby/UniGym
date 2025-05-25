@@ -8,10 +8,13 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
 import com.example.unigym2.Activities.Communicator
 import com.example.unigym2.Fragments.Chat.ChatPersonal
 import com.example.unigym2.Fragments.Chat.ChatUser
+import com.example.unigym2.Managers.AvatarManager
 import com.example.unigym2.R
+import com.google.android.material.imageview.ShapeableImageView
 import com.google.firebase.firestore.FirebaseFirestore
 
 private const val ARG_PARAM1 = "param1"
@@ -26,6 +29,7 @@ class VisualizarPerfilUser : Fragment() {
     private lateinit var nameTextView : TextView
     private lateinit var emailTextView: TextView
     private lateinit var backBtn : ImageView
+    private lateinit var userImage: ShapeableImageView
 
     private lateinit var communicator : Communicator
 
@@ -58,6 +62,7 @@ class VisualizarPerfilUser : Fragment() {
 
         nameTextView = v.findViewById(R.id.UserProfileName)
         emailTextView = v.findViewById(R.id.userCREF)
+        userImage = v.findViewById(R.id.profileVisualizarUserImage)
 
         objetivo1 = v.findViewById(R.id.especialidade1)
         objetivo2 = v.findViewById(R.id.especialidade2)
@@ -84,6 +89,9 @@ class VisualizarPerfilUser : Fragment() {
                             2 -> objetivo3.text = objetivos[i].toString()
                             3 -> objetivo4.text = objetivos[i].toString()
                         }
+                    }
+                    AvatarManager.getUserAvatar(userID, result.data?.get("email").toString(), result.data?.get("name").toString(), 40, lifecycleScope) { bitmap ->
+                        userImage.setImageBitmap(bitmap)
                     }
                 }.addOnFailureListener { exception ->
                     Log.d("firestore", "Error getting document.", exception)

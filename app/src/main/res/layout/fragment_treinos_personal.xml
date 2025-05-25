@@ -82,7 +82,7 @@
             android:textColor="@color/black"
             android:textSize="24sp"
             android:textStyle="bold"
-            app:icon="@drawable/bike"
+            app:icon="@drawable/fitness_center_icon"
             app:iconPadding="10dp"
             app:iconSize="32dp"
             app:iconTint="@android:color/black"

@@ -15,4 +15,6 @@ interface Communicator {
     fun setAuthUserName(userName: String)
     fun getAuthUserName(): String
     fun getAuthInstance(): FirebaseAuth
+    fun hideLoadingOverlay()
+    fun showLoadingOverlay()
 }

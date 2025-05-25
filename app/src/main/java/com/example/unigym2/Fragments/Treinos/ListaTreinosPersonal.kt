@@ -99,6 +99,8 @@ class ListaTreinosPersonal : Fragment(), ListaUsuariosClickListener {
         val userId = communicator.getAuthUser()
         val userCollection = db.collection("Usuarios")
 
+        communicator.showLoadingOverlay()
+
         userCollection.whereEqualTo("isPersonal", false).get().addOnSuccessListener { documents ->
             for(document in documents){
                 var profileImage: Bitmap?
@@ -110,6 +112,7 @@ class ListaTreinosPersonal : Fragment(), ListaUsuariosClickListener {
                     adapter.notifyDataSetChanged()
                 }
             }
+            communicator.hideLoadingOverlay()
         }
 
         /*treinosCollection.add(
