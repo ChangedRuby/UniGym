@@ -6,6 +6,7 @@
     android:layout_height="match_parent">
 
     <FrameLayout
+        android:id="@+id/fragment_container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:context=".Fragments.Chat.ChatUser">
@@ -128,6 +129,7 @@
                 android:layout_marginEnd="1dp"
                 android:textAlignment="inherit"
                 android:textDirection="inherit"
+                android:visibility="visible"
                 app:layout_constraintBottom_toTopOf="@+id/materialToolbar2"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
