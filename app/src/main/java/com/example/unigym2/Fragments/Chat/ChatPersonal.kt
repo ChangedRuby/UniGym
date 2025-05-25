@@ -139,6 +139,7 @@ class ChatPersonal : Fragment() {
 
     private fun createItems(){
         val userCollection = db.collection("Usuarios")
+        communicator.showLoadingOverlay()
         userCollection.whereEqualTo("isPersonal", false).get().addOnSuccessListener { documents ->
             originalItemArray.clear()
 
@@ -181,6 +182,7 @@ class ChatPersonal : Fragment() {
                     }}
                 }
             }
+            communicator.hideLoadingOverlay()
         }
     }
 }

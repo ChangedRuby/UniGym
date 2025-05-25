@@ -60,6 +60,8 @@ class HomePersonalTrainer : Fragment() {
         titleView = v.findViewById(R.id.nameTitle)
         schedulesBtn = v.findViewById(R.id.schedulesBtn)
 
+        communicator.showLoadingOverlay()
+
         val auth = FirebaseAuth.getInstance()
         val personalID = auth.currentUser?.uid
 
@@ -91,6 +93,7 @@ class HomePersonalTrainer : Fragment() {
                 val userName = result.data?.get("name").toString()
                 titleView.text = userName
                 communicator.setAuthUserName(userName)
+                communicator.hideLoadingOverlay()
                 Log.d("firestore", "${result.id} => ${result.data}")
             }.addOnFailureListener { exception ->
                 Log.w("firestore", "Error getting document.", exception)

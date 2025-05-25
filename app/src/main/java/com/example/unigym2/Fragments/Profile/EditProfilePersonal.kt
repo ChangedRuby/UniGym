@@ -186,7 +186,7 @@ class EditProfilePersonal : Fragment() {
         }
 
         if(changedImage){
-            AvatarManager.storeAvatarForUser(communicator.getAuthUser(), imageConverted)
+            AvatarManager.storeAvatarForUser(communicator.getAuthUser(), communicator.getAuthUserEmail(), imageConverted)
         }
 
         val specialties = ArrayList<String>()

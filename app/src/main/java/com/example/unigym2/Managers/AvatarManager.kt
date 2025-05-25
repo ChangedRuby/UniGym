@@ -116,10 +116,11 @@ object AvatarManager {
         return decodedImage
     }
 
-    public fun storeAvatarForUser(userId: String, imageBase64: String){
+    public fun storeAvatarForUser(userId: String, userEmail: String, imageBase64: String){
         var db = FirebaseFirestore.getInstance()
 
         db.collection("Usuarios").document(userId).update("avatar", imageBase64)
+        imageCache.set(generateHash(userEmail.lowercase().trim()), base64ToBitmap(imageBase64)!!)
     }
 
     public fun setOverlayCommunicator(communicator: Communicator){

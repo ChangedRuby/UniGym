@@ -149,7 +149,7 @@ class EditProfileUser : Fragment() {
         }
 
         if(changedImage){
-            AvatarManager.storeAvatarForUser(communicator.getAuthUser(), imageConverted)
+            AvatarManager.storeAvatarForUser(communicator.getAuthUser(), communicator.getAuthUserEmail(), imageConverted)
         }
 
         val objectives = ArrayList<String>()
