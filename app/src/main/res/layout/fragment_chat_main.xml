@@ -60,13 +60,19 @@
 
             <Button
                 android:id="@+id/enviarButton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="50sp"
+                android:layout_height="50sp"
                 android:layout_marginTop="8dp"
                 android:layout_marginEnd="16dp"
                 android:backgroundTint="@color/button_blue"
-                android:text="Enviar"
+                android:paddingLeft="0dp"
+                android:paddingTop="0dp"
+                android:paddingRight="0dp"
+                android:paddingBottom="0dp"
                 android:textColor="#000000"
+                app:icon="@drawable/baseline_send_icon"
+                app:iconGravity="textStart"
+                app:iconPadding="0dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="@+id/materialToolbar2" />
 
@@ -134,6 +140,23 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="@+id/view6" />
+
+            <Button
+                android:id="@+id/sendImageButton"
+                android:layout_width="50sp"
+                android:layout_height="50sp"
+                android:layout_marginTop="8dp"
+                android:backgroundTint="@color/button_blue"
+                android:paddingLeft="0dp"
+                android:paddingRight="0dp"
+                app:icon="@drawable/add_icon"
+                app:iconGravity="textStart"
+                app:iconPadding="0dp"
+                app:iconSize="30sp"
+                app:layout_constraintEnd_toStartOf="@+id/enviarButton"
+                app:layout_constraintHorizontal_bias="0.966"
+                app:layout_constraintStart_toStartOf="@+id/materialToolbar2"
+                app:layout_constraintTop_toBottomOf="@+id/mainChat_RecycleView" />
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>

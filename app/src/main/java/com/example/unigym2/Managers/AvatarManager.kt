@@ -111,7 +111,11 @@ object AvatarManager {
     }
 
     public fun base64ToBitmap(base64: String): Bitmap?{
-        var decodedBytes = Base64.decode(base64, Base64.DEFAULT)
+        var decodedBytes = try {
+            Base64.decode(base64, Base64.DEFAULT)
+        } catch (e: Exception) {
+            return null
+        }
         var decodedImage = BitmapFactory.decodeByteArray(decodedBytes, 0, decodedBytes.size)
         return decodedImage
     }
@@ -128,14 +132,14 @@ object AvatarManager {
     }
 
     public fun isJpeg(base64: String): Boolean{
-        val decodedBytes = Base64.decode(base64, Base64.DEFAULT)
+        // val decodedBytes = Base64.decode(base64, Base64.DEFAULT)
 
         if(base64 == "null" || base64 == ""){
             Log.d("avatar_manager", "-> not a jpeg")
             return false
         }
 
-        val image = base64ToBitmap(base64)
+        val image: Bitmap ?= base64ToBitmap(base64)
         if(image == null){
             Log.d("avatar_manager", "-> not a jpeg")
             return false
