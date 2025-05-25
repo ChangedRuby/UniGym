@@ -39,6 +39,7 @@ class ProfileUser : Fragment() {
     lateinit var deleteUserButton: ImageView
     lateinit var profileView: ShapeableImageView
     lateinit var profileBitmap: Bitmap
+    private lateinit var quantidadeTreinos : TextView
     lateinit var auth: FirebaseAuth
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -68,12 +69,16 @@ class ProfileUser : Fragment() {
         objetivo2TextView = v.findViewById(R.id.especialidade2)
         objetivo3TextView = v.findViewById(R.id.objetivo3)
         objetivo4TextView = v.findViewById(R.id.objetivo4)
+        quantidadeTreinos = v.findViewById(R.id.CountTreinos)
         profileView = v.findViewById(R.id.profileUserImage)
         db.collection("Usuarios").document(communicator.getAuthUser())
             .get()
             .addOnSuccessListener { result ->
                 nameTextView.text = result.data?.get("name").toString()
                 emailTextView.text = communicator.getAuthUserEmail()
+
+                val totalTreinos = result.get("totalTreinos") ?: 0
+                quantidadeTreinos.text = "$totalTreinos"
 
                 val objetivos = result.data?.get("objectives") as List<*>
 

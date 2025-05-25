@@ -79,8 +79,9 @@ class VisualizarPerfilUser : Fragment() {
                     nameTextView.text = result.data?.get("name").toString()
                     emailTextView.text = result.data?.get("email").toString()
 
-                    val totalTreinos = result.get("totalTreinos")
-                    quantidadeTreinos.text = "$totalTreinos Dias"
+                    val totalTreinos = result.get("totalTreinos") ?: 0
+                    quantidadeTreinos.text = "$totalTreinos"
+
                     val objetivos = result.data?.get("objetivos") as List<*>
 
                     for (i in 0 until objetivos.size) {
