@@ -44,7 +44,7 @@ class ChatMain : Fragment() {
     ): View? {
         val view = inflater.inflate(R.layout.fragment_chat_main, container, false)
 
-        // Inicializa os componentes
+        // Inicializa os componentes.
         chatName = view.findViewById(R.id.chatName)
         backBtn = view.findViewById(R.id.goBackBtn)
         communicator = activity as Communicator
