@@ -44,7 +44,6 @@ class ChatMain : Fragment() {
     ): View? {
         val view = inflater.inflate(R.layout.fragment_chat_main, container, false)
 
-        // Inicializa os componentes.
         chatName = view.findViewById(R.id.chatName)
         backBtn = view.findViewById(R.id.goBackBtn)
         communicator = activity as Communicator
@@ -61,16 +60,14 @@ class ChatMain : Fragment() {
         mainChatRecyclerView.layoutManager = LinearLayoutManager(context)
         mainChatRecyclerView.adapter = messageAdapter
 
-        // Ouve o Bundle correto
         parentFragmentManager.setFragmentResultListener("chat_name_key", viewLifecycleOwner) { _, bundle ->
             val userName = bundle.getString("name", "Unknown Username")
-            val UID = bundle.getString("receiverID")  // Corrigido: "receiverID" com I maiúsculo
+            val UID = bundle.getString("receiverID")
             chatName.text = userName
             receiverUid = UID
             setupChat()
         }
 
-        // Enviar mensagem ao clicar
         sendButton.setOnClickListener {
             val msgText = messageBox.text.toString().trim()
             if (msgText.isNotEmpty() && chatRoomId != null) {
@@ -80,6 +77,17 @@ class ChatMain : Fragment() {
                     "receiverId" to receiverUid,
                     "timestamp" to System.currentTimeMillis()
                 )
+
+                // Primeiro, garante que a sala tenha os UIDs gravados
+                val chatRoomData = hashMapOf(
+                    "senderUid" to senderUid,
+                    "receiverUid" to receiverUid
+                )
+                db.collection("Chats")
+                    .document(chatRoomId!!)
+                    .set(chatRoomData) // Isso cria/atualiza a sala com os UIDs
+
+                // Agora, adiciona a mensagem
                 db.collection("Chats")
                     .document(chatRoomId!!)
                     .collection("messages")
@@ -102,7 +110,6 @@ class ChatMain : Fragment() {
             return
         }
 
-        // Cria um chatRoomId único baseado nos dois UIDs
         chatRoomId = listOf(senderUid!!, receiverUid!!).sorted().joinToString("")
 
         val messagesRef = db.collection("Chats")
@@ -110,7 +117,6 @@ class ChatMain : Fragment() {
             .collection("messages")
             .orderBy("timestamp")
 
-        // Carrega mensagens antigas
         messagesRef.get().addOnSuccessListener { snapshot ->
             messageList.clear()
             for (doc in snapshot.documents) {
@@ -123,7 +129,6 @@ class ChatMain : Fragment() {
             mainChatRecyclerView.scrollToPosition(messageList.size - 1)
         }
 
-        // Escuta novas mensagens em tempo real
         listenerRegistration = messagesRef.addSnapshotListener { snapshots, error ->
             if (error != null || snapshots == null) return@addSnapshotListener
 
