@@ -30,11 +30,14 @@ class HomeUser : Fragment() {
     private var param2: String? = null
     lateinit var titleView: TextView
     lateinit var communicator: Communicator
+    lateinit var button: TextView
+
 
     val db = FirebaseFirestore.getInstance()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         arguments?.let {
             param1 = it.getString(ARG_PARAM1)
             param2 = it.getString(ARG_PARAM2)
@@ -48,7 +51,10 @@ class HomeUser : Fragment() {
         // Inflate the layout for this fragment
         var v = inflater.inflate(R.layout.fragment_home_user, container, false)
 
+
         titleView = v.findViewById(R.id.nameTitle)
+        button = v.findViewById(R.id.treinoFeitoButton)
+
         communicator = activity as Communicator
 
         db.collection("Usuarios").document(communicator.getAuthUser())
@@ -62,6 +68,26 @@ class HomeUser : Fragment() {
                 Log.w("firestore", "Error getting document.", exception)
             }
 
+            button.setOnClickListener {
+                db.collection("Usuarios").document(communicator.getAuthUser())
+                    .get()
+                    .addOnSuccessListener { snapshot ->
+                        val totalAtual = snapshot.getLong("totalTreinos")?:0
+                        db.collection("Usuarios").document(communicator.getAuthUser())
+                            .update("totalTreinos", totalAtual + 1)
+                            .addOnSuccessListener {
+                                button.visibility = View.GONE
+                                Log.d("firestore", "Treino registrado com sucesso")
+                            }
+                            .addOnFailureListener {
+                                Log.e( "firestore ", "Erro ao registrar treino", it)
+                            }
+                    }
+                    .addOnFailureListener {
+                        Log.e("firestore", "Erro ao obter total de treinos", it)
+                    }
+            }
+ 
         return v
     }
 
