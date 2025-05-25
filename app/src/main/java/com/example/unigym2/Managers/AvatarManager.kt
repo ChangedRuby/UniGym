@@ -37,7 +37,7 @@ object AvatarManager {
             db.collection("Usuarios").document(userId).get().addOnSuccessListener { document ->
                 var userImageBase64: String = document.get("avatar").toString()
                 Log.d("avatar_manager", "Image base64 retrieved")
-                if(userImageBase64 == "null" || userImageBase64 == ""){
+                if(!isJpeg(userImageBase64)){
                     Log.d("avatar_manager", "getting profile image from Gravatar")
                     getGravatarBitmap(email, userName, size, lifecycle) { bitmap ->
                         imageCache.put(hashedEmail, bitmap!!)
@@ -125,6 +125,31 @@ object AvatarManager {
 
     public fun setOverlayCommunicator(communicator: Communicator){
         this.communicator = communicator
+    }
+
+    public fun isJpeg(base64: String): Boolean{
+        val decodedBytes = Base64.decode(base64, Base64.DEFAULT)
+
+        if(base64 == "null" || base64 == ""){
+            Log.d("avatar_manager", "-> not a jpeg")
+            return false
+        }
+
+        val image = base64ToBitmap(base64)
+        if(image == null){
+            Log.d("avatar_manager", "-> not a jpeg")
+            return false
+        }
+
+        return true
+
+        /*val options = BitmapFactory.Options().apply {
+            inJustDecodeBounds = true
+        }
+        BitmapFactory.decodeByteArray(decodedBytes, 0, decodedBytes.size, options)
+
+        Log.d("avatar_manager", "${options.outMimeType == "image/jpeg"}")
+        return options.outMimeType == "image/jpeg"*/
     }
 
     private fun generateHash(input: String): String {
