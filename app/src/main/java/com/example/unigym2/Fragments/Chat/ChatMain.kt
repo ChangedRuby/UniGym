@@ -16,6 +16,7 @@ import com.example.unigym2.Fragments.Chat.Recyclerviews.Message
 import com.example.unigym2.Fragments.Chat.Recyclerviews.MessageAdapter
 import com.example.unigym2.R
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.DocumentChange
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ListenerRegistration
 
@@ -30,7 +31,7 @@ class ChatMain : Fragment() {
     private lateinit var communicator: Communicator
     private lateinit var db: FirebaseFirestore
     private lateinit var chatName: TextView
-    private lateinit var listenerRegistration: ListenerRegistration
+    private var listenerRegistration: ListenerRegistration? = null
 
     private var chatRoomId: String? = null
     private var receiverUid: String? = null
@@ -43,17 +44,10 @@ class ChatMain : Fragment() {
     ): View? {
         val view = inflater.inflate(R.layout.fragment_chat_main, container, false)
 
+        // Inicializa os componentes
         chatName = view.findViewById(R.id.chatName)
         backBtn = view.findViewById(R.id.goBackBtn)
         communicator = activity as Communicator
-
-        parentFragmentManager.setFragmentResultListener("chat_name_key", viewLifecycleOwner) { _, bundle ->
-            val userName = bundle.getString("name", "Unknown Username")
-            val UID = bundle.getString("recieverID")
-            chatName.text = userName
-            receiverUid = UID
-            setupChat()
-        }
 
         senderUid = FirebaseAuth.getInstance().currentUser?.uid
         db = FirebaseFirestore.getInstance()
@@ -67,57 +61,25 @@ class ChatMain : Fragment() {
         mainChatRecyclerView.layoutManager = LinearLayoutManager(context)
         mainChatRecyclerView.adapter = messageAdapter
 
-        backBtn.setOnClickListener {
-            communicator.replaceFragment(if (communicator.getMode()) ChatPersonal() else ChatUser())
+        // Ouve o Bundle correto
+        parentFragmentManager.setFragmentResultListener("chat_name_key", viewLifecycleOwner) { _, bundle ->
+            val userName = bundle.getString("name", "Unknown Username")
+            val UID = bundle.getString("receiverID")  // Corrigido: "receiverID" com I maiúsculo
+            chatName.text = userName
+            receiverUid = UID
+            setupChat()
         }
 
-        return view
-    }
-
-    private fun setupChat() {
-        if (senderUid == null || receiverUid == null) return
-
-        chatRoomId = if (senderUid!! < receiverUid!!) {
-            senderUid + receiverUid
-        } else {
-            receiverUid + senderUid
-        }
-
-        val messagesRef = db.collection("Chats")
-            .document(chatRoomId!!)
-            .collection("messages")
-            .orderBy("timestamp")
-
-        // Listener para receber mensagens antigas e novas em tempo real
-        listenerRegistration = messagesRef.addSnapshotListener { snapshots, error ->
-            if (error != null) {
-                return@addSnapshotListener
-            }
-
-            if (snapshots != null && !snapshots.isEmpty) {
-                messageList.clear()
-                for (doc in snapshots.documents) {
-                    val msg = doc.toObject(Message::class.java)
-                    if (msg != null) {
-                        messageList.add(msg)
-                    }
-                }
-                messageAdapter.notifyDataSetChanged()
-                mainChatRecyclerView.scrollToPosition(messageList.size - 1)
-            }
-        }
-
-        // Enviar nova mensagem
+        // Enviar mensagem ao clicar
         sendButton.setOnClickListener {
             val msgText = messageBox.text.toString().trim()
-            if (msgText.isNotEmpty()) {
+            if (msgText.isNotEmpty() && chatRoomId != null) {
                 val msgMap = hashMapOf(
                     "message" to msgText,
                     "senderId" to senderUid,
                     "receiverId" to receiverUid,
                     "timestamp" to System.currentTimeMillis()
                 )
-
                 db.collection("Chats")
                     .document(chatRoomId!!)
                     .collection("messages")
@@ -127,12 +89,57 @@ class ChatMain : Fragment() {
                     }
             }
         }
+
+        backBtn.setOnClickListener {
+            communicator.replaceFragment(if (communicator.getMode()) ChatPersonal() else ChatUser())
+        }
+
+        return view
+    }
+
+    private fun setupChat() {
+        if (senderUid.isNullOrEmpty() || receiverUid.isNullOrEmpty()) {
+            return
+        }
+
+        // Cria um chatRoomId único baseado nos dois UIDs
+        chatRoomId = listOf(senderUid!!, receiverUid!!).sorted().joinToString("")
+
+        val messagesRef = db.collection("Chats")
+            .document(chatRoomId!!)
+            .collection("messages")
+            .orderBy("timestamp")
+
+        // Carrega mensagens antigas
+        messagesRef.get().addOnSuccessListener { snapshot ->
+            messageList.clear()
+            for (doc in snapshot.documents) {
+                val msg = doc.toObject(Message::class.java)
+                if (msg != null) {
+                    messageList.add(msg)
+                }
+            }
+            messageAdapter.notifyDataSetChanged()
+            mainChatRecyclerView.scrollToPosition(messageList.size - 1)
+        }
+
+        // Escuta novas mensagens em tempo real
+        listenerRegistration = messagesRef.addSnapshotListener { snapshots, error ->
+            if (error != null || snapshots == null) return@addSnapshotListener
+
+            for (change in snapshots.documentChanges) {
+                if (change.type == DocumentChange.Type.ADDED) {
+                    val msg = change.document.toObject(Message::class.java)
+                    messageList.add(msg)
+                    messageAdapter.notifyItemInserted(messageList.size - 1)
+                    mainChatRecyclerView.scrollToPosition(messageList.size - 1)
+                }
+            }
+        }
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
-        if (::listenerRegistration.isInitialized) {
-            listenerRegistration.remove()
-        }
+        listenerRegistration?.remove()
     }
 }
