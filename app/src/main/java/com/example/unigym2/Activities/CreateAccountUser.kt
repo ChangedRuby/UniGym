@@ -82,7 +82,12 @@ class CreateAccountUser : AppCompatActivity() {
                                     "",
                                     "",
                                     ""
-                                )
+                                ),
+                                "totalTreinos" to 0,
+                                "treinosConsecutivos" to 0,
+                                "treinosSemana" to 0,
+                                "lastSessionReset" to System.currentTimeMillis(),
+                                "lastWorkout" to System.currentTimeMillis()
                             )
                         ).addOnSuccessListener { documentReference ->
                             auth.signInWithEmailAndPassword(email, password)

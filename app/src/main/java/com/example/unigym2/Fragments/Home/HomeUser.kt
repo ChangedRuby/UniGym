@@ -1,10 +1,12 @@
 package com.example.unigym2.Fragments.Home
 
+import android.icu.util.Calendar
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import com.example.unigym2.Activities.Communicator
@@ -34,6 +36,10 @@ class HomeUser : Fragment() {
 
     lateinit var sessionTime : TextView
     lateinit var sessionPersonal : TextView
+    lateinit var completedSessions : TextView
+    lateinit var dayStreak : TextView
+    lateinit var streakBar : ProgressBar
+
 
     val db = FirebaseFirestore.getInstance()
 
@@ -48,12 +54,43 @@ class HomeUser : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         communicator.showLoadingOverlay()
+
+        checkAndUpdateDayStreak()
+
         db.collection("Usuarios").document(communicator.getAuthUser())
             .get()
             .addOnSuccessListener { result ->
                 val userName = result.data?.get("name").toString()
+                val lastResetTimestamp = result.getLong("lastSessionReset") ?: 0L
+
+                val calendar = Calendar.getInstance()
+                calendar.timeInMillis = System.currentTimeMillis()
+
+                val currentDayOfWeek = calendar.get(Calendar.DAY_OF_WEEK)
+                val daysToSubtract = (currentDayOfWeek - Calendar.SUNDAY + 7) % 7
+                calendar.add(Calendar.DAY_OF_MONTH, -daysToSubtract)
+                calendar.set(Calendar.HOUR_OF_DAY, 23)
+                calendar.set(Calendar.MINUTE, 59)
+                calendar.set(Calendar.SECOND, 59)
+
+                val lastSunday = calendar.timeInMillis
+                if (System.currentTimeMillis() > lastSunday && lastResetTimestamp < lastSunday) {
+                    db.collection("Usuarios").document(communicator.getAuthUser())
+                        .update("treinosSemana", 0, "lastSessionReset", System.currentTimeMillis())
+                        .addOnSuccessListener {
+                            Log.d("firestore", "Streak reset successfully")
+                            streakBar.progress = 0
+                            completedSessions.text = "0 Completos"
+                        }
+                        .addOnFailureListener { e ->
+                            Log.w("firestore", "Error resetting streak", e)
+                        }
+                }
                 titleView.text = userName
                 communicator.setAuthUserName(userName)
+                dayStreak.text = result.data?.get("treinosConsecutivos").toString() + " Dias"
+                completedSessions.text = result.data?.get("treinosSemana").toString() + " Completos"
+                streakBar.progress = result.data?.get("treinosSemana") as? Int ?: 0
                 Log.d("firestore", "${result.id} => ${result.data}")
             }.addOnFailureListener { exception ->
                 Log.w("firestore", "Error getting document.", exception)
@@ -113,11 +150,145 @@ class HomeUser : Fragment() {
                             Log.w("firestore", "Error getting document.", exception)
                         }
                 }
-
             }.addOnFailureListener { exception ->
                 Log.w("firestore", "Error getting document.", exception)
             }
         communicator.hideLoadingOverlay()
+    }
+
+    private fun checkAndUpdateDayStreak() {
+        val userId = communicator.getAuthUser()
+        val userRef = db.collection("Usuarios").document(userId)
+
+        userRef.get().addOnSuccessListener { document ->
+            val lastWorkoutTimestamp = document.getLong("lastWorkoutTimestamp") ?: 0
+            val currentStreak = document.getLong("treinosConsecutivos")?.toInt() ?: 0
+            val currentTime = System.currentTimeMillis()
+
+            // Get calendar instances for current time and last workout
+            val currentCalendar = Calendar.getInstance()
+            currentCalendar.timeInMillis = currentTime
+
+            val lastWorkoutCalendar = Calendar.getInstance()
+            lastWorkoutCalendar.timeInMillis = lastWorkoutTimestamp
+
+            // Calculate the difference in days
+            val daysSinceLastWorkout = getDaysBetween(lastWorkoutCalendar, currentCalendar)
+
+            // Check if streak should be reset
+            var newStreak = currentStreak
+            var shouldReset = false
+
+            if (daysSinceLastWorkout > 3) {
+                // If more than 3 days have passed, definitely reset (longest weekend is 3 days)
+                shouldReset = true
+            } else if (daysSinceLastWorkout > 0) {
+                // Check if we missed a weekday workout
+                val missedWeekday = checkIfMissedWeekday(lastWorkoutCalendar, currentCalendar)
+                if (missedWeekday) {
+                    shouldReset = true
+                }
+            }
+
+            // Update streak in Firebase if needed
+            if (shouldReset) {
+                userRef.update(
+                    mapOf(
+                        "treinosConsecutivos" to 0
+                    )
+                ).addOnSuccessListener {
+                    Log.d("firestore", "Day streak reset successfully")
+                    dayStreak.text = "0 Dias"
+                }
+            }
+        }
+    }
+
+    // Helper function to check if a weekday workout was missed
+    private fun checkIfMissedWeekday(lastWorkout: Calendar, current: Calendar): Boolean {
+        val tempCalendar = Calendar.getInstance()
+        tempCalendar.timeInMillis = lastWorkout.timeInMillis
+
+        // Move one day at a time from last workout to current day
+        while (tempCalendar.before(current)) {
+            tempCalendar.add(Calendar.DAY_OF_MONTH, 1)
+
+            val dayOfWeek = tempCalendar.get(Calendar.DAY_OF_WEEK)
+
+            // If this day is a weekday (Monday-Friday) and not the current day, it's a missed day
+            if (dayOfWeek != Calendar.SATURDAY && dayOfWeek != Calendar.SUNDAY &&
+                !isSameDay(tempCalendar, current)) {
+                return true
+            }
+        }
+
+        return false
+    }
+
+    // Helper function to calculate days between two dates
+    private fun getDaysBetween(startDate: Calendar, endDate: Calendar): Int {
+        val startDay = startDate.get(Calendar.DAY_OF_YEAR)
+        val startYear = startDate.get(Calendar.YEAR)
+        val endDay = endDate.get(Calendar.DAY_OF_YEAR)
+        val endYear = endDate.get(Calendar.YEAR)
+
+        return if (startYear == endYear) {
+            endDay - startDay
+        } else {
+            var result = 0
+            var tempYear = startYear
+
+            // Add days remaining in start year
+            val startYearDays = if (startYear % 4 == 0) 366 else 365
+            result += startYearDays - startDay
+
+            // Add days for years in between
+            tempYear++
+            while (tempYear < endYear) {
+                result += if (tempYear % 4 == 0) 366 else 365
+                tempYear++
+            }
+
+            // Add days in end year
+            result += endDay
+
+            result
+        }
+    }
+
+    // Helper function to check if two dates are the same day
+    private fun isSameDay(date1: Calendar, date2: Calendar): Boolean {
+        return date1.get(Calendar.YEAR) == date2.get(Calendar.YEAR) &&
+                date1.get(Calendar.DAY_OF_YEAR) == date2.get(Calendar.DAY_OF_YEAR)
+    }
+
+    private fun updateWorkoutCompleted() {
+        val userId = communicator.getAuthUser()
+        val userRef = db.collection("Usuarios").document(userId)
+
+        userRef.get().addOnSuccessListener { document ->
+            val currentStreak = document.getLong("treinosConsecutivos")?.toInt() ?: 0
+            val weeklyWorkouts = document.getLong("treinosSemana")?.toInt() ?: 0
+
+            // Increment streak and weekly workout count
+            val newStreak = currentStreak + 1
+            val newWeeklyWorkouts = weeklyWorkouts + 1
+
+            userRef.update(
+                mapOf(
+                    "treinosConsecutivos" to newStreak,
+                    "treinosSemana" to newWeeklyWorkouts,
+                    "lastWorkoutTimestamp" to System.currentTimeMillis()
+                )
+            ).addOnSuccessListener {
+                Log.d("firestore", "Streak updated successfully")
+                dayStreak.text = "$newStreak Dias"
+                completedSessions.text = "$newWeeklyWorkouts Completos"
+                streakBar.progress = newWeeklyWorkouts
+            }.addOnFailureListener { e ->
+                Log.w("firestore", "Error updating streak", e)
+            }
+        }
     }
 
     override fun onCreateView(
@@ -130,6 +301,9 @@ class HomeUser : Fragment() {
         titleView = v.findViewById(R.id.nameTitle)
         sessionTime = v.findViewById(R.id.nextSessionTime)
         sessionPersonal = v.findViewById(R.id.nextSessionCostumer)
+        completedSessions = v.findViewById(R.id.weeklyCompletedSessions)
+        dayStreak = v.findViewById(R.id.dayStreak)
+        streakBar = v.findViewById(R.id.progressBar)
         button = v.findViewById(R.id.treinoFeitoButton)
         communicator = activity as Communicator
 
