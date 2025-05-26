@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.ImageView
+import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -42,6 +43,8 @@ class SolicitationsPersonal : Fragment() {
 
     lateinit var schedulesBtn: Button
     lateinit var exitBtn : ImageView
+    lateinit var semSolitacoeView: TextView
+
     private lateinit var communicator : Communicator
 
     private lateinit var adapter : RequestsRecyclerAdapter
@@ -64,7 +67,8 @@ class SolicitationsPersonal : Fragment() {
                               savedInstanceState: Bundle?): View? {
         // Inflate the layout for this fragment
         var v = inflater.inflate(R.layout.fragment_solicitations_personal, container, false)
-
+        semSolitacoeView = v.findViewById(R.id.semSolicitaçõesView)
+        semSolitacoeView.visibility = View.INVISIBLE
 
         dataInitialize()
         val layoutManager = LinearLayoutManager(context)
@@ -79,6 +83,7 @@ class SolicitationsPersonal : Fragment() {
         exitBtn.setOnClickListener {
             communicator.replaceFragment(HomePersonalTrainer())
         }
+
 
         return v
     }
@@ -108,7 +113,7 @@ class SolicitationsPersonal : Fragment() {
 
         db = FirebaseFirestore.getInstance()
         val personalIdAtual = FirebaseAuth.getInstance().currentUser?.uid
-
+        var contador = 0
         db.collection("Agendamentos")
             .whereEqualTo("personalID", personalIdAtual)
             .whereEqualTo("status", "pendente")
@@ -124,8 +129,12 @@ class SolicitationsPersonal : Fragment() {
                         return
                     }
 
+
+
                     for(dc : DocumentChange in value?.documentChanges!!){
                         val document = dc.document
+
+                        contador++
 
                         if(dc.type == DocumentChange.Type.ADDED){
                             AvatarManager.getUserAvatar(document.get("clienteID").toString(), document.get("clienteEmail").toString(), document.get("clienteNome").toString(), 40, lifecycleScope) { bitmap ->
@@ -136,6 +145,9 @@ class SolicitationsPersonal : Fragment() {
                                 adapter.notifyDataSetChanged()
                             }
                         }
+                    }
+                    if(contador<=1){
+                        semSolitacoeView.visibility = View.VISIBLE
                     }
 
                 }

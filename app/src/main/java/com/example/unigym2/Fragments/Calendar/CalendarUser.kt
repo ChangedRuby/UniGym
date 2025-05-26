@@ -83,7 +83,7 @@ class CalendarUser : Fragment() {
             Log.d("data_selecionada", dataSelecionada)
 
             programacoesContainer.visibility = View.VISIBLE
-
+//dateTime
             dataBase.collection("Agendamentos")
                 .whereEqualTo("clienteID", userId)
                 .whereEqualTo("data", dataSelecionada)

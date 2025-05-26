@@ -47,6 +47,19 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             tools:ignore="TouchTargetSizeCheck,SpeakableTextPresentCheck" />
+
+        <TextView
+            android:id="@+id/semSolicitaçõesView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Não há solicitações"
+            android:textStyle="normal"
+            app:layout_constraintBottom_toBottomOf="@+id/recycler_view"
+            app:layout_constraintEnd_toEndOf="@+id/recycler_view"
+            app:layout_constraintHorizontal_bias="0.467"
+            app:layout_constraintStart_toStartOf="@+id/recycler_view"
+            app:layout_constraintTop_toTopOf="@+id/recycler_view"
+            app:layout_constraintVertical_bias="0.394" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </FrameLayout>
