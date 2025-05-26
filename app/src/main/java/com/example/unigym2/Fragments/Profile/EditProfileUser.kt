@@ -112,7 +112,7 @@ class EditProfileUser : Fragment() {
             .addOnSuccessListener { result ->
                 usernameEdit.hint = result.data?.get("name").toString()
                 userProfileEmail.text = communicator.getAuthUserEmail()
-                val objectives = result.data?.get("objetivos") as List<*>
+                val objectives = result.data?.get("objectives") as List<*>
                 for (i in 0 until objectives.size) {
                     when (i) {
                         0 -> objetivo1.hint = objectives[i].toString()

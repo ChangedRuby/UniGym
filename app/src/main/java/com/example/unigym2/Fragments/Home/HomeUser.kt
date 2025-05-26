@@ -8,8 +8,11 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import com.example.unigym2.Activities.Communicator
+import com.example.unigym2.Fragments.Chat.Recyclerviews.ListaPersonaisItem
 import com.example.unigym2.R
+import com.google.firebase.Firebase
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.firestore
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -27,6 +30,8 @@ class HomeUser : Fragment() {
     private var param2: String? = null
     lateinit var titleView: TextView
     lateinit var communicator: Communicator
+    lateinit var button: TextView
+
     lateinit var sessionTime : TextView
     lateinit var sessionPersonal : TextView
 
@@ -34,6 +39,7 @@ class HomeUser : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         arguments?.let {
             param1 = it.getString(ARG_PARAM1)
             param2 = it.getString(ARG_PARAM2)
@@ -128,6 +134,26 @@ class HomeUser : Fragment() {
         communicator = activity as Communicator
 
         communicator.showLoadingOverlay()
+
+            button.setOnClickListener {
+                db.collection("Usuarios").document(communicator.getAuthUser())
+                    .get()
+                    .addOnSuccessListener { snapshot ->
+                        val totalAtual = snapshot.getLong("totalTreinos")?:0
+                        db.collection("Usuarios").document(communicator.getAuthUser())
+                            .update("totalTreinos", totalAtual + 1)
+                            .addOnSuccessListener {
+                                button.visibility = View.GONE
+                                Log.d("firestore", "Treino registrado com sucesso")
+                            }
+                            .addOnFailureListener {
+                                Log.e( "firestore ", "Erro ao registrar treino", it)
+                            }
+                    }
+                    .addOnFailureListener {
+                        Log.e("firestore", "Erro ao obter total de treinos", it)
+                    }
+            }
 
         return v
     }

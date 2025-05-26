@@ -5,6 +5,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.FrameLayout
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.fragment.app.Fragment
@@ -39,6 +40,7 @@ class VisualizarPerfilUser : Fragment() {
     private lateinit var objetivo2 : TextView
     private lateinit var objetivo3 : TextView
     private lateinit var objetivo4 : TextView
+    private lateinit var quantidadeTreinos : TextView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -68,6 +70,7 @@ class VisualizarPerfilUser : Fragment() {
         objetivo2 = v.findViewById(R.id.especialidade2)
         objetivo3 = v.findViewById(R.id.objetivo3)
         objetivo4 = v.findViewById(R.id.objetivo4)
+        quantidadeTreinos = v.findViewById(R.id.CountTreinos)
 
         backBtn.setOnClickListener {
             communicator.replaceFragment(if (communicator.getMode()) ChatPersonal() else ChatUser())
@@ -80,6 +83,10 @@ class VisualizarPerfilUser : Fragment() {
                 .addOnSuccessListener { result ->
                     nameTextView.text = result.data?.get("name").toString()
                     emailTextView.text = result.data?.get("email").toString()
+
+                    val totalTreinos = result.get("totalTreinos") ?: 0
+                    quantidadeTreinos.text = "$totalTreinos"
+
                     val objetivos = result.data?.get("objetivos") as List<*>
 
                     for (i in 0 until objetivos.size) {
