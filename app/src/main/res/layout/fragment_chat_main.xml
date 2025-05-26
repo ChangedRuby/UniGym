@@ -156,7 +156,7 @@
                 app:layout_constraintEnd_toStartOf="@+id/enviarButton"
                 app:layout_constraintHorizontal_bias="0.966"
                 app:layout_constraintStart_toStartOf="@+id/materialToolbar2"
-                app:layout_constraintTop_toBottomOf="@+id/mainChat_RecycleView" />
+                app:layout_constraintTop_toTopOf="@+id/materialToolbar2" />
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>

@@ -59,7 +59,8 @@ class ChatMain : Fragment() {
 
 
                 val msgText = imageConverted
-                if (msgText.isNotEmpty() && chatRoomId != null) {
+                sendMessage(msgText)
+                /*if (msgText.isNotEmpty() && chatRoomId != null) {
                     val msgMap = hashMapOf(
                         "message" to msgText,
                         "senderId" to senderUid,
@@ -84,7 +85,7 @@ class ChatMain : Fragment() {
                         .addOnSuccessListener {
                             messageBox.text.clear()
                         }
-                }
+                }*/
 
 
 
@@ -132,7 +133,8 @@ class ChatMain : Fragment() {
         }
 
         sendButton.setOnClickListener {
-            val msgText = messageBox.text.toString().trim()
+            sendMessage(messageBox.text.toString().trim())
+            /*val msgText = messageBox.text.toString().trim()
             if (msgText.isNotEmpty() && chatRoomId != null) {
                 val msgMap = hashMapOf(
                     "message" to msgText,
@@ -158,7 +160,7 @@ class ChatMain : Fragment() {
                     .addOnSuccessListener {
                         messageBox.text.clear()
                     }
-            }
+            }*/
         }
 
         backBtn.setOnClickListener {
@@ -203,6 +205,35 @@ class ChatMain : Fragment() {
                     mainChatRecyclerView.scrollToPosition(messageList.size - 1)
                 }
             }
+        }
+    }
+
+    private fun sendMessage(msgText: String){
+        if (msgText.isNotEmpty() && chatRoomId != null) {
+            val msgMap = hashMapOf(
+                "message" to msgText,
+                "senderId" to senderUid,
+                "receiverId" to receiverUid,
+                "timestamp" to System.currentTimeMillis()
+            )
+
+            // Primeiro, garante que a sala tenha os UIDs gravados
+            val chatRoomData = hashMapOf(
+                "senderUid" to senderUid,
+                "receiverUid" to receiverUid
+            )
+            db.collection("Chats")
+                .document(chatRoomId!!)
+                .set(chatRoomData) // Isso cria/atualiza a sala com os UIDs
+
+            // Agora, adiciona a mensagem
+            db.collection("Chats")
+                .document(chatRoomId!!)
+                .collection("messages")
+                .add(msgMap)
+                .addOnSuccessListener {
+                    messageBox.text.clear()
+                }
         }
     }
 
