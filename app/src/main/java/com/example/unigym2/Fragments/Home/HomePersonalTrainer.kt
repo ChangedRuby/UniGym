@@ -83,8 +83,11 @@ class HomePersonalTrainer : Fragment() {
                 for(document in documents){
                     solicitacoesPendentes++
                 }
-
-                solicitationsView.text = "$solicitacoesPendentes solicitações pendentes!"
+                if(solicitacoesPendentes==0){
+                    solicitationsView.text = "Nenhuma solicitação pendente"
+                } else {
+                    solicitationsView.text = "$solicitacoesPendentes solicitações pendentes!"
+                }
 
             }
             .addOnFailureListener {
