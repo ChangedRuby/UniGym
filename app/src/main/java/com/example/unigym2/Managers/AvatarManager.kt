@@ -21,46 +21,40 @@ import kotlin.random.Random
 
 object AvatarManager {
     public var imageCache: HashMap<String, Bitmap> = hashMapOf()
-    var communicator: Communicator ?= null
+    var communicator: Communicator? = null
 
-    public fun getUserAvatar(userId: String, email: String, userName: String, size: Int, lifecycle: LifecycleCoroutineScope, callback: (Bitmap?) -> Unit) {
-        var db = FirebaseFirestore.getInstance()
-
+    fun getUserAvatar(userId: String, email: String, userName: String, size: Int, lifecycle: LifecycleCoroutineScope, callback: (Bitmap?) -> Unit) {
+        val db = FirebaseFirestore.getInstance()
         val hashedEmail = generateHash(email.lowercase().trim())
         communicator?.showLoadingOverlay()
 
-        if(imageCache.containsKey(hashedEmail)){
+        if (imageCache.containsKey(hashedEmail)) {
             Log.d("avatar_manager", "-> avatar already loaded, loading from cache instead")
             communicator?.hideLoadingOverlay()
-            callback(imageCache.get(hashedEmail))
-        } else{
+            callback(imageCache[hashedEmail])
+        } else {
             db.collection("Usuarios").document(userId).get().addOnSuccessListener { document ->
-                var userImageBase64: String = document.get("avatar").toString()
+                val userImageBase64 = document.get("avatar").toString()
                 Log.d("avatar_manager", "Image base64 retrieved")
-                if(!isJpeg(userImageBase64)){
+                if (!isJpeg(userImageBase64)) {
                     Log.d("avatar_manager", "getting profile image from Gravatar")
                     getGravatarBitmap(email, userName, size, lifecycle) { bitmap ->
-                        imageCache.put(hashedEmail, bitmap!!)
+                        imageCache[hashedEmail] = bitmap!!
                         communicator?.hideLoadingOverlay()
                         callback(bitmap)
                     }
-                } else{
+                } else {
                     val bitmapImage = base64ToBitmap(userImageBase64)
-                    imageCache.put(hashedEmail, bitmapImage!!)
+                    imageCache[hashedEmail] = bitmapImage!!
                     communicator?.hideLoadingOverlay()
                     callback(bitmapImage)
                 }
-
             }
         }
     }
 
-    public fun getGravatarBitmap(email: String, userName: String, size: Int, lifecycle: LifecycleCoroutineScope, callback: (Bitmap?) -> Unit) {
-
-        // essa função obtem a foto de usuario pelo hash SHA-256 do email utilizando a API do Gravatar
+    fun getGravatarBitmap(email: String, userName: String, size: Int, lifecycle: LifecycleCoroutineScope, callback: (Bitmap?) -> Unit) {
         val hashedEmail = generateHash(email.lowercase().trim())
-        // val apiUrl = "https://gravatar.com/avatar/$hashedEmail?s=$size&d=initials&name=${userName.trim().replace(" ", "+")}"
-        // val apiUrl = "https://gravatar.com/avatar/000000000000000000000000000000000000000000000000000000?s=$size&d=initials&name=${userName.trim().replace(" ", "+")}"
         val apiUrl = "https://gravatar.com/avatar/${Random.nextInt(50, 55)}?s=$size&d=initials&name=${userName.trim().replace(" ", "+")}"
         var profileBitmap: Bitmap? = null
 
@@ -76,13 +70,11 @@ object AvatarManager {
             val responseCode: Int = connection.responseCode
             Log.d("user_profile", "Response Code: $responseCode")
 
-            if(responseCode == 200){
+            if (responseCode == 200) {
                 val inputStream = connection.inputStream
                 val bufferedInputStream = BufferedInputStream(inputStream)
-                Log.d("user_profile", "width; $size")
-
                 profileBitmap = BitmapFactory.decodeStream(bufferedInputStream)
-            } else{
+            } else {
                 Log.d("gravatar_manager", "Error while getting data: $responseCode")
             }
 
@@ -90,77 +82,65 @@ object AvatarManager {
                 callback(profileBitmap)
             }
         }
-
     }
 
-    public fun uriToBase64(uri: Uri?, quality: Int, context: Context): String{
+    fun uriToBase64(uri: Uri?, quality: Int, context: Context): String {
+        val inputStream = context.contentResolver.openInputStream(uri!!)
+        val imageBitmap = BitmapFactory.decodeStream(inputStream)
 
-        // converts uri to bitmap
-        var inputStream = context.contentResolver.openInputStream(uri!!)
-        var imageBitmap = BitmapFactory.decodeStream(inputStream)
-
-        var outputStream = ByteArrayOutputStream()
+        val outputStream = ByteArrayOutputStream()
         imageBitmap.compress(Bitmap.CompressFormat.JPEG, quality, outputStream)
 
-        // converts image to base64 after converting to bytearray
-        var imageByteArray = outputStream.toByteArray()
-        var convertedImage = Base64.encodeToString(imageByteArray, Base64.DEFAULT)
+        val imageByteArray = outputStream.toByteArray()
+        val convertedImage = Base64.encodeToString(imageByteArray, Base64.DEFAULT)
         inputStream?.close()
 
         return convertedImage
     }
 
-    public fun base64ToBitmap(base64: String): Bitmap?{
-        var decodedBytes = try {
-            Base64.decode(base64, Base64.DEFAULT)
+    fun base64ToBitmap(base64: String): Bitmap? {
+        return try {
+            val decodedBytes = Base64.decode(base64, Base64.DEFAULT)
+            BitmapFactory.decodeByteArray(decodedBytes, 0, decodedBytes.size)
         } catch (e: Exception) {
-            return null
+            null
         }
-        var decodedImage = BitmapFactory.decodeByteArray(decodedBytes, 0, decodedBytes.size)
-        return decodedImage
     }
 
-    public fun storeAvatarForUser(userId: String, userEmail: String, imageBase64: String){
-        var db = FirebaseFirestore.getInstance()
+    fun byteArrayToBitmap(byteArray: ByteArray): Bitmap {
+        return BitmapFactory.decodeByteArray(byteArray, 0, byteArray.size)
+    }
+
+    fun storeAvatarForUser(userId: String, userEmail: String, imageBase64: String) {
+        val db = FirebaseFirestore.getInstance()
 
         db.collection("Usuarios").document(userId).update("avatar", imageBase64)
-        imageCache.set(generateHash(userEmail.lowercase().trim()), base64ToBitmap(imageBase64)!!)
+        imageCache[generateHash(userEmail.lowercase().trim())] = base64ToBitmap(imageBase64)!!
     }
 
-    public fun setOverlayCommunicator(communicator: Communicator){
+    fun setOverlayCommunicator(communicator: Communicator) {
         this.communicator = communicator
     }
 
-    public fun isJpeg(base64: String): Boolean{
-        // val decodedBytes = Base64.decode(base64, Base64.DEFAULT)
-
-        if(base64 == "null" || base64 == ""){
+    fun isJpeg(base64: String): Boolean {
+        if (base64 == "null" || base64 == "") {
             Log.d("avatar_manager", "-> not a jpeg")
             return false
         }
 
-        val image: Bitmap ?= base64ToBitmap(base64)
-        if(image == null){
+        val image: Bitmap? = base64ToBitmap(base64)
+        if (image == null) {
             Log.d("avatar_manager", "-> not a jpeg")
             return false
         }
 
         return true
-
-        /*val options = BitmapFactory.Options().apply {
-            inJustDecodeBounds = true
-        }
-        BitmapFactory.decodeByteArray(decodedBytes, 0, decodedBytes.size, options)
-
-        Log.d("avatar_manager", "${options.outMimeType == "image/jpeg"}")
-        return options.outMimeType == "image/jpeg"*/
     }
 
     private fun generateHash(input: String): String {
         val md = MessageDigest.getInstance("SHA-256")
         val byteArray = input.toByteArray()
         val hashBytes = md.digest(byteArray)
-        val hashString = hashBytes.joinToString("") {"%02x".format(it)}
-        return hashString
+        return hashBytes.joinToString("") { "%02x".format(it) }
     }
 }

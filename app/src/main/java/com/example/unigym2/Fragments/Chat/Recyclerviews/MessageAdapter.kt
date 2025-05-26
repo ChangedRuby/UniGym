@@ -1,154 +1,92 @@
 package com.example.unigym2.Fragments.Chat.Recyclerviews
 
-import android.os.Message
-import android.service.carrier.CarrierMessagingService
+import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
-import androidx.compose.runtime.currentComposer
 import androidx.recyclerview.widget.RecyclerView
-import com.example.unigym2.R
-import android.content.Context
 import com.example.unigym2.Managers.AvatarManager
+import com.example.unigym2.R
 import com.google.android.material.imageview.ShapeableImageView
-import com.google.firebase.Firebase
 import com.google.firebase.auth.FirebaseAuth
+import java.text.SimpleDateFormat
+import java.util.*
 
-class MessageAdapter(val context: Context, val messageList:
-ArrayList<com.example.unigym2.Fragments.Chat.Recyclerviews.Message>) :
-    RecyclerView.Adapter<RecyclerView.ViewHolder>(){
+class MessageAdapter(val context: Context, val messageList: ArrayList<Message>) :
+    RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
-        val ITEM_RECEIVE = 1
-        val ITEM_SENT = 2
-        val ITEM_RECEIVE_IMAGE = 3
-        val ITEM_SENT_IMAGE = 4
+    val ITEM_RECEIVE = 1
+    val ITEM_SENT = 2
+    val ITEM_RECEIVE_IMAGE = 3
+    val ITEM_SENT_IMAGE = 4
 
-        override fun onCreateViewHolder(parent: ViewGroup, viewType: Int,): RecyclerView.ViewHolder {
-
-            /*if(viewType == 1){
-                //Inflate receive
-                val view: View = LayoutInflater.from(context).inflate(R.layout.message_received, parent, false)
-                return ReceiveViewHolder(view)
-            } else{
-                //inflate sent
-                val view: View = LayoutInflater.from(context).inflate(R.layout.message_sent, parent, false)
-                return SentViewHolder(view)
-            }*/
-
-            when(viewType){
-                1 -> {
-                    //Inflate receive
-                    val view: View = LayoutInflater.from(context).inflate(R.layout.message_received, parent, false)
-                    return ReceiveViewHolder(view)
-                }
-                2 -> {
-                    //inflate sent
-                    val view: View = LayoutInflater.from(context).inflate(R.layout.message_sent, parent, false)
-                    return SentViewHolder(view)
-                }
-                3 -> {
-                    //Inflate receive image
-                    val view: View = LayoutInflater.from(context).inflate(R.layout.message_received_image, parent, false)
-                    return ReceiveImageViewHolder(view)
-                }
-                4 -> {
-                    //Inflate receive image
-                    val view: View = LayoutInflater.from(context).inflate(R.layout.message_sent_image, parent, false)
-                    return SentImageViewHolder(view)
-                }
-                else -> {
-                    //Inflate receive
-                    val view: View = LayoutInflater.from(context).inflate(R.layout.message_received, parent, false)
-                    return ReceiveViewHolder(view)
-                }
-            }
-
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
+        val inflater = LayoutInflater.from(context)
+        return when (viewType) {
+            ITEM_RECEIVE -> ReceiveViewHolder(inflater.inflate(R.layout.message_received, parent, false))
+            ITEM_SENT -> SentViewHolder(inflater.inflate(R.layout.message_sent, parent, false))
+            ITEM_RECEIVE_IMAGE -> ReceiveImageViewHolder(inflater.inflate(R.layout.message_received_image, parent, false))
+            ITEM_SENT_IMAGE -> SentImageViewHolder(inflater.inflate(R.layout.message_sent_image, parent, false))
+            else -> ReceiveViewHolder(inflater.inflate(R.layout.message_received, parent, false))
+        }
     }
 
-    override fun onBindViewHolder(holder: RecyclerView.ViewHolder,position: Int,) {
-
+    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         val currentMessage = messageList[position]
+        val timeFormatted = currentMessage.timestamp?.let { formatTimestamp(it) } ?: "--:--"
 
-        when(holder.javaClass){
-            SentViewHolder::class.java -> {
-                val viewHolder = holder as SentViewHolder
+        when (holder) {
+            is SentViewHolder -> {
                 holder.sentMessage.text = currentMessage.message
+                holder.sentTime.text = timeFormatted
             }
-            ReceiveViewHolder::class.java -> {
-                val viewHolder = holder as ReceiveViewHolder
+            is ReceiveViewHolder -> {
                 holder.receivedMessage.text = currentMessage.message
+                holder.receivedTime.text = timeFormatted
             }
-            SentImageViewHolder::class.java -> {
-                val viewHolder = holder as SentImageViewHolder
-                holder.sentImageMessage.setImageBitmap(AvatarManager.base64ToBitmap(currentMessage.message.toString()))
+            is SentImageViewHolder -> {
+                holder.sentImageMessage.setImageBitmap(AvatarManager.base64ToBitmap(currentMessage.message ?: ""))
             }
-            ReceiveImageViewHolder::class.java -> {
-                val viewHolder = holder as ReceiveImageViewHolder
-                holder.receivedImageMessage.setImageBitmap(AvatarManager.base64ToBitmap(currentMessage.message.toString()))
+            is ReceiveImageViewHolder -> {
+                holder.receivedImageMessage.setImageBitmap(AvatarManager.base64ToBitmap(currentMessage.message ?: ""))
             }
-
         }
+    }
 
-       /* if(holder.javaClass == SentViewHolder::class.java){
-            //Paradas para o SentViewHolder
-
-            val viewHolder = holder as SentViewHolder
-            if(AvatarManager.isJpeg(currentMessage.message.toString())){
-
-            } else{
-                holder.sentMessage.text = currentMessage.message
-
-            }
-
-        } else{
-            //Paradas para o ReceiveViewHolder
-            val viewHolder = holder as ReceiveViewHolder
-            if(AvatarManager.isJpeg(currentMessage.message.toString())){
-
-
-            } else{
-                holder.receivedMessage.text = currentMessage.message
-
-            }
-        }*/
+    private fun formatTimestamp(timestamp: Long): String {
+        val date = Date(timestamp)
+        val format = SimpleDateFormat("HH:mm", Locale.getDefault())
+        format.timeZone = TimeZone.getTimeZone("GMT-3")
+        return format.format(date)
     }
 
     override fun getItemViewType(position: Int): Int {
         val currentMessage = messageList[position]
-
-        if(FirebaseAuth.getInstance().currentUser?.uid.equals(currentMessage.senderId)){
-            if(AvatarManager.isJpeg(currentMessage.message.toString())){
-                return ITEM_SENT_IMAGE
-            } else{
-                return ITEM_SENT
-            }
+        return if (FirebaseAuth.getInstance().currentUser?.uid == currentMessage.senderId) {
+            if (AvatarManager.isJpeg(currentMessage.message ?: "")) ITEM_SENT_IMAGE else ITEM_SENT
         } else {
-            if(AvatarManager.isJpeg(currentMessage.message.toString())){
-                return ITEM_RECEIVE_IMAGE
-            } else{
-                return ITEM_RECEIVE
-            }
+            if (AvatarManager.isJpeg(currentMessage.message ?: "")) ITEM_RECEIVE_IMAGE else ITEM_RECEIVE
         }
     }
 
-    override fun getItemCount(): Int {
-        return messageList.size
-    }
+    override fun getItemCount() = messageList.size
 
-    class SentViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView){
-        val sentMessage = itemView.findViewById<TextView>(R.id.txt_sent_message)
+    class SentViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+        val sentMessage: TextView = itemView.findViewById(R.id.txt_sent_message)
+        val sentTime: TextView = itemView.findViewById(R.id.txt_timestamp_sent)
     }
 
     class ReceiveViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val receivedMessage = itemView.findViewById<TextView>(R.id.txt_received_message)
+        val receivedMessage: TextView = itemView.findViewById(R.id.txt_received_message)
+        val receivedTime: TextView = itemView.findViewById(R.id.txt_timestamp_received)
     }
 
-    class SentImageViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView){
-        val sentImageMessage = itemView.findViewById<ShapeableImageView>(R.id.txt_sent_image)
+    class SentImageViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+        val sentImageMessage: ShapeableImageView = itemView.findViewById(R.id.txt_sent_image)
     }
 
     class ReceiveImageViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val receivedImageMessage = itemView.findViewById<ShapeableImageView>(R.id.txt_received_image)
+        val receivedImageMessage: ShapeableImageView = itemView.findViewById(R.id.txt_received_image)
     }
 }

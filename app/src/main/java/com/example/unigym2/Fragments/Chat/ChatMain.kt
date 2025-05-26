@@ -2,6 +2,7 @@ package com.example.unigym2.Fragments.Chat
 
 import android.net.Uri
 import android.os.Bundle
+import android.util.Base64
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -13,6 +14,7 @@ import android.widget.TextView
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.unigym2.Activities.Communicator
@@ -20,10 +22,13 @@ import com.example.unigym2.Fragments.Chat.Recyclerviews.Message
 import com.example.unigym2.Fragments.Chat.Recyclerviews.MessageAdapter
 import com.example.unigym2.Managers.AvatarManager
 import com.example.unigym2.R
+import com.google.ai.client.generativeai.GenerativeModel
+import com.google.android.material.imageview.ShapeableImageView
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.DocumentChange
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ListenerRegistration
+import kotlinx.coroutines.launch
 
 class ChatMain : Fragment() {
 
@@ -37,6 +42,7 @@ class ChatMain : Fragment() {
     private lateinit var communicator: Communicator
     private lateinit var db: FirebaseFirestore
     private lateinit var chatName: TextView
+    private lateinit var profileChatImage: ShapeableImageView
     private lateinit var imageConverted: String
     private lateinit var galleryLauncher: ActivityResultLauncher<String>
     private var listenerRegistration: ListenerRegistration? = null
@@ -44,66 +50,27 @@ class ChatMain : Fragment() {
     private var chatRoomId: String? = null
     private var receiverUid: String? = null
     private var senderUid: String? = null
-    private var selectedImageToSend: Boolean = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         galleryLauncher = registerForActivityResult(ActivityResultContracts.GetContent()) { uri ->
             if (uri != null) {
-                var imageUri: Uri?
-
-                // uri to base 64
-                imageUri = uri
+                val imageUri: Uri = uri
                 imageConverted = AvatarManager.uriToBase64(imageUri, 20, requireContext())
-
-
-                val msgText = imageConverted
-                sendMessage(msgText)
-                /*if (msgText.isNotEmpty() && chatRoomId != null) {
-                    val msgMap = hashMapOf(
-                        "message" to msgText,
-                        "senderId" to senderUid,
-                        "receiverId" to receiverUid,
-                        "timestamp" to System.currentTimeMillis()
-                    )
-
-                    // Primeiro, garante que a sala tenha os UIDs gravados
-                    val chatRoomData = hashMapOf(
-                        "senderUid" to senderUid,
-                        "receiverUid" to receiverUid
-                    )
-                    db.collection("Chats")
-                        .document(chatRoomId!!)
-                        .set(chatRoomData) // Isso cria/atualiza a sala com os UIDs
-
-                    // Agora, adiciona a mensagem
-                    db.collection("Chats")
-                        .document(chatRoomId!!)
-                        .collection("messages")
-                        .add(msgMap)
-                        .addOnSuccessListener {
-                            messageBox.text.clear()
-                        }
-                }*/
-
-
-
-//            imageUser.setImageURI(imageUri)
-                Log.d("userlog", "Image converted to base 64")
+                sendMessage(imageConverted)
             }
         }
     }
 
     override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
+        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View? {
         val view = inflater.inflate(R.layout.fragment_chat_main, container, false)
 
         chatName = view.findViewById(R.id.chatName)
         backBtn = view.findViewById(R.id.goBackBtn)
+        profileChatImage = view.findViewById(R.id.profileChatImage)
         communicator = activity as Communicator
 
         senderUid = FirebaseAuth.getInstance().currentUser?.uid
@@ -124,43 +91,20 @@ class ChatMain : Fragment() {
             val UID = bundle.getString("receiverID")
             chatName.text = userName
             receiverUid = UID
+            loadReceiverImage()
             setupChat()
         }
 
         sendImageButton.setOnClickListener {
-
             galleryLauncher.launch("image/*")
         }
 
         sendButton.setOnClickListener {
-            sendMessage(messageBox.text.toString().trim())
-            /*val msgText = messageBox.text.toString().trim()
-            if (msgText.isNotEmpty() && chatRoomId != null) {
-                val msgMap = hashMapOf(
-                    "message" to msgText,
-                    "senderId" to senderUid,
-                    "receiverId" to receiverUid,
-                    "timestamp" to System.currentTimeMillis()
-                )
-
-                // Primeiro, garante que a sala tenha os UIDs gravados
-                val chatRoomData = hashMapOf(
-                    "senderUid" to senderUid,
-                    "receiverUid" to receiverUid
-                )
-                db.collection("Chats")
-                    .document(chatRoomId!!)
-                    .set(chatRoomData) // Isso cria/atualiza a sala com os UIDs
-
-                // Agora, adiciona a mensagem
-                db.collection("Chats")
-                    .document(chatRoomId!!)
-                    .collection("messages")
-                    .add(msgMap)
-                    .addOnSuccessListener {
-                        messageBox.text.clear()
-                    }
-            }*/
+            val msg = messageBox.text.toString().trim()
+            sendMessage(msg)
+            if (receiverUid == "BROK_AI_AGENT") {
+                gerarRespostaIA(msg)
+            }
         }
 
         backBtn.setOnClickListener {
@@ -170,10 +114,23 @@ class ChatMain : Fragment() {
         return view
     }
 
-    private fun setupChat() {
-        if (senderUid.isNullOrEmpty() || receiverUid.isNullOrEmpty()) {
-            return
+    private fun loadReceiverImage() {
+        if (receiverUid == "BROK_AI_AGENT") {
+            profileChatImage.setImageResource(R.drawable.brok_logo)
+        } else {
+            db.collection("Usuarios").document(receiverUid ?: "").get().addOnSuccessListener { document ->
+                val avatarBase64 = document.getString("avatar")
+                if (!avatarBase64.isNullOrEmpty()) {
+                    val imageBytes = Base64.decode(avatarBase64, Base64.DEFAULT)
+                    val bitmap = AvatarManager.byteArrayToBitmap(imageBytes)
+                    profileChatImage.setImageBitmap(bitmap)
+                }
+            }
         }
+    }
+
+    private fun setupChat() {
+        if (senderUid.isNullOrEmpty() || receiverUid.isNullOrEmpty()) return
 
         chatRoomId = listOf(senderUid!!, receiverUid!!).sorted().joinToString("")
 
@@ -208,7 +165,7 @@ class ChatMain : Fragment() {
         }
     }
 
-    private fun sendMessage(msgText: String){
+    private fun sendMessage(msgText: String) {
         if (msgText.isNotEmpty() && chatRoomId != null) {
             val msgMap = hashMapOf(
                 "message" to msgText,
@@ -217,16 +174,15 @@ class ChatMain : Fragment() {
                 "timestamp" to System.currentTimeMillis()
             )
 
-            // Primeiro, garante que a sala tenha os UIDs gravados
             val chatRoomData = hashMapOf(
                 "senderUid" to senderUid,
                 "receiverUid" to receiverUid
             )
+
             db.collection("Chats")
                 .document(chatRoomId!!)
-                .set(chatRoomData) // Isso cria/atualiza a sala com os UIDs
+                .set(chatRoomData)
 
-            // Agora, adiciona a mensagem
             db.collection("Chats")
                 .document(chatRoomId!!)
                 .collection("messages")
@@ -234,6 +190,29 @@ class ChatMain : Fragment() {
                 .addOnSuccessListener {
                     messageBox.text.clear()
                 }
+        }
+    }
+
+    private fun gerarRespostaIA(prompt: String) {
+        val gm = GenerativeModel(modelName = "gemini-2.0-flash", apiKey = "AIzaSyC76OQVLSLAYUfEFTus1MB0itOLQPFu1ag")
+        lifecycleScope.launch {
+            try {
+                val response = gm.generateContent(prompt)
+                val iaResposta = response.text ?: "Desculpe, não entendi sua pergunta."
+
+                val msgMap = hashMapOf(
+                    "message" to iaResposta,
+                    "senderId" to "BROK_AI_AGENT",
+                    "receiverId" to senderUid,
+                    "timestamp" to System.currentTimeMillis()
+                )
+                db.collection("Chats")
+                    .document(chatRoomId!!)
+                    .collection("messages")
+                    .add(msgMap)
+            } catch (e: Exception) {
+                Log.e("GeminiError", "Erro ao gerar resposta da Gemini: ${e.message}")
+            }
         }
     }
 
