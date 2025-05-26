@@ -102,7 +102,7 @@
             app:layout_constraintStart_toStartOf="@+id/imageView9" />
 
         <TextView
-            android:id="@+id/nextSessionProfessional"
+            android:id="@+id/nextSessionCostumer"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"

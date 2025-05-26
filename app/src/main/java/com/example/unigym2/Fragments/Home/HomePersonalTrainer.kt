@@ -34,6 +34,8 @@ class HomePersonalTrainer : Fragment() {
     lateinit var schedulesBtn: Button
     lateinit var titleView: TextView
     lateinit var solicitationsView: TextView
+    lateinit var sessionTime: TextView
+    lateinit var sessionCostumer: TextView
 
     lateinit var db: FirebaseFirestore
     private lateinit var communicator: Communicator
@@ -59,6 +61,8 @@ class HomePersonalTrainer : Fragment() {
         communicator = activity as Communicator
         titleView = v.findViewById(R.id.nameTitle)
         schedulesBtn = v.findViewById(R.id.schedulesBtn)
+        sessionTime = v.findViewById(R.id.nextSessionTime)
+        sessionCostumer = v.findViewById(R.id.nextSessionCostumer)
 
         communicator.showLoadingOverlay()
 
@@ -100,6 +104,66 @@ class HomePersonalTrainer : Fragment() {
             }
 
         return v
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        communicator.showLoadingOverlay()
+
+        db.collection("Agendamentos")
+            .whereEqualTo("personalID", communicator.getAuthUser())
+            .whereEqualTo("status", "aceito")
+            .get()
+            .addOnSuccessListener { results ->
+                val currentDate = java.util.Calendar.getInstance()
+
+                var closestSession : Map<String, Any>? = null
+                var minTimeDifference = Long.MAX_VALUE
+
+                for (result in results) {
+                    val sessionData = result.data
+                    val dateString = sessionData["data"] as? String
+                    val timeString = sessionData["hora"] as? String
+
+                    val dateParts = dateString?.split("/")
+                    if (dateParts?.size != 3) continue
+
+                    val day = dateParts[0].toIntOrNull() ?: continue
+                    val month = dateParts[1].toIntOrNull() ?: continue
+                    val year = dateParts[2].toIntOrNull() ?: continue
+
+                    val timeParts = timeString?.split(":")
+                    if (timeParts?.size != 2) continue
+
+                    val hour = timeParts[0].toIntOrNull() ?: continue
+                    val minute = timeParts[1].toIntOrNull() ?: continue
+                    val sessionCalendar = java.util.Calendar.getInstance()
+                    sessionCalendar.set(year, month - 1, day, hour, minute, 0)
+                    if (sessionCalendar.timeInMillis <= currentDate.timeInMillis) continue
+
+                    val timeDifference = sessionCalendar.timeInMillis - currentDate.timeInMillis
+
+                    if (timeDifference < minTimeDifference) {
+                        minTimeDifference = timeDifference
+                        closestSession = sessionData
+                    }
+
+                    val costumerID = closestSession?.get("clienteID") as? String ?: ""
+                    sessionTime.text = "${closestSession?.get("hora")}"
+
+                    db.collection("Usuarios").document(costumerID)
+                        .get()
+                        .addOnSuccessListener { costumerResult ->
+                            sessionCostumer.text = costumerResult.data?.get("name").toString()
+                        }.addOnFailureListener { exception ->
+                            Log.w("firestore", "Error getting document.", exception)
+                        }
+                }
+
+            }.addOnFailureListener { exception ->
+                Log.w("firestore", "Error getting document.", exception)
+            }
+        communicator.hideLoadingOverlay()
     }
 
     companion object {

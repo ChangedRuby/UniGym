@@ -328,6 +328,7 @@
             android:id="@+id/SairPersonal"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginEnd="16dp"
             android:src="@drawable/go_back_button"
             app:layout_constraintBottom_toTopOf="@+id/lineView"
             app:layout_constraintEnd_toEndOf="parent"
