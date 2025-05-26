@@ -84,7 +84,7 @@ class HomePersonalTrainer : Fragment() {
                     solicitacoesPendentes++
                 }
                 if(solicitacoesPendentes==0){
-                    solicitationsView.text = "Nenhuma solicitação pendente"
+                    solicitationsView.text = "Nenhuma solicitação!"
                 } else {
                     solicitationsView.text = "$solicitacoesPendentes solicitações pendentes!"
                 }
