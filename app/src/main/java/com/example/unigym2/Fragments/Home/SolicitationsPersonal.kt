@@ -68,6 +68,7 @@ class SolicitationsPersonal : Fragment() {
         // Inflate the layout for this fragment
         var v = inflater.inflate(R.layout.fragment_solicitations_personal, container, false)
         semSolitacoeView = v.findViewById(R.id.semSolicitaçõesView)
+        communicator = activity as Communicator
         semSolitacoeView.visibility = View.INVISIBLE
 
         dataInitialize()
@@ -77,7 +78,6 @@ class SolicitationsPersonal : Fragment() {
         recyclerView.setHasFixedSize(true)
         adapter = RequestsRecyclerAdapter(requestsArrayList, communicator)
         recyclerView.adapter = adapter
-        communicator = activity as Communicator
         exitBtn = v.findViewById(R.id.closeScreen)
 
         exitBtn.setOnClickListener {
@@ -146,7 +146,7 @@ class SolicitationsPersonal : Fragment() {
                             }
                         }
                     }
-                    if(contador<=1){
+                    if(contador<=0){
                         semSolitacoeView.visibility = View.VISIBLE
                     }
 

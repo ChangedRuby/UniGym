@@ -111,6 +111,7 @@ class CalendarUser : Fragment() {
                             val horario = document.getString("hora")
                             val timestamp = document.getLong("timestamp")
                             val servico = document.getString("servico")
+                            Log.d("calendar_user", document.data.toString())
 
                             dataBase.collection("Usuarios")
                                 .document(personalID!!)
@@ -125,6 +126,7 @@ class CalendarUser : Fragment() {
                                         servico = servico
                                     )
                                     schedulesArrayList.add(programacao)
+                                    schedulesArrayList.sortWith( compareBy({ it.timestamp }) )
                                     adapter.notifyDataSetChanged()
                                 }
                         }
@@ -167,5 +169,19 @@ class CalendarUser : Fragment() {
 
     fun dataInitialize(){
         schedulesArrayList = arrayListOf()
+    }
+
+    fun bubbleSort(array: ArrayList<CalendarUserItem>): ArrayList<CalendarUserItem>{
+        for (i in 0 until array.size - 1){
+            for (j in 0 until array.size - i - 1){
+                if (array[j].timestamp!! > array[j+1].timestamp!!){
+                    val temp = array[j]
+                    array[j] = array[j+1]
+                    array[j+1] = temp
+                }
+            }
+        }
+        Log.d("calendar_user", array.toString())
+        return array
     }
 }

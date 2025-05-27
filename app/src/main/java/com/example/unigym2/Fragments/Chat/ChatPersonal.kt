@@ -14,8 +14,8 @@ import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.unigym2.Activities.Communicator
-import com.example.unigym2.Fragments.Chat.Recyclerviews.ListaPersonaisAdapter // Changed Adapter type
-import com.example.unigym2.Fragments.Chat.Recyclerviews.ListaPersonaisItem
+import com.example.unigym2.Fragments.Chat.Recyclerviews.ListaUsuariosAdapter // Changed Adapter type
+import com.example.unigym2.Fragments.Chat.Recyclerviews.ListaUsuariosItem
 import com.example.unigym2.Managers.AvatarManager
 import com.example.unigym2.R
 import com.google.firebase.firestore.FirebaseFirestore
@@ -30,15 +30,15 @@ class ChatPersonal : Fragment() {
     private var param1: String? = null
     private var param2: String? = null
 
-    private lateinit var adapter: ListaPersonaisAdapter // Changed Adapter type
+    private lateinit var adapter: ListaUsuariosAdapter // Changed Adapter type
     lateinit var communicator: Communicator
     private lateinit var recyclerView: RecyclerView
     private lateinit var db: FirebaseFirestore
     private lateinit var searchView: SearchView
     private lateinit var userListTabLayout: TabLayout // Added TabLayout
 
-    private lateinit var originalItemArray: MutableList<ListaPersonaisItem>
-    private lateinit var displayedItemArray: MutableList<ListaPersonaisItem>
+    private lateinit var originalItemArray: MutableList<ListaUsuariosItem>
+    private lateinit var displayedItemArray: MutableList<ListaUsuariosItem>
     private var currentUserId: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -81,7 +81,7 @@ class ChatPersonal : Fragment() {
 
 
         val layoutManager = LinearLayoutManager(context)
-        adapter = ListaPersonaisAdapter(displayedItemArray, communicator, parentFragmentManager)
+        adapter = ListaUsuariosAdapter(displayedItemArray, communicator, parentFragmentManager)
         recyclerView.adapter = adapter
         recyclerView.layoutManager = layoutManager
 
@@ -183,7 +183,7 @@ class ChatPersonal : Fragment() {
         if (fetchAlunos) { // Tab "Alunos"
             if (brokImageBitmap != null) {
                 originalItemArray.add(
-                    ListaPersonaisItem(name = "Brok", userId = "BROK_AI_AGENT", image = brokImageBitmap)
+                    ListaUsuariosItem(name = "Brok", userId = "BROK_AI_AGENT", image = brokImageBitmap)
                 )
                 Log.d("ChatPersonal", "CHAT_PERSONAL_DEBUG: Added Brok AI Agent to originalItemArray (Alunos tab).")
             }
@@ -241,7 +241,7 @@ class ChatPersonal : Fragment() {
                     if (conversedUserIds.contains("BROK_AI_AGENT") && brokImageBitmap != null) {
                         if (originalItemArray.none { it.userId == "BROK_AI_AGENT" }) {
                             originalItemArray.add(
-                                ListaPersonaisItem(name = "Brok", userId = "BROK_AI_AGENT", image = brokImageBitmap)
+                                ListaUsuariosItem(name = "Brok", userId = "BROK_AI_AGENT", image = brokImageBitmap)
                             )
                             Log.d("ChatPersonal", "CHAT_PERSONAL_DEBUG: Manually added Brok to originalItemArray (Personal's Conversas).")
                         }
@@ -304,7 +304,7 @@ class ChatPersonal : Fragment() {
 
         var itemsProcessed = 0
         val totalItemsToProcess = documents.size
-        val fetchedFirestoreUserItems = mutableListOf<ListaPersonaisItem>()
+        val fetchedFirestoreUserItems = mutableListOf<ListaUsuariosItem>()
 
         if (totalItemsToProcess == 0 && originalItemArray.isNotEmpty()) {
             Log.d("ChatPersonal", "CHAT_PERSONAL_DEBUG: handleFetchedUserDocuments: No new user documents from Firestore, but originalItemArray not empty (e.g. Brok). Updating UI.")
@@ -335,7 +335,7 @@ class ChatPersonal : Fragment() {
             if (userId.isNotEmpty() && userName.isNotEmpty()) {
                 if (originalItemArray.none { it.userId == userId }) { // Avoid duplicates if already added (e.g. Brok)
                     AvatarManager.getUserAvatar(userId, userEmail, userName, 40, lifecycleScope) { bitmap ->
-                        val newItem = ListaPersonaisItem(name = userName, userId = userId, image = bitmap)
+                        val newItem = ListaUsuariosItem(name = userName, userId = userId, image = bitmap)
                         fetchedFirestoreUserItems.add(newItem)
                         itemsProcessed++
                         if (itemsProcessed == totalItemsToProcess) {
@@ -362,7 +362,7 @@ class ChatPersonal : Fragment() {
         }
     }
 
-    private fun finalizeAndRefreshList(newlyFetchedItems: List<ListaPersonaisItem>) {
+    private fun finalizeAndRefreshList(newlyFetchedItems: List<ListaUsuariosItem>) {
         originalItemArray.addAll(newlyFetchedItems)
         originalItemArray.sortBy { (it.name as java.lang.String?)?.toLowerCase(Locale.ROOT) }
         originalItemArray = originalItemArray.distinctBy { it.userId }.toMutableList()

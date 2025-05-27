@@ -11,13 +11,15 @@ import androidx.fragment.app.FragmentManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.unigym2.Activities.Communicator
 import com.example.unigym2.Fragments.Chat.ChatMain
+import com.example.unigym2.Fragments.Profile.VisualizarPerfilPersonal
+import com.example.unigym2.Fragments.Profile.VisualizarPerfilUser
 import com.example.unigym2.R
 import com.google.android.material.imageview.ShapeableImageView
 
 class ListaUsuariosAdapter(
-    private val itemArray: MutableList<ListaPersonaisItem>,
+    private val itemArray: MutableList<ListaUsuariosItem>,
     private val communicator: Communicator,
-    private val parentFragmentManager: FragmentManager
+    private val fragmentManager: FragmentManager,
 ) : RecyclerView.Adapter<ListaUsuariosAdapter.ListaUsuariosViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ListaUsuariosViewHolder {
@@ -38,9 +40,30 @@ class ListaUsuariosAdapter(
                 putString("receiverID", currentItem.userId)
             }
 
-            parentFragmentManager.setFragmentResult("chat_name_key", bundle)
-
+            fragmentManager.setFragmentResult("chat_name_key", bundle)
             communicator.replaceFragment(ChatMain())
+        }
+
+        if (currentItem.userId == "BROK_AI_AGENT") {
+            holder.visualizarPerfilBtn.visibility = View.GONE
+            holder.nameView.text = "Brok"
+            holder.descriptionView.text = "Converse com um agente de IA."
+        } else {
+            holder.visualizarPerfilBtn.visibility = View.VISIBLE
+            holder.descriptionView.text = "Treino com personal"
+        }
+
+        holder.visualizarPerfilBtn.setOnClickListener {
+            fragmentManager.setFragmentResult("user_info_key", Bundle().apply {
+                putString("user_name", currentItem.name)
+                putString("user_id", currentItem.userId)
+            })
+            fragmentManager.setFragmentResult("user_monitoring_key", Bundle().apply {
+                putString("user_name", currentItem.name)
+                putString("user_id", currentItem.userId)
+            })
+            communicator.replaceFragment(VisualizarPerfilUser())
+
         }
     }
 
@@ -49,5 +72,7 @@ class ListaUsuariosAdapter(
     class ListaUsuariosViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val nameView: TextView = itemView.findViewById(R.id.textViewUsername)
         val userImage: ShapeableImageView = itemView.findViewById(R.id.profileChatListaImage)
+        val visualizarPerfilBtn: ImageView = itemView.findViewById(R.id.visualizarPerfilBtn)
+        val descriptionView: TextView = itemView.findViewById(R.id.userDescription)
     }
 }
