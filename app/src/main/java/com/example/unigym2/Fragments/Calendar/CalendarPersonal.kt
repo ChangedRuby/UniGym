@@ -124,27 +124,6 @@ class CalendarPersonal : Fragment() {
                                         servico = servico
                                     )
                                     schedulesArrayList.add(programacao)
-
-                                    if (schedulesArrayList.size == documents.size()){
-//                                        val formatter = java.text.SimpleDateFormat("HH:mm")
-//                                        val now = java.util.Calendar.getInstance().time
-//
-//                                        schedulesArrayList.sortBy { item ->
-//                                            val itemTime = formatter.parse(item.horario ?: "23:59") ?: now
-//                                            val diff = itemTime.time - now.time
-//                                            if (diff < 0) Long.MAX_VALUE else diff
-//                                        }
-
-                                        val agora = java.util.Calendar.getInstance()
-                                        val millisAgora = agora.get(java.util.Calendar.HOUR_OF_DAY) * 3600000L +
-                                                agora.get(java.util.Calendar.MINUTE) * 60000L
-
-                                        schedulesArrayList.sortBy { item ->
-                                            val millisItem = horaParaMillis(item.horario)
-                                            val diferenca = millisItem - millisAgora
-                                            if (diferenca < 0) Long.MAX_VALUE else diferenca
-                                        }
-                                    }
                                     Log.d("data_selecionada", "$programacao")
                                     adapter.notifyDataSetChanged()
                                 }
@@ -192,16 +171,5 @@ class CalendarPersonal : Fragment() {
 
     fun dataInitialize(){
         schedulesArrayList = arrayListOf()
-    }
-
-    fun horaParaMillis (horario : String?):Long {
-        return try{
-            val partes = horario?.split(":") ?: return Long.MAX_VALUE
-            val horas = partes[0].toIntOrNull() ?: return Long.MAX_VALUE
-            val minutos = partes[1].toIntOrNull() ?: return Long.MAX_VALUE
-            horas * 3600000L + minutos * 60000L
-        } catch (e: Exception) {
-            Long.MAX_VALUE
-        }
     }
 }
