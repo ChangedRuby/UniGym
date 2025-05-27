@@ -108,6 +108,10 @@ class LoginMenu : AppCompatActivity() {
                                     Log.d("login_activity", "User document exists")
                                     if (document.data?.get("isPersonal") == false) {
                                         if (!document.data!!.contains("lastPersonalWorkout")) document.data!!.put("lastPersonalWorkout", "Timestamp")
+                                    } else {
+                                        if (!document.data!!.contains("specialties")) document.data!!.put("specialties", listOf("", "", "", ""))
+                                        if (!document.data!!.contains("services")) document.data!!.put("services", listOf("", "", "", ""))
+                                        if (!document.data!!.contains("servicePrices")) document.data!!.put("servicePrices", listOf("", "", "", ""))
                                     }
                                 } else {
                                     Log.d("login_activity", "User document does not exist")
