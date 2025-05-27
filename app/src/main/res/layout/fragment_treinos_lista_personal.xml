@@ -25,7 +25,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <SearchView
+        <androidx.appcompat.widget.SearchView
             android:id="@+id/conversasSearchView"
             android:layout_width="393sp"
             android:layout_height="52sp"

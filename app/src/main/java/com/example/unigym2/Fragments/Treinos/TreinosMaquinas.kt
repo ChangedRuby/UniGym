@@ -7,13 +7,12 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.Toast
+import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.RecycledViewPool
 import com.example.unigym2.Activities.Communicator
-import com.example.unigym2.Fragments.Home.Recyclerviews.RequestsData
-import com.example.unigym2.Fragments.Treinos.Recyclerviews.ListaTreinosItem
 import com.example.unigym2.Fragments.Treinos.Recyclerviews.MaquinaInnerItem
 import com.example.unigym2.Fragments.Treinos.Recyclerviews.MaquinaOuterAdapter
 import com.example.unigym2.Fragments.Treinos.Recyclerviews.MaquinaOuterItem
@@ -25,31 +24,25 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.FirebaseFirestoreException
 import com.google.firebase.firestore.Query
 import com.google.firebase.firestore.QuerySnapshot
+import java.util.Locale // For Locale.ROOT
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
 private const val ARG_PARAM1 = "param1"
 private const val ARG_PARAM2 = "param2"
 
-/**
- * A simple [Fragment] subclass.
- * Use the [TreinosMaquinas.newInstance] factory method to
- * create an instance of this fragment.
- */
 class TreinosMaquinas : Fragment() {
-    // TODO: Rename and change types of parameters
     private var param1: String? = null
     private var param2: String? = null
-    lateinit var addButton: Button
+    private lateinit var addButton: Button
     private lateinit var communicator: Communicator
 
     private lateinit var adapter: MaquinaOuterAdapter
     private lateinit var outerRecyclerView: RecyclerView
-    lateinit var outerItemsArray: MutableList<MaquinaOuterItem>
-    lateinit var viewPool: RecyclerView.RecycledViewPool
-    private lateinit var outerItems: ArrayList<RequestsData>
+    private lateinit var outerItemsArray: MutableList<MaquinaOuterItem>
+    private lateinit var displayedOuterItemsArray: MutableList<MaquinaOuterItem>
+    private lateinit var viewPool: RecyclerView.RecycledViewPool
+    private lateinit var searchView: SearchView
 
-    lateinit var db: FirebaseFirestore
+    private lateinit var db: FirebaseFirestore
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -58,17 +51,13 @@ class TreinosMaquinas : Fragment() {
             param1 = it.getString(ARG_PARAM1)
             param2 = it.getString(ARG_PARAM2)
         }
-//        val searchView = findViewById<SearchView>(R.id.MaquinasSearchView)
-//        val searchPlate = searchView.findViewById<View>(androidx.appcompat.R.id.search_plate)
-//        searchPlate.setBackgroundColor(Color.parseColor("#3372788C"))
     }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
-        var v = inflater.inflate(R.layout.fragment_treinos_maquinas, container, false)
+        val v = inflater.inflate(R.layout.fragment_treinos_maquinas, container, false)
 
         communicator = activity as Communicator
         db = FirebaseFirestore.getInstance()
@@ -76,8 +65,10 @@ class TreinosMaquinas : Fragment() {
         addButton = v.findViewById(R.id.AddMaquinaButton)
         addButton.setOnClickListener {
             communicator.replaceFragment(AdicionarMaquina())
-
         }
+
+        searchView = v.findViewById(R.id.MaquinasSearchView)
+        setupSearchView()
 
         parentFragmentManager.setFragmentResultListener(
             "maquina_adicionada_key",
@@ -86,31 +77,16 @@ class TreinosMaquinas : Fragment() {
             val foiAdicionada = bundle.getBoolean("maquina_adicionada", false)
             if (foiAdicionada) {
                 val maquinaName = bundle.getString("maquina_name")
-
-                // Create a new user with a first and last name
-                val maquina = hashMapOf(
-                    "title" to maquinaName,
-                )
-
-                // Add a new document with a generated ID
+                val maquina = hashMapOf("title" to maquinaName)
                 db.collection("Maquinas")
                     .add(maquina)
                     .addOnSuccessListener { documentReference ->
-                        Log.d(
-                            "treinosMaquinas",
-                            "DocumentSnapshot added with ID: ${documentReference.id}"
-                        )
+                        Log.d("treinosMaquinas", "DocumentSnapshot added with ID: ${documentReference.id}")
                     }
                     .addOnFailureListener { e ->
                         Log.w("treinosMaquinas", "Error adding document", e)
                     }
-
-
-                Toast.makeText(
-                    requireContext(),
-                    "Máquina $maquinaName adicionada!",
-                    Toast.LENGTH_SHORT
-                ).show()
+                Toast.makeText(requireContext(), "Máquina $maquinaName adicionada!", Toast.LENGTH_SHORT).show()
             }
         }
 
@@ -121,74 +97,74 @@ class TreinosMaquinas : Fragment() {
             val foiAdicionada = bundle.getBoolean("exercicio_adicionado", false)
             val exercicioName = bundle.getString("exercicio_name")
             if (foiAdicionada) {
-                val document = db.collection("Maquinas").document(bundle.getString("maquina_id").toString())
-                // var exercisesArray: ArrayList<String>
-
-                document.update("exercises", FieldValue.arrayUnion(exercicioName.toString()))
-
-                // versão antiga em que pegava o array de exercicios do document, editava e atualizava
-                /*document.get().addOnSuccessListener { result ->
-                    exercisesArray = result.data?.get("exercises") as ArrayList<String>
-                    exercisesArray.add(exercicioName.toString())
-
-                    document.update(
-                        hashMapOf<String, Any>(
-                            "exercises" to exercisesArray
-                        ),
-                    ).addOnSuccessListener { result ->
-                        Log.d("treinosMaquinas", "Exercise $exercicioName added.")
-                    }
-
-                }*/
-
-                Log.d("treinosMaquinas", bundle.getString("maquina_id").toString())
-                Toast.makeText(requireContext(), "Exercício $exercicioName adicionado!", Toast.LENGTH_SHORT).show()
+                val documentId = bundle.getString("maquina_id")
+                if (documentId != null && exercicioName != null) {
+                    val document = db.collection("Maquinas").document(documentId)
+                    document.update("exercises", FieldValue.arrayUnion(exercicioName))
+                        .addOnSuccessListener {
+                            Log.d("treinosMaquinas", "Exercise $exercicioName added to $documentId.")
+                        }
+                        .addOnFailureListener { e ->
+                            Log.w("treinosMaquinas", "Error adding exercise to $documentId.", e)
+                        }
+                    Toast.makeText(requireContext(), "Exercício $exercicioName adicionado!", Toast.LENGTH_SHORT).show()
+                } else {
+                    Log.w("treinosMaquinas", "maquina_id or exercicio_name is null.")
+                }
             }
         }
 
-        /*parentFragmentManager.setFragmentResultListener(
-            "treino_adicionado_key",
-            viewLifecycleOwner
-        ) { _, bundle ->
-            val foiAdicionada = bundle.getBoolean("treino_adicionado", false)
-            if (foiAdicionada) {
-                Toast.makeText(requireContext(), "Treino adicionado!", Toast.LENGTH_SHORT).show()
-            }
-        }*/
-
-
-        // RECYCLER VIEW
-
         val layoutManager = LinearLayoutManager(context)
         outerItemsArray = mutableListOf()
+        displayedOuterItemsArray = mutableListOf()
         createOuterItems()
 
         viewPool = RecycledViewPool()
 
         outerRecyclerView = v.findViewById(R.id.maquinasOuterRecyclerview)
         outerRecyclerView.layoutManager = layoutManager
-        // outerRecyclerView.setHasFixedSize(true)
         outerRecyclerView.setRecycledViewPool(viewPool)
-        adapter = MaquinaOuterAdapter(outerItemsArray, viewPool, communicator, parentFragmentManager)
+        adapter = MaquinaOuterAdapter(displayedOuterItemsArray, viewPool, communicator, parentFragmentManager)
         outerRecyclerView.adapter = adapter
-
-
-
-
 
         return v
     }
 
+    private fun setupSearchView() {
+        searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                searchView.clearFocus()
+                return true
+            }
+
+            override fun onQueryTextChange(newText: String?): Boolean {
+                filter(newText.orEmpty())
+                return true
+            }
+        })
+        searchView.queryHint = "Buscar máquinas..."
+    }
+
+    private fun filter(query: String) {
+        displayedOuterItemsArray.clear()
+        val lowerCaseQuery = (query as java.lang.String).toLowerCase(Locale.ROOT)
+
+        if (lowerCaseQuery.isEmpty()) {
+            displayedOuterItemsArray.addAll(outerItemsArray)
+        } else {
+            for (item in outerItemsArray) {
+                val itemTitleLowerCase = (item.title as java.lang.String?)?.toLowerCase(Locale.ROOT) ?: ""
+                if (itemTitleLowerCase.contains(lowerCaseQuery)) {
+                    displayedOuterItemsArray.add(item)
+                }
+            }
+        }
+        displayedOuterItemsArray.sortBy { (it.title as java.lang.String?)?.toLowerCase(Locale.ROOT) }
+        adapter.notifyDataSetChanged()
+    }
+
+
     companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment treinos_maquinas.
-         */
-        // TODO: Rename and change types and number of parameters
         @JvmStatic
         fun newInstance(param1: String, param2: String) =
             TreinosMaquinas().apply {
@@ -199,44 +175,43 @@ class TreinosMaquinas : Fragment() {
             }
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-    }
 
     private fun createOuterItems() {
-
         db.collection("Maquinas").orderBy("title", Query.Direction.ASCENDING)
             .addSnapshotListener(object : EventListener<QuerySnapshot> {
                 override fun onEvent(
                     value: QuerySnapshot?,
                     error: FirebaseFirestoreException?
                 ) {
-
-
                     if (error != null) {
                         Log.e("Firestore error", error.message.toString())
                         return
                     }
 
-                    for (dc: DocumentChange in value?.documentChanges!!) {
+                    if (value == null) {
+                        Log.w("Firestore warning", "Snapshot listener returned null value.")
+                        return
+                    }
 
+
+                    for (dc: DocumentChange in value.documentChanges) {
                         val document = dc.document
                         val docId = document.id
-                        val title = document.getString("title") ?: "Titulo indisponivel"
+                        val title = document.getString("title") ?: "Título Indisponível"
 
                         val exercisesFromFirestore = document.get("exercises")
                         val currentInnerItems = mutableListOf<MaquinaInnerItem>()
 
-                        if(exercisesFromFirestore is List<*>){
+                        if (exercisesFromFirestore is List<*>) {
                             exercisesFromFirestore.forEach { item ->
-                                if(item is String){
+                                if (item is String) {
                                     currentInnerItems.add(MaquinaInnerItem(text = item, maquinaId = docId))
-                                } else{
-                                    Log.w("maquinas_data", "Item is not a String $item for document $docId")
+                                } else {
+                                    Log.w("maquinas_data", "Exercise item is not a String: $item for document $docId")
                                 }
                             }
-                        } else if(exercisesFromFirestore != null){
-                            Log.w("maquinas_data", "exercisesFromFirestore is not a List for document $docId")
+                        } else if (exercisesFromFirestore != null) {
+                            Log.w("maquinas_data", "'exercises' field is not a List for document $docId. Type: ${exercisesFromFirestore.javaClass.name}")
                         }
 
                         when (dc.type) {
@@ -246,45 +221,36 @@ class TreinosMaquinas : Fragment() {
                                     title = title,
                                     id = docId,
                                 )
-                                outerItemsArray.add(outerItem)
+                                if (outerItemsArray.none { it.id == docId }) {
+                                    outerItemsArray.add(outerItem)
+                                }
                             }
-
                             DocumentChange.Type.MODIFIED -> {
-                                val index = outerItemsArray.indexOfFirst { it.title == title }
-
-                                if(index != -1){
+                                val index = outerItemsArray.indexOfFirst { it.id == docId }
+                                if (index != -1) {
                                     outerItemsArray[index] = MaquinaOuterItem(
                                         innerItems = currentInnerItems,
                                         title = title,
                                         id = docId,
                                     )
                                     Log.d("maquinas_data", "Modified ${outerItemsArray[index].title}")
+                                } else {
+                                    val outerItem = MaquinaOuterItem(
+                                        innerItems = currentInnerItems,
+                                        title = title,
+                                        id = docId,
+                                    )
+                                    outerItemsArray.add(outerItem)
+                                    Log.w("maquinas_data", "Modified item with ID $docId not found, added instead.")
                                 }
                             }
-
                             DocumentChange.Type.REMOVED -> {
-                                outerItemsArray.removeAll { it.title == title }
+                                outerItemsArray.removeAll { it.id == docId }
                             }
                         }
                     }
-
-                    adapter.notifyDataSetChanged()
+                    filter(searchView.query.toString())
                 }
-
             })
-
-
-        // Generate sample data
-//        val outerItems = arrayOf(
-//            "Leg press Horizontal 1",
-//            "Leg press Horizontal 2",
-//            "Leg press Horizontal 3",
-//        )
-//
-//        val innerItems1 = MutableList(10) { MaquinaInnerItem("Inner Item $it") }
-//        val innerItems2 = MutableList(10) { MaquinaInnerItem("Inner Item ${it + 10}") }
-//        val innerItems3 = MutableList(10) { MaquinaInnerItem("Inner Item ${it + 20}") }
-//        return mutableListOf(MaquinaOuterItem(innerItems1, outerItems[0]), MaquinaOuterItem(innerItems2, outerItems[1]), MaquinaOuterItem(innerItems3, outerItems[2]))
-//    }
     }
 }
