@@ -121,7 +121,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="12dp"
             android:fontFamily="@font/roboto"
-            android:text="ㅤㅤ"
+            android:text="Solicitações"
             android:textColor="@android:color/black"
             android:textSize="24sp"
             android:textStyle="bold"
