@@ -118,6 +118,7 @@ class CalendarUser : Fragment() {
                                 .get()
                                 .addOnSuccessListener { result ->
                                     val nomePersonal = result.getString("name")
+                                    Log.d("calendar_user", timestamp.toString())
 
                                     val programacao = CalendarUserItem(
                                         nomePersonal = nomePersonal,
@@ -127,6 +128,7 @@ class CalendarUser : Fragment() {
                                     )
                                     schedulesArrayList.add(programacao)
                                     schedulesArrayList.sortWith( compareBy({ it.timestamp }) )
+                                    Log.d("calendar_user", schedulesArrayList.toString())
                                     adapter.notifyDataSetChanged()
                                 }
                         }
