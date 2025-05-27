@@ -87,7 +87,7 @@ class VisualizarPerfilUser : Fragment() {
                     val totalTreinos = result.get("totalTreinos") ?: 0
                     quantidadeTreinos.text = "$totalTreinos"
 
-                    val objetivos = result.data?.get("objetivos") as List<*>
+                    val objetivos = result.data?.get("objectives") as List<*>
 
                     for (i in 0 until objetivos.size) {
                         when (i) {

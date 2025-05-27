@@ -29,6 +29,7 @@ class ProfilePersonal : Fragment() {
     lateinit var crefTextView: TextView
     lateinit var editBtn : ImageView
     lateinit var exitBtn : ImageView
+    lateinit var deleteAccountButton: ImageView
     lateinit var accessibilityBtn: TextView
     lateinit var imageView: ShapeableImageView
     private lateinit var communicator : Communicator
@@ -63,6 +64,7 @@ class ProfilePersonal : Fragment() {
         communicator = activity as Communicator
         editBtn = v.findViewById(R.id.EditProfilePersonal)
         exitBtn = v.findViewById(R.id.SairPersonal)
+        deleteAccountButton = v.findViewById(R.id.deletePersonalUserBtn)
         accessibilityBtn = v.findViewById(R.id.AcessibilidadePersonal)
         nameTextView = v.findViewById(R.id.UserProfileName)
         emailTextView = v.findViewById(R.id.userProfileEmail)
@@ -146,6 +148,13 @@ class ProfilePersonal : Fragment() {
             Log.d("personalLog", "Clicked")
             requireActivity().supportFragmentManager.beginTransaction()
                 .add(android.R.id.content, ProfileLogout())
+                .addToBackStack(null)
+                .commit()
+        }
+
+        deleteAccountButton.setOnClickListener {
+            requireActivity().supportFragmentManager.beginTransaction()
+                .add(android.R.id.content, ProfileConfirmDeleteAccount())
                 .addToBackStack(null)
                 .commit()
         }

@@ -107,12 +107,13 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:fontFamily="@font/roboto"
+            android:gravity="right"
             android:text="Dante Quintana"
             android:textColor="@android:color/white"
             android:textSize="24sp"
             app:layout_constraintEnd_toEndOf="@+id/imageView9"
-            app:layout_constraintHorizontal_bias="0.832"
-            app:layout_constraintStart_toStartOf="@+id/imageView9"
+            app:layout_constraintHorizontal_bias="0.666"
+            app:layout_constraintStart_toEndOf="@+id/nextSessionTime"
             app:layout_constraintTop_toBottomOf="@+id/textView16" />
 
         <ImageView
