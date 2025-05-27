@@ -6,6 +6,7 @@ import android.widget.Button
 import android.widget.FrameLayout
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentTransaction
 import com.example.unigym2.Fragments.Calendar.CalendarPersonal
 import com.example.unigym2.Fragments.Calendar.CalendarUser
 import com.example.unigym2.Fragments.Chat.ChatPersonal
@@ -102,6 +103,7 @@ class MainActivity : AppCompatActivity(), Communicator{
         fragmentTransaction.replace(R.id.frame_layout, fragment)
         fragmentTransaction.setReorderingAllowed(true)
         fragmentTransaction.addToBackStack(supportFragmentManager.findFragmentById(R.id.frame_layout).toString())
+        fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
         fragmentTransaction.commit()
     }
 
