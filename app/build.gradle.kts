@@ -47,9 +47,8 @@ android {
 
 dependencies {
 //    implementation(platform("androidx.compose:compose-bom:2025.01.01"))
-    implementation(libs.androidx.core.ktx)
+//    implementation(libs.firebase.messaging.ktx)
     implementation(libs.androidx.appcompat)
-    implementation(libs.material)
     implementation(libs.androidx.activity)
     implementation(libs.androidx.constraintlayout)
     implementation(libs.appcompat)
@@ -84,7 +83,8 @@ dependencies {
 
     // Choose one of the following:
     // Material Design 3
-    implementation("androidx.compose.material3:material3")
+    implementation("androidx.compose.material3:material3:1.2.1")
+    implementation("com.google.android.material:material:1.11.0")
     // or only import the main APIs for the underlying toolkit systems,
     // such as input and measurement/layout
     implementation("androidx.compose.ui:ui")
@@ -114,6 +114,7 @@ dependencies {
     implementation("androidx.compose.runtime:runtime-livedata")
     // Optional - Integration with RxJava
     implementation("androidx.compose.runtime:runtime-rxjava2")
+    implementation("com.google.firebase:firebase-messaging-ktx")
 
 
     // Add the dependencies for any other desired Firebase products

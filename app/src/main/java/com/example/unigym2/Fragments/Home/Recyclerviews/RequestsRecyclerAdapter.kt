@@ -17,6 +17,8 @@ import com.example.unigym2.Activities.Communicator
 import com.example.unigym2.R
 import com.google.android.material.imageview.ShapeableImageView
 import com.google.firebase.firestore.FirebaseFirestore
+import android.widget.Toast
+import androidx.core.content.ContentProviderCompat.requireContext
 
 class RequestsRecyclerAdapter(private val requestsList: ArrayList<RequestsData>, val communicator: Communicator) : RecyclerView.Adapter<RequestsRecyclerAdapter.MyViewHolder>(){
 
@@ -71,13 +73,13 @@ class RequestsRecyclerAdapter(private val requestsList: ArrayList<RequestsData>,
         }
 
         holder.accept.setOnClickListener{
-            val agendamentoID =currentItem.agendamentoID
-            if(agendamentoID!==null){
+            val agendamentoID = currentItem.agendamentoID
+            if(agendamentoID !== null){
                 dataBase.collection("Agendamentos")
                     .document(agendamentoID)
                     .update("status", "aceito")
                     .addOnSuccessListener {
-                        showNotification("Solicitação aceita", "A sua solicitação foi aceita por ${communicator.getAuthUserName()}", holder.itemView.context)
+                        handleRequestAcceptance(currentItem)
                         requestsList.removeAt(position)
                         notifyItemRemoved(position)
                         notifyItemRangeChanged(position, requestsList.size)
@@ -85,7 +87,6 @@ class RequestsRecyclerAdapter(private val requestsList: ArrayList<RequestsData>,
                     .addOnFailureListener { e ->
                         Log.e("ACEITAR", "Erro ao aceitar solicitação")
                     }
-
             } else{
                 Log.e("ACEITAR", "ID é nulo")
             }
@@ -117,5 +118,85 @@ class RequestsRecyclerAdapter(private val requestsList: ArrayList<RequestsData>,
         val deleteView: Button = itemView.findViewById(R.id.removeRequestButton)
         val profileView: ShapeableImageView = itemView.findViewById(R.id.imageProfileSolicitation)
         val accept: Button = itemView.findViewById(R.id.acceptRequestBtn)
+    }
+
+    fun sendNotification(title: String, message: String, recipientToken: String) {
+        val db = FirebaseFirestore.getInstance()
+
+        // Create notification payload
+        val notification = hashMapOf(
+            "title" to title,
+            "body" to message,
+            "recipientToken" to recipientToken,
+            "timestamp" to System.currentTimeMillis()
+        )
+
+        // Store the notification in Firestore to be processed by Cloud Functions
+        db.collection("notifications")
+            .add(notification)
+            .addOnSuccessListener { documentReference ->
+                Log.d("FCM", "Notification sent with ID: ${documentReference.id}")
+            }
+            .addOnFailureListener { e ->
+                Log.e("FCM", "Error sending notification", e)
+            }
+    }
+
+    private fun handleRequestAcceptance(requestToAccept: RequestsData) {
+        // Show some loading indicator if needed
+        Log.d("ActivityLogic", "Handling acceptance for: ${requestToAccept.nomeCliente}")
+
+        // Step 1: Update the status in your database
+        RequestActions.acceptRequestInDatabase(requestToAccept,
+            onSuccess = {
+                Log.i("ActivityLogic", "Request accepted in DB for ${requestToAccept.nomeCliente}. Notification should be triggered by backend.")
+                // If you were NOT using database triggers and had a separate backend call for notifications:
+                // RequestActions.triggerAcceptanceNotification(requestToAccept,
+                //    onSuccess = { Log.i("ActivityLogic", "Notification triggered successfully.") },
+                //    onFailure = { e -> Log.e("ActivityLogic", "Failed to trigger notification.", e) }
+                // )
+
+            },
+            onFailure = { exception ->
+                Log.e("ActivityLogic", "Failed to accept request for ${requestToAccept.nomeCliente}", exception)
+            }
+        )
+    }
+}
+
+object RequestActions {
+
+    private val db = FirebaseFirestore.getInstance()
+
+    /**
+     * Updates the request status to "accepted" in Firestore.
+     * This change, if your backend is set up with database triggers (e.g., Cloud Functions for Firestore),
+     * should then trigger the sending of an FCM notification.
+     */
+    fun acceptRequestInDatabase(
+        request: RequestsData, // Using your data class
+        onSuccess: () -> Unit,
+        onFailure: (Exception) -> Unit
+    ) {
+        if (request.agendamentoID == null) {
+            Log.e("RequestActions", "Cannot accept request without an agendamentoID (request ID).")
+            onFailure(IllegalArgumentException("Request ID is missing"))
+            return
+        }
+
+        Log.d("RequestActions", "Attempting to accept request: ${request.agendamentoID}")
+        db.collection("agendamentos") // Assuming "agendamentos" is your collection name
+            .document(request.agendamentoID)
+            .update("status", "accepted") // Or whatever field and value signifies acceptance
+            .addOnSuccessListener {
+                Log.i("RequestActions", "Request ${request.agendamentoID} successfully marked as accepted in Firestore.")
+                // The backend (e.g., Cloud Function listening to this update)
+                // is now responsible for sending the FCM notification.
+                onSuccess()
+            }
+            .addOnFailureListener { e ->
+                Log.e("RequestActions", "Error accepting request ${request.agendamentoID} in Firestore", e)
+                onFailure(e)
+            }
     }
 }

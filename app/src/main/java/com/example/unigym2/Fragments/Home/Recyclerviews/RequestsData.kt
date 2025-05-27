@@ -11,4 +11,5 @@ data class RequestsData(
     val personalID: String? = null,
     val agendamentoID: String? = null,
     val image: Bitmap? = null,
+    val requesterFcmToken: String? = null
 )
