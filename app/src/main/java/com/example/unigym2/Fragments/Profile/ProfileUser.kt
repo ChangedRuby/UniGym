@@ -75,7 +75,7 @@ class ProfileUser : Fragment() {
             .get()
             .addOnSuccessListener { result ->
                 nameTextView.text = result.data?.get("name").toString()
-                emailTextView.text = communicator.getAuthUserEmail()
+                emailTextView.text = communicator.getAuthUserEmail() // tá crachando bem aqui
 
                 val totalTreinos = result.get("totalTreinos") ?: 0
                 quantidadeTreinos.text = "$totalTreinos"
