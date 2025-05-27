@@ -11,6 +11,7 @@ import androidx.appcompat.app.AppCompatActivity
 import com.example.unigym2.R
 import com.google.android.material.textfield.TextInputEditText
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FirebaseFirestore
 
 class LoginMenu : AppCompatActivity() {
     lateinit var entrarBtn: Button
@@ -23,10 +24,12 @@ class LoginMenu : AppCompatActivity() {
     lateinit var foreground: View
     lateinit var progressBar: ProgressBar
     lateinit var auth: FirebaseAuth
+    lateinit var db: FirebaseFirestore
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login_menu)
+        db = FirebaseFirestore.getInstance()
 
         entrarBtn = findViewById(R.id.entrarBtn)
         entrarBtnPersonal = findViewById(R.id.entrarBtnPersonal)
@@ -61,8 +64,6 @@ class LoginMenu : AppCompatActivity() {
 
         entrarBtn.setOnClickListener{
             authLogin(emailInput.text.toString().trim(), passwordView.text.toString().trim())
-
-
         }
 
         entrarBtnPersonal.setOnClickListener {
@@ -101,6 +102,24 @@ class LoginMenu : AppCompatActivity() {
                         // Sign in success, update UI with the signed-in user's information
                         Log.d("login_activity", "signInWithEmail:success")
                         val user = auth.currentUser
+                        db.collection("Usuarios").document(user!!.uid).get()
+                            .addOnSuccessListener { document ->
+                                if (document.exists()) {
+                                    Log.d("login_activity", "User document exists")
+                                    if (document.data?.get("isPersonal") == false) {
+                                        if (!document.data!!.contains("lastPersonalWorkout")) document.data!!.put("lastPersonalWorkout", "Timestamp")
+                                    } else {
+                                        if (!document.data!!.contains("specialties")) document.data!!.put("specialties", listOf("", "", "", ""))
+                                        if (!document.data!!.contains("services")) document.data!!.put("services", listOf("", "", "", ""))
+                                        if (!document.data!!.contains("servicePrices")) document.data!!.put("servicePrices", listOf("", "", "", ""))
+                                    }
+                                } else {
+                                    Log.d("login_activity", "User document does not exist")
+                                }
+                            }
+                            .addOnFailureListener { exception ->
+                                Log.w("login_activity", "Error getting user document", exception)
+                            }
 
                         var intent = Intent(this, MainActivity::class.java)
                         intent.putExtra("userId", user!!.uid)

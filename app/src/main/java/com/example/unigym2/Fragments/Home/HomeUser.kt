@@ -62,6 +62,7 @@ class HomeUser : Fragment() {
             .addOnSuccessListener { result ->
                 val userName = result.data?.get("name").toString()
                 val lastResetTimestamp = result.getLong("lastSessionReset") ?: 0L
+                streakBar.progress = result.getLong("treinosSemana")?.toInt() ?: 0
 
                 val calendar = Calendar.getInstance()
                 calendar.timeInMillis = System.currentTimeMillis()
@@ -79,6 +80,7 @@ class HomeUser : Fragment() {
                         .update("treinosSemana", 0, "lastSessionReset", System.currentTimeMillis())
                         .addOnSuccessListener {
                             Log.d("firestore", "Streak reset successfully")
+
                             streakBar.progress = 0
                             completedSessions.text = "0 Completos"
                         }
@@ -102,11 +104,6 @@ class HomeUser : Fragment() {
             .get()
             .addOnSuccessListener { results ->
                 val currentDate = java.util.Calendar.getInstance()
-                val currentYear = currentDate.get(java.util.Calendar.YEAR)
-                val currentMonth = currentDate.get(java.util.Calendar.MONTH) + 1 // Months are 0-based in Calendar
-                val currentDay = currentDate.get(java.util.Calendar.DAY_OF_MONTH)
-                val currentHour = currentDate.get(java.util.Calendar.HOUR_OF_DAY)
-                val currentMinute = currentDate.get(java.util.Calendar.MINUTE)
 
                 var closestSession : Map<String, Any>? = null
                 var minTimeDifference = Long.MAX_VALUE
@@ -209,15 +206,12 @@ class HomeUser : Fragment() {
         val tempCalendar = Calendar.getInstance()
         tempCalendar.timeInMillis = lastWorkout.timeInMillis
 
-        // Move one day at a time from last workout to current day
         while (tempCalendar.before(current)) {
             tempCalendar.add(Calendar.DAY_OF_MONTH, 1)
 
             val dayOfWeek = tempCalendar.get(Calendar.DAY_OF_WEEK)
 
-            // If this day is a weekday (Monday-Friday) and not the current day, it's a missed day
-            if (dayOfWeek != Calendar.SATURDAY && dayOfWeek != Calendar.SUNDAY &&
-                !isSameDay(tempCalendar, current)) {
+            if (dayOfWeek != Calendar.SATURDAY && dayOfWeek != Calendar.SUNDAY && !isSameDay(tempCalendar, current)) {
                 return true
             }
         }
@@ -268,11 +262,21 @@ class HomeUser : Fragment() {
 
         userRef.get().addOnSuccessListener { document ->
             val currentStreak = document.getLong("treinosConsecutivos")?.toInt() ?: 0
-            val weeklyWorkouts = document.getLong("treinosSemana")?.toInt() ?: 0
+            var weeklyWorkouts = document.getLong("treinosSemana")?.toInt() ?: 0
+            if (document.getLong("lastWorkoutTimestamp") == null) {
+                userRef.update("lastWorkoutTimestamp", 0L)
+                Log.d("firestore", "lastWorkoutTimestamp was null, set to 0")
+            } else {
+                Log.d("firestore", "lastWorkoutTimestamp is already set")
+            }
+            if (weeklyWorkouts >= 6) {
+                weeklyWorkouts -= 6
+                document.reference.update("treinosSemana", weeklyWorkouts)
+            }
 
             // Increment streak and weekly workout count
             val newStreak = currentStreak + 1
-            val newWeeklyWorkouts = weeklyWorkouts + 1
+            val newWeeklyWorkouts = if (weeklyWorkouts < 6) weeklyWorkouts + 1 else 0
 
             userRef.update(
                 mapOf(
@@ -310,22 +314,34 @@ class HomeUser : Fragment() {
         communicator.showLoadingOverlay()
 
             button.setOnClickListener {
+//                db.collection("Usuarios").document(communicator.getAuthUser())
+//                    .get()
+//                    .addOnSuccessListener { snapshot ->
+//                        val totalAtual = snapshot.getLong("totalTreinos")?:0
+//                        db.collection("Usuarios").document(communicator.getAuthUser())
+//                            .update("totalTreinos", totalAtual + 1)
+//                            .addOnSuccessListener {
+//                                button.visibility = View.GONE
+//                                Log.d("firestore", "Treino registrado com sucesso")
+//                            }
+//                            .addOnFailureListener {
+//                                Log.e( "firestore ", "Erro ao registrar treino", it)
+//                            }
+//                    }
+//                    .addOnFailureListener {
+//                        Log.e("firestore", "Erro ao obter total de treinos", it)
+//                    }
+                var lastWorkoutTimestamp : Long
                 db.collection("Usuarios").document(communicator.getAuthUser())
                     .get()
-                    .addOnSuccessListener { snapshot ->
-                        val totalAtual = snapshot.getLong("totalTreinos")?:0
-                        db.collection("Usuarios").document(communicator.getAuthUser())
-                            .update("totalTreinos", totalAtual + 1)
-                            .addOnSuccessListener {
-                                button.visibility = View.GONE
-                                Log.d("firestore", "Treino registrado com sucesso")
-                            }
-                            .addOnFailureListener {
-                                Log.e( "firestore ", "Erro ao registrar treino", it)
-                            }
+                    .addOnSuccessListener { document ->
+                        lastWorkoutTimestamp = document.getLong("lastWorkoutTimestamp") ?: 0L
+                        if (lastWorkoutTimestamp == 0L || System.currentTimeMillis() - lastWorkoutTimestamp > 24 * 60 * 60 * 1000) {
+                            updateWorkoutCompleted()
+                        }
                     }
-                    .addOnFailureListener {
-                        Log.e("firestore", "Erro ao obter total de treinos", it)
+                    .addOnFailureListener { e ->
+                        Log.w("firestore", "Error getting document.", e)
                     }
             }
 
