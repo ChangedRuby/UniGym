@@ -20,8 +20,11 @@ import androidx.fragment.app.Fragment
 import com.example.unigym2.Activities.Communicator
 import com.example.unigym2.Fragments.Profile.VisualizarPerfilPersonal
 import com.example.unigym2.R
+import com.google.firebase.Timestamp
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.auth.FirebaseAuth
+import java.time.LocalDateTime
+import java.util.Calendar
 
 
 // TODO: Rename parameter arguments, choose names that match
@@ -37,6 +40,9 @@ private const val ARG_PARAM2 = "param2"
 class MonitoringSchedules : Fragment() {
     lateinit var communicator: Communicator
     private var dataSelecionada: String? = null
+    private var dayOfMonthSelecionado: Int = -1
+    private var monthSelecionado: Int = -1
+    private var yearSelecionado: Int = -1
     // TODO: Rename and change types of parameters
     private var param1: String? = null
     private var param2: String? = null
@@ -131,6 +137,9 @@ class MonitoringSchedules : Fragment() {
         calendarView.setOnDateChangeListener { _, year, month, dayOfMonth ->
             blocoNovaSessao.visibility = View.VISIBLE
 
+            yearSelecionado = year
+            monthSelecionado = month
+            dayOfMonthSelecionado = dayOfMonth
             dataSelecionada = String.format("%02d/%02d/%04d", dayOfMonth, month+1, year)
         }
 
@@ -200,11 +209,16 @@ class MonitoringSchedules : Fragment() {
 
                     if(conflito) Toast.makeText(requireContext(), "Horário indisponível!", Toast.LENGTH_SHORT).show()
                     else{
+                        val calendar = Calendar.getInstance()
+                        calendar.set(yearSelecionado, monthSelecionado, dayOfMonthSelecionado, hora, minuto)
+                        val data = calendar.time
+                        val timestamp = data.time
                         val agendamento = hashMapOf(
                             "clienteID" to clienteID,
                             "personalID" to personalID,
                             "data" to dataSelecionada,
                             "hora" to horaFormatada,
+                            "timestamp" to timestamp,
                             "servico" to servicoSelecionado,
                             "status" to "pendente"
                         )

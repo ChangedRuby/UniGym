@@ -109,6 +109,7 @@ class CalendarUser : Fragment() {
                             val clienteID = document.getString("clienteID")
                             val personalID = document.getString("personalID")
                             val horario = document.getString("hora")
+                            val timestamp = document.getLong("timestamp")
                             val servico = document.getString("servico")
 
                             dataBase.collection("Usuarios")
@@ -120,12 +121,14 @@ class CalendarUser : Fragment() {
                                     val programacao = CalendarUserItem(
                                         nomePersonal = nomePersonal,
                                         horario = horario,
+                                        timestamp = timestamp,
                                         servico = servico
                                     )
                                     schedulesArrayList.add(programacao)
                                     adapter.notifyDataSetChanged()
                                 }
                         }
+                        // schedulesArrayList.sortWith( compareBy({ it.timestamp }) )
                         adapter.notifyDataSetChanged()
                     }
                 }
