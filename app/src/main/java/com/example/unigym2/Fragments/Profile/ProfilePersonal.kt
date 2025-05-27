@@ -127,7 +127,7 @@ class ProfilePersonal : Fragment() {
                         3 -> preco4.text = prices[i].toString()
                     }
                 }
-                Log.d("firestore", "${result.id} => ${result.data}")
+                Log.d("firestore", "Collected data")
             }.addOnFailureListener { exception ->
                 Log.w("firestore", "Error getting document.", exception)
             }

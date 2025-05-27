@@ -93,7 +93,7 @@ class HomeUser : Fragment() {
                 dayStreak.text = result.data?.get("treinosConsecutivos").toString() + " Dias"
                 completedSessions.text = result.data?.get("treinosSemana").toString() + " Completos"
                 streakBar.progress = result.data?.get("treinosSemana") as? Int ?: 0
-                Log.d("firestore", "${result.id} => ${result.data}")
+                Log.d("firestore", "Collected data")
             }.addOnFailureListener { exception ->
                 Log.w("firestore", "Error getting document.", exception)
             }

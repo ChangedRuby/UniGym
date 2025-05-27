@@ -91,7 +91,7 @@ class ProfileUser : Fragment() {
                     }
                 }
 
-                Log.d("firestore", "${result.id} => ${result.data}")
+                Log.d("firestore", "Collected data")
             }.addOnFailureListener { exception ->
                 Log.w("firestore", "Error getting document.", exception)
             }
