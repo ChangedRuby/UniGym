@@ -34,6 +34,10 @@ class MaquinaInnerAdapter(private val innerItems: MutableList<MaquinaInnerItem>)
         var exercisesArray: ArrayList<*>
 
         holder.deleteExercicioButton.setOnClickListener {
+            innerItems.removeAt(position)
+            notifyItemRemoved(position)
+            notifyItemRangeChanged(position, innerItems.size)
+
             document.get().addOnSuccessListener { result ->
                 exercisesArray = result.data?.get("exercises") as ArrayList<*>
                 exercisesArray.removeAt(position)
@@ -47,10 +51,6 @@ class MaquinaInnerAdapter(private val innerItems: MutableList<MaquinaInnerItem>)
                 }
 
             }
-
-            /*innerItems.removeAt(position)
-            notifyItemRemoved(position)
-            notifyItemRangeChanged(position, innerItems.size)*/
 
         }
     }

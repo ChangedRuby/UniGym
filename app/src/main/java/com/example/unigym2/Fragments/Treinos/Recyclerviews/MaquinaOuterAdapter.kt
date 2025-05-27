@@ -51,10 +51,12 @@ class MaquinaOuterAdapter(private val outerItems: MutableList<MaquinaOuterItem>,
 
         holder.deleteMaquinaButton.setOnClickListener {
             val id = outerItem.id.toString()
+
+            outerItems.removeAt(position)
+            notifyItemRemoved(position)
+            notifyItemRangeChanged(position, outerItems.size)
+
             db.collection("Maquinas").document(id).delete().addOnCompleteListener {
-                /*outerItems.removeAt(position)
-                notifyItemRemoved(position)
-                notifyItemRangeChanged(position, outerItems.size)*/
 
                 Log.d("deleteMaquinaButton", "DocumentSnapshot $id successfully deleted")
             }
