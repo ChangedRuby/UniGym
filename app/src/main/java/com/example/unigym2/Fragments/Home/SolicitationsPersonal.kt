@@ -75,7 +75,7 @@ class SolicitationsPersonal : Fragment() {
         recyclerView = v.findViewById(R.id.recycler_view)
         recyclerView.layoutManager = layoutManager
         recyclerView.setHasFixedSize(true)
-        adapter = RequestsRecyclerAdapter(requestsArrayList)
+        adapter = RequestsRecyclerAdapter(requestsArrayList, communicator)
         recyclerView.adapter = adapter
         communicator = activity as Communicator
         exitBtn = v.findViewById(R.id.closeScreen)

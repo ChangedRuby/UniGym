@@ -1,18 +1,24 @@
 package com.example.unigym2.Fragments.Home.Recyclerviews
 
+import android.app.Notification
+import android.app.NotificationChannel
+import android.app.NotificationManager
+import android.content.Context
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.TextView
+import androidx.core.app.NotificationCompat
+import androidx.core.content.ContextCompat.getSystemService
 import androidx.recyclerview.widget.RecyclerView
+import com.example.unigym2.Activities.Communicator
 import com.example.unigym2.R
 import com.google.android.material.imageview.ShapeableImageView
 import com.google.firebase.firestore.FirebaseFirestore
-import kotlin.math.acos
 
-class RequestsRecyclerAdapter(private val requestsList: ArrayList<RequestsData>) : RecyclerView.Adapter<RequestsRecyclerAdapter.MyViewHolder>(){
+class RequestsRecyclerAdapter(private val requestsList: ArrayList<RequestsData>, val communicator: Communicator) : RecyclerView.Adapter<RequestsRecyclerAdapter.MyViewHolder>(){
 
 
 
@@ -71,6 +77,7 @@ class RequestsRecyclerAdapter(private val requestsList: ArrayList<RequestsData>)
                     .document(agendamentoID)
                     .update("status", "aceito")
                     .addOnSuccessListener {
+                        showNotification("Solicitação aceita", "A sua solicitação foi aceita por ${communicator.getAuthUserName()}", holder.itemView.context)
                         requestsList.removeAt(position)
                         notifyItemRemoved(position)
                         notifyItemRangeChanged(position, requestsList.size)
@@ -84,6 +91,21 @@ class RequestsRecyclerAdapter(private val requestsList: ArrayList<RequestsData>)
             }
         }
 
+    }
+
+    fun showNotification(title: String, message: String, applicationContext: Context) {
+        val mNotificationManager = applicationContext.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+        val channel = NotificationChannel("210",
+            "Solicitations",
+            NotificationManager.IMPORTANCE_DEFAULT)
+        channel.description = "Solicitações de agendamento"
+        mNotificationManager.createNotificationChannel(channel)
+        val mBuilder = NotificationCompat.Builder(applicationContext, "210")
+            .setSmallIcon(R.drawable.app_icon) // notification icon
+            .setContentTitle(title) // title for notification
+            .setContentText(message)// message for notification
+            .setAutoCancel(true) // clear notification after click
+        mNotificationManager.notify(0, mBuilder.build())
     }
 
     class MyViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView){
