@@ -12,12 +12,10 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.example.unigym2.Activities.Communicator
-import com.example.unigym2.Fragments.Chat.Recyclerviews.ListaPersonaisItem
 import com.example.unigym2.R
-import com.google.firebase.Firebase
+import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
-import com.google.firebase.firestore.firestore
 import java.text.SimpleDateFormat
 import java.util.Locale
 
@@ -58,153 +56,190 @@ class HomeUser : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
         communicator.showLoadingOverlay()
-
         checkAndUpdateDayStreak()
+        loadUserData()
+        checkForNewAcceptedSessions()
+        loadNextSession()
 
+        communicator.hideLoadingOverlay()
+
+    }
+
+    private fun loadUserData() {
         db.collection("Usuarios").document(communicator.getAuthUser())
             .get()
             .addOnSuccessListener { result ->
                 val userName = result.data?.get("name").toString()
-                val lastResetTimestamp = result.getLong("lastSessionReset") ?: 0L
-                streakBar.progress = result.getLong("treinosSemana")?.toInt() ?: 0
+                handleWeeklyReset(result)
 
-                val calendar = Calendar.getInstance()
-                calendar.timeInMillis = System.currentTimeMillis()
-
-                val currentDayOfWeek = calendar.get(Calendar.DAY_OF_WEEK)
-                val daysToSubtract = (currentDayOfWeek - Calendar.SUNDAY + 7) % 7
-                calendar.add(Calendar.DAY_OF_MONTH, -daysToSubtract)
-                calendar.set(Calendar.HOUR_OF_DAY, 23)
-                calendar.set(Calendar.MINUTE, 59)
-                calendar.set(Calendar.SECOND, 59)
-
-                val lastSunday = calendar.timeInMillis
-                if (System.currentTimeMillis() > lastSunday && lastResetTimestamp < lastSunday) {
-                    db.collection("Usuarios").document(communicator.getAuthUser())
-                        .update("treinosSemana", 0, "lastSessionReset", System.currentTimeMillis())
-                        .addOnSuccessListener {
-                            Log.d("firestore", "Streak reset successfully")
-
-                            streakBar.progress = 0
-                            completedSessions.text = "0 Completos"
-                        }
-                        .addOnFailureListener { e ->
-                            Log.w("firestore", "Error resetting streak", e)
-                        }
-                }
                 titleView.text = userName
                 communicator.setAuthUserName(userName)
-                dayStreak.text = result.data?.get("treinosConsecutivos").toString() + " Dias"
-                completedSessions.text = result.data?.get("treinosSemana").toString() + " Completos"
-                streakBar.progress = result.data?.get("treinosSemana") as? Int ?: 0
+                dayStreak.text = "${result.data?.get("treinosConsecutivos")} Dias"
+                Log.d("firestore", "streakBar progress set to: ${result.data?.get("treinosSemana")}")
                 Log.d("firestore", "Collected data")
             }.addOnFailureListener { exception ->
                 Log.w("firestore", "Error getting document.", exception)
             }
+    }
+
+    private fun handleWeeklyReset(result: DocumentSnapshot) {
+        val lastResetTimestamp = result.getLong("lastSessionReset") ?: 0L
+        val lastSunday = getLastSundayTimestamp()
+
+        if (System.currentTimeMillis() > lastSunday && lastResetTimestamp < lastSunday) {
+            resetWeeklyWorkouts()
+        } else {
+            updateWorkoutUI(result)
+        }
+    }
+
+    private fun getLastSundayTimestamp(): Long {
+        val calendar = Calendar.getInstance()
+        val currentDayOfWeek = calendar.get(Calendar.DAY_OF_WEEK)
+        val daysToSubtract = (currentDayOfWeek - Calendar.SUNDAY + 7) % 7
+
+        calendar.add(Calendar.DAY_OF_MONTH, -daysToSubtract)
+        calendar.set(Calendar.HOUR_OF_DAY, 23)
+        calendar.set(Calendar.MINUTE, 59)
+        calendar.set(Calendar.SECOND, 59)
+
+        return calendar.timeInMillis
+    }
+
+    private fun resetWeeklyWorkouts() {
+        db.collection("Usuarios").document(communicator.getAuthUser())
+            .update("treinosSemana", 0, "lastSessionReset", System.currentTimeMillis())
+            .addOnSuccessListener {
+                Log.d("firestore", "Streak reset successfully")
+                streakBar.progress = 0
+                completedSessions.text = "0 Completos"
+            }
+            .addOnFailureListener { e ->
+                Log.w("firestore", "Error resetting streak", e)
+            }
+    }
+
+    private fun updateWorkoutUI(result: DocumentSnapshot) {
+        val weeklyWorkouts = result.getLong("treinosSemana")?.toInt() ?: 0
+        streakBar.progress = weeklyWorkouts
+        completedSessions.text = "$weeklyWorkouts Completos"
+    }
+
+    private fun checkForNewAcceptedSessions() {
+        db.collection("Agendamentos")
+            .whereEqualTo("clienteID", communicator.getAuthUser())
+            .whereEqualTo("status", "aceito")
+            .whereEqualTo("notificado", false)
+            .get()
+            .addOnSuccessListener { documents ->
+                for (document in documents) {
+                    val dataTreino = document.getString("data")
+                    val horaTreino = document.getString("hora")
+                    notifyAcceptedSession(document, dataTreino, horaTreino)
+                }
+            }
+    }
+
+    private fun notifyAcceptedSession(document: DocumentSnapshot, dataTreino: String?, horaTreino: String?) {
+        db.collection("Usuarios")
+            .document(document.get("personalID").toString())
+            .get()
+            .addOnSuccessListener { personalDoc ->
+                document.reference.update("notificado", true)
+                val personalName = personalDoc.get("name").toString()
+                Toast.makeText(
+                    requireContext(),
+                    "Treino com $personalName no dia $dataTreino as $horaTreino aceito.",
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
+    }
+
+    private fun loadNextSession() {
+        val nowCalendar = Calendar.getInstance()
+        val endOfTodayMillis = getEndOfDayTimestamp()
 
         db.collection("Agendamentos")
             .whereEqualTo("clienteID", communicator.getAuthUser())
             .whereEqualTo("status", "aceito")
-            .whereEqualTo("notificado", false).get().addOnSuccessListener { documents ->
-                for (document in documents) {
-                    val dataTreino = document.getString("data")
-                    val horaTreino = document.getString("hora")
-                    db.collection("Usuarios").document(document.get("personalID").toString()).get().addOnSuccessListener { personalDoc ->
-                        document.reference.update("notificado", true)
-                        val personalName = personalDoc.get("name").toString()
-                        Toast.makeText(requireContext(), "Treino com $personalName no dia $dataTreino as $horaTreino aceito.", Toast.LENGTH_SHORT).show()
-                    }
+            .whereGreaterThanOrEqualTo("timestamp", nowCalendar.timeInMillis)
+            .whereLessThanOrEqualTo("timestamp", endOfTodayMillis)
+            .orderBy("timestamp", Query.Direction.ASCENDING)
+            .limit(1)
+            .get()
+            .addOnSuccessListener { querySnapshot ->
+                if (!querySnapshot.isEmpty) {
+                    displayNextSession(querySnapshot.documents[0])
+                } else {
+                    displayNoSessions()
                 }
+                communicator.hideLoadingOverlay()
+            }.addOnFailureListener { exception ->
+                Log.w("firestore", "Erro ao buscar agendamentos do dia.", exception)
+                sessionTime.text = "Erro ao carregar treinos"
+                sessionPersonal.text = ""
+                communicator.hideLoadingOverlay()
             }
+    }
 
-        // --- MODIFICAÇÃO PRINCIPAL AQUI ---
-        // Buscar o primeiro agendamento ACEITO do DIA ATUAL que ainda NÃO PASSOU
-
-        // 1. Definir o início e o fim do dia atual em milissegundos
-        val nowCalendar = Calendar.getInstance() // Hora atual
-
-        val startOfTodayCalendar = Calendar.getInstance()
-        startOfTodayCalendar.set(Calendar.HOUR_OF_DAY, 0)
-        startOfTodayCalendar.set(Calendar.MINUTE, 0)
-        startOfTodayCalendar.set(Calendar.SECOND, 0)
-        startOfTodayCalendar.set(Calendar.MILLISECOND, 0)
-        val startOfTodayMillis = startOfTodayCalendar.timeInMillis
-
+    private fun getEndOfDayTimestamp(): Long {
         val endOfTodayCalendar = Calendar.getInstance()
         endOfTodayCalendar.set(Calendar.HOUR_OF_DAY, 23)
         endOfTodayCalendar.set(Calendar.MINUTE, 59)
         endOfTodayCalendar.set(Calendar.SECOND, 59)
         endOfTodayCalendar.set(Calendar.MILLISECOND, 999)
-        val endOfTodayMillis = endOfTodayCalendar.timeInMillis
+        return endOfTodayCalendar.timeInMillis
+    }
 
-        db.collection("Agendamentos")
-            .whereEqualTo("clienteID", communicator.getAuthUser())
-            .whereEqualTo("status", "aceito")
-            // Filtra por agendamentos cujo timestamp é DEPOIS OU IGUAL à hora atual (para não pegar os que já passaram hoje)
-            .whereGreaterThanOrEqualTo("timestamp", nowCalendar.timeInMillis)
-            // Filtra por agendamentos cujo timestamp é ANTES OU IGUAL ao fim do dia de hoje
-            .whereLessThanOrEqualTo("timestamp", endOfTodayMillis)
-            .orderBy("timestamp", Query.Direction.ASCENDING) // Ordena do mais cedo para o mais tarde
-            .limit(1) // Pega apenas o primeiro resultado
-            .get()
-            .addOnSuccessListener { querySnapshot -> // querySnapshot pode conter 0 ou 1 documento
-                if (!querySnapshot.isEmpty) {
-                    val firstSessionDocument = querySnapshot.documents[0] // Pega o primeiro (e único) documento
-                    val sessionData = firstSessionDocument.data // Isso é um Map<String, Any>?
+    private fun displayNextSession(document: DocumentSnapshot) {
+        val sessionData = document.data
+        displaySessionTime(document)
+        displayPersonalName(sessionData)
+    }
 
-                    val sessionTimestamp = firstSessionDocument.getLong("timestamp")
-                    if (sessionTimestamp != null) {
-                        val sessionCal = Calendar.getInstance()
-                        sessionCal.timeInMillis = sessionTimestamp
-                        // Formatar o timestamp para mostrar apenas a hora HH:mm
-                        val timeFormatter = SimpleDateFormat("HH:mm", Locale.getDefault())
-                        sessionTime.text = timeFormatter.format(sessionCal.time)
+    private fun displaySessionTime(document: DocumentSnapshot) {
+        val sessionTimestamp = document.getLong("timestamp")
+        if (sessionTimestamp != null) {
+            val sessionCal = Calendar.getInstance()
+            sessionCal.timeInMillis = sessionTimestamp
+            val timeFormatter = SimpleDateFormat("HH:mm", Locale.getDefault())
+            sessionTime.text = timeFormatter.format(sessionCal.time)
+        } else {
+            sessionTime.text = document.getString("hora") ?: "N/A"
+        }
+    }
+
+    private fun displayPersonalName(sessionData: Map<String, Any>?) {
+        val personalId = sessionData?.get("personalID") as? String
+        if (!personalId.isNullOrEmpty()) {
+            db.collection("Usuarios").document(personalId)
+                .get()
+                .addOnSuccessListener { personalResult ->
+                    if (personalResult.exists()) {
+                        sessionPersonal.text = personalResult.getString("name") ?: "Personal"
                     } else {
-                        // Fallback se o campo 'timestamp' não estiver presente, mas você tiver 'hora'
-                        sessionTime.text = sessionData?.get("hora") as? String ?: "N/A"
+                        sessionPersonal.text = "Personal não encontrado"
                     }
-
-                    val personalId = sessionData?.get("personalID") as? String
-                    if (!personalId.isNullOrEmpty()) {
-                        db.collection("Usuarios").document(personalId)
-                            .get()
-                            .addOnSuccessListener { personalResult ->
-                                if (personalResult.exists()) {
-                                    sessionPersonal.text = personalResult.getString("name") ?: "Personal"
-                                } else {
-                                    sessionPersonal.text = "Personal não encontrado"
-                                }
-                                sessionTime.visibility = View.VISIBLE
-                                sessionPersonal.visibility = View.VISIBLE
-                            }.addOnFailureListener { exception ->
-                                Log.w("firestore", "Erro ao buscar dados do personal.", exception)
-                                sessionPersonal.text = "Erro Personal"
-                                sessionTime.visibility = View.VISIBLE // Mesmo com erro no personal, mostrar a hora
-                                sessionPersonal.visibility = View.VISIBLE
-                            }
-                    } else {
-                        sessionPersonal.text = "Personal não informado"
-                        sessionTime.visibility = View.VISIBLE
-                        sessionPersonal.visibility = View.VISIBLE
-                    }
-                } else {
-                    // Nenhum agendamento encontrado para hoje que ainda não passou
-                    sessionTime.text = "Nenhum treino hoje"
-                    sessionPersonal.text = "" // Limpa o nome do personal
-                    // Opcional: esconder os TextViews se preferir
-                    // sessionTime.visibility = View.GONE
-                    // sessionPersonal.visibility = View.GONE
+                    sessionTime.visibility = View.VISIBLE
+                    sessionPersonal.visibility = View.VISIBLE
+                }.addOnFailureListener { exception ->
+                    Log.w("firestore", "Erro ao buscar dados do personal.", exception)
+                    sessionPersonal.text = "Erro Personal"
+                    sessionTime.visibility = View.VISIBLE
+                    sessionPersonal.visibility = View.VISIBLE
                 }
-                communicator.hideLoadingOverlay() // Esconder overlay APÓS a busca do agendamento
-            }.addOnFailureListener { exception ->
-                Log.w("firestore", "Erro ao buscar agendamentos do dia.", exception)
-                sessionTime.text = "Erro ao carregar treinos"
-                sessionPersonal.text = ""
-                communicator.hideLoadingOverlay() // Esconder overlay em caso de falha também
-            }
-        // O communicator.hideLoadingOverlay() que estava aqui foi movido para dentro dos listeners da query acima
-        communicator.hideLoadingOverlay()
+        } else {
+            sessionPersonal.text = "Personal não informado"
+            sessionTime.visibility = View.VISIBLE
+            sessionPersonal.visibility = View.VISIBLE
+        }
+    }
+
+    private fun displayNoSessions() {
+        sessionTime.text = "Nenhum treino hoje"
+        sessionPersonal.text = ""
     }
 
     private fun checkAndUpdateDayStreak() {
@@ -343,19 +378,14 @@ class HomeUser : Fragment() {
                 dayStreak.text = "$newStreak Dias"
                 completedSessions.text = "$newWeeklyWorkouts Completos"
                 streakBar.progress = newWeeklyWorkouts
+                checkButtonVisibility()
             }.addOnFailureListener { e ->
                 Log.w("firestore", "Error updating streak", e)
             }
         }
     }
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        // Inflate the layout for this fragment
-        var v = inflater.inflate(R.layout.fragment_home_user, container, false)
-
+    private fun initializeViews(v: View) {
         titleView = v.findViewById(R.id.nameTitle)
         sessionTime = v.findViewById(R.id.nextSessionTime)
         sessionPersonal = v.findViewById(R.id.nextSessionCostumer)
@@ -365,16 +395,38 @@ class HomeUser : Fragment() {
         button = v.findViewById(R.id.treinoFeitoButton)
         layoutButton = v.findViewById(R.id.treinoFeitoLayout)
         communicator = activity as Communicator
+    }
 
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        // Inflate the layout for this fragment
+        val v = inflater.inflate(R.layout.fragment_home_user, container, false)
+        initializeViews(v)
+        setupWorkoutButton()
 
+        return v
+    }
+
+    private fun setupWorkoutButton() {
         communicator.showLoadingOverlay()
+        checkButtonVisibility()
 
-        var lastWorkoutTimestamp : Long
+        button.setOnClickListener {
+            handleWorkoutButtonClick()
+        }
+    }
+
+    private fun checkButtonVisibility() {
         db.collection("Usuarios").document(communicator.getAuthUser())
             .get()
             .addOnSuccessListener { document ->
-                lastWorkoutTimestamp = document.getLong("lastWorkoutTimestamp") ?: 0L
-                if (lastWorkoutTimestamp == 0L || System.currentTimeMillis() - lastWorkoutTimestamp < 24 * 60 * 60 * 1000) {
+                val lastWorkoutTimestamp = document.getLong("lastWorkoutTimestamp") ?: 0L
+                if (lastWorkoutTimestamp == 0L ||
+                    System.currentTimeMillis() - lastWorkoutTimestamp > 24 * 60 * 60 * 1000) {
+                    layoutButton.visibility = View.VISIBLE
+                } else {
                     layoutButton.visibility = View.GONE
                     Log.d("firestore", "Workout already completed today")
                 }
@@ -382,39 +434,21 @@ class HomeUser : Fragment() {
             .addOnFailureListener { e ->
                 Log.w("firestore", "Error getting document.", e)
             }
+    }
 
-            button.setOnClickListener {
-//                db.collection("Usuarios").document(communicator.getAuthUser())
-//                    .get()
-//                    .addOnSuccessListener { snapshot ->
-//                        val totalAtual = snapshot.getLong("totalTreinos")?:0
-//                        db.collection("Usuarios").document(communicator.getAuthUser())
-//                            .update("totalTreinos", totalAtual + 1)
-//                            .addOnSuccessListener {
-//                                button.visibility = View.GONE
-//                                Log.d("firestore", "Treino registrado com sucesso")
-//                            }
-//                            .addOnFailureListener {
-//                                Log.e( "firestore ", "Erro ao registrar treino", it)
-//                            }
-//                    }
-//                    .addOnFailureListener {
-//                        Log.e("firestore", "Erro ao obter total de treinos", it)
-//                    }
-                db.collection("Usuarios").document(communicator.getAuthUser())
-                    .get()
-                    .addOnSuccessListener { document ->
-                        lastWorkoutTimestamp = document.getLong("lastWorkoutTimestamp") ?: 0L
-                        if (lastWorkoutTimestamp == 0L || System.currentTimeMillis() - lastWorkoutTimestamp > 24 * 60 * 60 * 1000) {
-                            updateWorkoutCompleted()
-                        }
-                    }
-                    .addOnFailureListener { e ->
-                        Log.w("firestore", "Error getting document.", e)
-                    }
+    private fun handleWorkoutButtonClick() {
+        db.collection("Usuarios").document(communicator.getAuthUser())
+            .get()
+            .addOnSuccessListener { document ->
+                val lastWorkoutTimestamp = document.getLong("lastWorkoutTimestamp") ?: 0L
+                if (lastWorkoutTimestamp == 0L ||
+                    System.currentTimeMillis() - lastWorkoutTimestamp > 24 * 60 * 60 * 1000) {
+                    updateWorkoutCompleted()
+                }
             }
-
-        return v
+            .addOnFailureListener { e ->
+                Log.w("firestore", "Error getting document.", e)
+            }
     }
 
     companion object {
