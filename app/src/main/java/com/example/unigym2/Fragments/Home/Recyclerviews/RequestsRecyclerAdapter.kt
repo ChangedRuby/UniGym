@@ -19,7 +19,8 @@ import com.google.android.material.imageview.ShapeableImageView
 import com.google.firebase.firestore.FirebaseFirestore
 import android.widget.Toast
 import androidx.core.content.ContentProviderCompat.requireContext
-
+import com.example.unigym2.Fragments.Home.Recyclerviews.RequestActions.db
+public lateinit var currentItemClienteID : String
 class RequestsRecyclerAdapter(private val requestsList: ArrayList<RequestsData>, val communicator: Communicator) : RecyclerView.Adapter<RequestsRecyclerAdapter.MyViewHolder>(){
 
 
@@ -38,7 +39,7 @@ class RequestsRecyclerAdapter(private val requestsList: ArrayList<RequestsData>,
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
         val dataBase = FirebaseFirestore.getInstance()
         val currentItem = requestsList[position]
-
+        currentItemClienteID = currentItem.clienteID.toString()
         currentItem.clienteID?.let { clienteID ->  dataBase.collection("Usuarios").document(clienteID)
             .get()
             .addOnSuccessListener { document ->
@@ -76,7 +77,8 @@ class RequestsRecyclerAdapter(private val requestsList: ArrayList<RequestsData>,
             val agendamentoID = currentItem.agendamentoID
             if(agendamentoID !== null){
                 dataBase.collection("Agendamentos")
-                        handleRequestAcceptance(currentItem)
+//                        handleRequestAcceptance(currentItem)
+                        aceitarSolicitacao(currentItem)
                         requestsList.removeAt(position)
                         notifyItemRemoved(position)
                         notifyItemRangeChanged(position, requestsList.size)
@@ -113,6 +115,39 @@ class RequestsRecyclerAdapter(private val requestsList: ArrayList<RequestsData>,
             }
         )
     }
+
+    fun aceitarSolicitacao(request: RequestsData) {
+        request.agendamentoID?.let {
+            db.collection("Agendamentos") // Assuming "Agendamentos" is your collection name
+                .document(it)
+                .update("status", "aceito") // Or whatever field and value signifies acceptance
+                .addOnSuccessListener {
+                    Log.i("RequestActions", "Request ${request.agendamentoID} successfully marked as accepted in Firestore.")
+                    db.collection("Agendamentos")
+                        .whereEqualTo("clienteID", currentItemClienteID)
+                        .whereEqualTo("notificado", false)
+                        .get()
+                        .addOnSuccessListener {
+                            for (document in it) {
+                                var nomePersonal: String? = null
+                                db.collection("Usuarios").document(document.getString("personalID").toString())
+                                    .get().addOnSuccessListener { userDoc ->
+                                        nomePersonal = userDoc.getString("name")
+                                    }
+                                Toast.makeText(
+                                    communicator as Context,
+                                    "Agendamento aceito com sucesso! Personal: $nomePersonal",
+                                    Toast.LENGTH_SHORT
+                                ).show()
+                            }
+                        }
+                }
+                .addOnFailureListener { e ->
+                    Log.e("RequestActions", "Error accepting request ${request.agendamentoID} in Firestore", e)
+                }
+        }
+    }
+
     private fun sendLocalNotification(request: RequestsData) {
         val context = communicator as? Context ?: return
         val notificationManager = context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
@@ -149,7 +184,7 @@ class RequestsRecyclerAdapter(private val requestsList: ArrayList<RequestsData>,
 
 object RequestActions {
 
-    private val db = FirebaseFirestore.getInstance()
+    internal val db = FirebaseFirestore.getInstance()
 
     fun acceptRequestInDatabase(
         request: RequestsData, // Using your data class

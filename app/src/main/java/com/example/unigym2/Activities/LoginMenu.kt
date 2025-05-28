@@ -102,6 +102,7 @@ class LoginMenu : AppCompatActivity() {
                         // Sign in success, update UI with the signed-in user's information
                         Log.d("login_activity", "signInWithEmail:success")
                         val user = auth.currentUser
+
                         db.collection("Usuarios").document(user!!.uid).get()
                             .addOnSuccessListener { document ->
                                 if (document.exists()) {
@@ -119,6 +120,19 @@ class LoginMenu : AppCompatActivity() {
                             }
                             .addOnFailureListener { exception ->
                                 Log.w("login_activity", "Error getting user document", exception)
+                            }
+
+                        db.collection("Agendamentos").document(user.uid).get()
+                            .addOnSuccessListener { document ->
+                                if (document.exists()) {
+                                    Log.d("login_activity", "Agendamentos document exists")
+                                    if (!document.data!!.contains("notificado")) {
+                                        document.data!!.put("notificado", false)
+                                    }
+                                }
+                            }
+                            .addOnFailureListener { exception ->
+                                Log.w("login_activity", "Error getting solicitacao document", exception)
                             }
 
                         var intent = Intent(this, MainActivity::class.java)
