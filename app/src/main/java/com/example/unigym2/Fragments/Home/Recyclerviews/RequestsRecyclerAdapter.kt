@@ -113,17 +113,37 @@ class RequestsRecyclerAdapter(private val requestsList: ArrayList<RequestsData>,
         RequestActions.acceptRequestInDatabase(requestToAccept,
             onSuccess = {
                 Log.i("ActivityLogic", "Request accepted in DB for ${requestToAccept.nomeCliente}. Notification should be triggered by backend.")
-                // If you were NOT using database triggers and had a separate backend call for notifications:
-                // RequestActions.triggerAcceptanceNotification(requestToAccept,
-                //    onSuccess = { Log.i("ActivityLogic", "Notification triggered successfully.") },
-                //    onFailure = { e -> Log.e("ActivityLogic", "Failed to trigger notification.", e) }
-                // )
-
+                sendLocalNotification(requestToAccept)
             },
             onFailure = { exception ->
                 Log.e("ActivityLogic", "Failed to accept request for ${requestToAccept.nomeCliente}", exception)
             }
         )
+    }
+    private fun sendLocalNotification(request: RequestsData) {
+        val context = communicator as? Context ?: return
+        val notificationManager = context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+
+        // Create notification channel for Android 8.0+
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+            val channel = NotificationChannel(
+                "acceptance_channel",
+                "Request Acceptances",
+                NotificationManager.IMPORTANCE_HIGH
+            )
+            notificationManager.createNotificationChannel(channel)
+        }
+
+        // Build notification
+        val builder = NotificationCompat.Builder(context, "acceptance_channel")
+            .setSmallIcon(R.drawable.app_icon) // Make sure this exists
+            .setContentTitle("Agendamento Aceito")
+            .setContentText("Seu agendamento com ${request.nomeCliente} foi aceito!")
+            .setPriority(NotificationCompat.PRIORITY_HIGH)
+            .setAutoCancel(true)
+
+        // Show notification
+        notificationManager.notify(request.agendamentoID.hashCode(), builder.build())
     }
 }
 

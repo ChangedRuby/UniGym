@@ -24,16 +24,9 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.FirebaseFirestoreException
 import com.google.firebase.firestore.QuerySnapshot
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
 private const val ARG_PARAM1 = "param1"
 private const val ARG_PARAM2 = "param2"
 
-/**
- * A simple [androidx.fragment.app.Fragment] subclass.
- * Use the [SolicitationsPersonal.newInstance] factory method to
- * create an instance of this fragment.
- */
 class SolicitationsPersonal : Fragment() {
     // TODO: Rename and change types of parameters
     private var param1: String? = null
@@ -51,8 +44,6 @@ class SolicitationsPersonal : Fragment() {
     private lateinit var recyclerView: RecyclerView
     private lateinit var requestsArrayList: ArrayList<RequestsData>
 
-//    lateinit var names: Array<String>
-//    lateinit var requests: Array<String>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -65,7 +56,6 @@ class SolicitationsPersonal : Fragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
-        // Inflate the layout for this fragment
         var v = inflater.inflate(R.layout.fragment_solicitations_personal, container, false)
         semSolitacoeView = v.findViewById(R.id.semSolicitaçõesView)
         communicator = activity as Communicator
@@ -89,15 +79,6 @@ class SolicitationsPersonal : Fragment() {
     }
 
     companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment SolicitationsPersonal.
-         */
-        // TODO: Rename and change types and number of parameters
         @JvmStatic fun newInstance(param1: String, param2: String) =
                 SolicitationsPersonal().apply {
                     arguments = Bundle().apply {

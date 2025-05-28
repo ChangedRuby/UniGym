@@ -23,6 +23,7 @@ import com.example.unigym2.databinding.ActivityMainBinding
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.messaging.FirebaseMessaging
 
 class MainActivity : AppCompatActivity(), Communicator{
     var personalMode : Boolean = false
@@ -145,5 +146,19 @@ class MainActivity : AppCompatActivity(), Communicator{
 
     override fun showLoadingOverlay() {
         loadingLayout.visibility = FrameLayout.VISIBLE
+    }
+}
+
+private fun setupFirebaseMessaging() {
+    FirebaseMessaging.getInstance().token.addOnCompleteListener { task ->
+        if (!task.isSuccessful) {
+            Log.w("FCM", "Fetching FCM registration token failed", task.exception)
+            return@addOnCompleteListener
+        }
+
+        // Get token
+        val token = task.result
+        Log.d("FCM", "FCM Token: $token")
+
     }
 }
