@@ -94,21 +94,6 @@ class RequestsRecyclerAdapter(private val requestsList: ArrayList<RequestsData>,
 
     }
 
-    fun showNotification(title: String, message: String, applicationContext: Context) {
-        val mNotificationManager = applicationContext.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-        val channel = NotificationChannel("210",
-            "Solicitations",
-            NotificationManager.IMPORTANCE_DEFAULT)
-        channel.description = "Solicitações de agendamento"
-        mNotificationManager.createNotificationChannel(channel)
-        val mBuilder = NotificationCompat.Builder(applicationContext, "210")
-            .setSmallIcon(R.drawable.app_icon) // notification icon
-            .setContentTitle(title) // title for notification
-            .setContentText(message)// message for notification
-            .setAutoCancel(true) // clear notification after click
-        mNotificationManager.notify(0, mBuilder.build())
-    }
-
     class MyViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView){
 
         var nameView : TextView = itemView.findViewById(R.id.userName)
@@ -120,33 +105,11 @@ class RequestsRecyclerAdapter(private val requestsList: ArrayList<RequestsData>,
         val accept: Button = itemView.findViewById(R.id.acceptRequestBtn)
     }
 
-    fun sendNotification(title: String, message: String, recipientToken: String) {
-        val db = FirebaseFirestore.getInstance()
-
-        // Create notification payload
-        val notification = hashMapOf(
-            "title" to title,
-            "body" to message,
-            "recipientToken" to recipientToken,
-            "timestamp" to System.currentTimeMillis()
-        )
-
-        // Store the notification in Firestore to be processed by Cloud Functions
-        db.collection("notifications")
-            .add(notification)
-            .addOnSuccessListener { documentReference ->
-                Log.d("FCM", "Notification sent with ID: ${documentReference.id}")
-            }
-            .addOnFailureListener { e ->
-                Log.e("FCM", "Error sending notification", e)
-            }
-    }
 
     private fun handleRequestAcceptance(requestToAccept: RequestsData) {
         // Show some loading indicator if needed
         Log.d("ActivityLogic", "Handling acceptance for: ${requestToAccept.nomeCliente}")
 
-        // Step 1: Update the status in your database
         RequestActions.acceptRequestInDatabase(requestToAccept,
             onSuccess = {
                 Log.i("ActivityLogic", "Request accepted in DB for ${requestToAccept.nomeCliente}. Notification should be triggered by backend.")
@@ -168,11 +131,6 @@ object RequestActions {
 
     private val db = FirebaseFirestore.getInstance()
 
-    /**
-     * Updates the request status to "accepted" in Firestore.
-     * This change, if your backend is set up with database triggers (e.g., Cloud Functions for Firestore),
-     * should then trigger the sending of an FCM notification.
-     */
     fun acceptRequestInDatabase(
         request: RequestsData, // Using your data class
         onSuccess: () -> Unit,
@@ -185,9 +143,9 @@ object RequestActions {
         }
 
         Log.d("RequestActions", "Attempting to accept request: ${request.agendamentoID}")
-        db.collection("Agendamentos") // Assuming "agendamentos" is your collection name
+        db.collection("Agendamentos") // Assuming "Agendamentos" is your collection name
             .document(request.agendamentoID)
-            .update("status", "accepted") // Or whatever field and value signifies acceptance
+            .update("status", "aceito") // Or whatever field and value signifies acceptance
             .addOnSuccessListener {
                 Log.i("RequestActions", "Request ${request.agendamentoID} successfully marked as accepted in Firestore.")
                 // The backend (e.g., Cloud Function listening to this update)
