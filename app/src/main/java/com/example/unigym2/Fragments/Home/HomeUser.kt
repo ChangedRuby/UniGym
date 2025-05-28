@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ProgressBar
 import android.widget.TextView
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.example.unigym2.Activities.Communicator
 import com.example.unigym2.Fragments.Chat.Recyclerviews.ListaPersonaisItem
@@ -96,6 +97,19 @@ class HomeUser : Fragment() {
                 Log.d("firestore", "Collected data")
             }.addOnFailureListener { exception ->
                 Log.w("firestore", "Error getting document.", exception)
+            }
+
+        db.collection("Agendamentos")
+            .whereEqualTo("clienteID", communicator.getAuthUser())
+            .whereEqualTo("status", "aceito")
+            .whereEqualTo("notificado", false).get().addOnSuccessListener { documents ->
+                for (document in documents) {
+                    db.collection("Usuarios").document(document.get("personalID").toString()).get().addOnSuccessListener { personalDoc ->
+                        document.reference.update("notificado", true)
+                        val personalName = personalDoc.get("name").toString()
+                        Toast.makeText(requireContext(), "Treino $personalName aceito", Toast.LENGTH_SHORT).show()
+                    }
+                }
             }
 
         db.collection("Agendamentos")
