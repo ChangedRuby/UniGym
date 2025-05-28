@@ -35,6 +35,10 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+            <meta-data android:name="com.google.firebase.messaging.default_notification_icon"
+                android:value="@drawable/notification_asset" />
+            <meta-data android:name="com.google.firebase.messaging.default_notification_color"
+                android:resource="#2962FF" />
         </activity>
     </application>
 

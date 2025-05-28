@@ -76,17 +76,10 @@ class RequestsRecyclerAdapter(private val requestsList: ArrayList<RequestsData>,
             val agendamentoID = currentItem.agendamentoID
             if(agendamentoID !== null){
                 dataBase.collection("Agendamentos")
-                    .document(agendamentoID)
-                    .update("status", "aceito")
-                    .addOnSuccessListener {
                         handleRequestAcceptance(currentItem)
                         requestsList.removeAt(position)
                         notifyItemRemoved(position)
                         notifyItemRangeChanged(position, requestsList.size)
-                    }
-                    .addOnFailureListener { e ->
-                        Log.e("ACEITAR", "Erro ao aceitar solicitação")
-                    }
             } else{
                 Log.e("ACEITAR", "ID é nulo")
             }
