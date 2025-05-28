@@ -39,11 +39,6 @@
                 android:value="@drawable/notification_asset" />
             <meta-data android:name="com.google.firebase.messaging.default_notification_color"
                 android:resource="@color/button_blue" />
-            <service
-                android:name=".UniGymNotificationService"
-                <intent-filter>
-                    <action android:name="com.google.firebase.MESSAGING_EVENT" />
-                </intent-filter>
         </activity>
     </application>
 
