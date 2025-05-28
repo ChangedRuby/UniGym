@@ -220,7 +220,8 @@ class MonitoringSchedules : Fragment() {
                             "hora" to horaFormatada,
                             "timestamp" to timestamp,
                             "servico" to servicoSelecionado,
-                            "status" to "pendente"
+                            "status" to "pendente",
+                            "notificado" to false
                         )
                         firestore.collection("Agendamentos")
                             .add(agendamento)
