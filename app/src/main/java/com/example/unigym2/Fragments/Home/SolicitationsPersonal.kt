@@ -134,16 +134,25 @@ class SolicitationsPersonal : Fragment() {
                     for(dc : DocumentChange in value?.documentChanges!!){
                         val document = dc.document
 
+                        var clienteName: String ?= null
+
                         contador++
 
+
                         if(dc.type == DocumentChange.Type.ADDED){
-                            AvatarManager.getUserAvatar(document.get("clienteID").toString(), document.get("clienteEmail").toString(), document.get("clienteNome").toString(), 40, lifecycleScope) { bitmap ->
-                                val agendamento = RequestsData(nomeCliente = document.getString("nomeCliente"), data = document.getString("data"), hora = document.getString("hora"),
-                                    servico = document.getString("servico"), clienteID = document.getString("clienteID"), personalID = document.getString("personalID"),
-                                    agendamentoID = document.id, image = bitmap)
-                                requestsArrayList.add(agendamento)
-                                adapter.notifyDataSetChanged()
+                            db.collection("Usuarios").document(document.getString("clienteID").toString()).get().addOnSuccessListener { userDoc ->
+                                clienteName = userDoc.get("name").toString()
+
+                                AvatarManager.getUserAvatar(document.get("clienteID").toString(), document.get("clienteEmail").toString(), document.get("clienteNome").toString(), 40, lifecycleScope) { bitmap ->
+                                    val agendamento = RequestsData(nomeCliente = clienteName, data = document.getString("data"), hora = document.getString("hora"),
+                                        servico = document.getString("servico"), clienteID = document.getString("clienteID"), personalID = document.getString("personalID"),
+                                        agendamentoID = document.id, image = bitmap)
+                                    Log.d("schedules", "${agendamento.nomeCliente}")
+                                    requestsArrayList.add(agendamento)
+                                    adapter.notifyDataSetChanged()
+                                }
                             }
+
                         }
                     }
                     if(contador<=0){
