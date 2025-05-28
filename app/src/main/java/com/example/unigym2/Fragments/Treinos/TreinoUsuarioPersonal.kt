@@ -187,7 +187,11 @@ class TreinoUsuarioPersonal : Fragment() {
                     val document = dc.document
                     val docId = document.id
 
-                    var exercicios = document.get("exercicios") as List<Map<String, Any>>
+                    var exercicios: List<Map<String, Any>> = try {
+                        document.get("exercicios") as List<Map<String, Any>> ?: listOf(mapOf())
+                    } catch (e: Exception) {
+                        return
+                    }
                     Log.d("treino_usuario_personal", exercicios.toString())
 
                     for (exercicio in exercicios){

@@ -121,12 +121,18 @@ class CreateAccountUser : AppCompatActivity() {
 
                         treinosCollection.add(
                             hashMapOf(
+                                "exercicios" to listOf(
+                                    ""
+                                ),
                                 "name" to "A",
                             ),
                         )
 
                         treinosCollection.add(
                             hashMapOf(
+                                "exercicios" to listOf(
+                                    ""
+                                ),
                                 "name" to "B",
                             ),
                         )
