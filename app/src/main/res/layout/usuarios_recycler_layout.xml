@@ -52,6 +52,7 @@
         android:layout_marginTop="32dp"
         android:backgroundTint="#45BDA2"
         android:text="Visualizar"
+        android:textColor="@android:color/white"
         android:textSize="12sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="@+id/clienteView2"
