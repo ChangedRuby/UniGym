@@ -185,7 +185,7 @@ object RequestActions {
         }
 
         Log.d("RequestActions", "Attempting to accept request: ${request.agendamentoID}")
-        db.collection("agendamentos") // Assuming "agendamentos" is your collection name
+        db.collection("Agendamentos") // Assuming "agendamentos" is your collection name
             .document(request.agendamentoID)
             .update("status", "accepted") // Or whatever field and value signifies acceptance
             .addOnSuccessListener {

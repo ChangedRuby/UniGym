@@ -122,6 +122,13 @@ object AvatarManager {
         this.communicator = communicator
     }
 
+    fun bitmapToBase64(bitmap: Bitmap, quality: Int): String{
+        val byteArrayOutputStream = ByteArrayOutputStream()
+        bitmap.compress(Bitmap.CompressFormat.JPEG, quality, byteArrayOutputStream) // Adjust format and quality
+        val byteArray = byteArrayOutputStream.toByteArray()
+        return Base64.encodeToString(byteArray, Base64.DEFAULT)
+    }
+
     fun isJpeg(base64: String): Boolean {
         if (base64 == "null" || base64 == "") {
             Log.d("avatar_manager", "-> not a jpeg")

@@ -13,6 +13,7 @@ import com.example.unigym2.Activities.Communicator
 import com.example.unigym2.Fragments.Chat.ChatMain
 import com.example.unigym2.Fragments.Profile.VisualizarPerfilPersonal
 import com.example.unigym2.Fragments.Profile.VisualizarPerfilUser
+import com.example.unigym2.Managers.AvatarManager
 import com.example.unigym2.R
 import com.google.android.material.imageview.ShapeableImageView
 
@@ -37,6 +38,7 @@ class ListaUsuariosAdapter(
         holder.itemView.setOnClickListener {
             val bundle = Bundle().apply {
                 putString("name", currentItem.name)
+                putString("imageBase64", AvatarManager.bitmapToBase64(currentItem.image!!, 100))
                 putString("receiverID", currentItem.userId)
             }
 

@@ -1,5 +1,6 @@
 package com.example.unigym2.Fragments.Chat
 
+import android.graphics.Bitmap
 import android.net.Uri
 import android.os.Bundle
 import android.util.Base64
@@ -43,6 +44,7 @@ class ChatMain : Fragment() {
     private lateinit var db: FirebaseFirestore
     private lateinit var chatName: TextView
     private lateinit var profileChatImage: ShapeableImageView
+    private var loadedProfileImage: Bitmap ?= null
     private lateinit var imageConverted: String
     private lateinit var galleryLauncher: ActivityResultLauncher<String>
     private var listenerRegistration: ListenerRegistration? = null
@@ -88,9 +90,11 @@ class ChatMain : Fragment() {
 
         parentFragmentManager.setFragmentResultListener("chat_name_key", viewLifecycleOwner) { _, bundle ->
             val userName = bundle.getString("name", "Unknown Username")
+            val userImage = bundle.getString("imageBase64")
             val UID = bundle.getString("receiverID")
             chatName.text = userName
             receiverUid = UID
+            loadedProfileImage = AvatarManager.base64ToBitmap(userImage!!)
             loadReceiverImage()
             setupChat()
         }
@@ -118,14 +122,15 @@ class ChatMain : Fragment() {
         if (receiverUid == "BROK_AI_AGENT") {
             profileChatImage.setImageResource(R.drawable.brok_logo)
         } else {
-            db.collection("Usuarios").document(receiverUid ?: "").get().addOnSuccessListener { document ->
+            profileChatImage.setImageBitmap(loadedProfileImage)
+            /*db.collection("Usuarios").document(receiverUid ?: "").get().addOnSuccessListener { document ->
                 val avatarBase64 = document.getString("avatar")
                 if (!avatarBase64.isNullOrEmpty()) {
                     val imageBytes = Base64.decode(avatarBase64, Base64.DEFAULT)
                     val bitmap = AvatarManager.byteArrayToBitmap(imageBytes)
                     profileChatImage.setImageBitmap(bitmap)
                 }
-            }
+            }*/
         }
     }
 
