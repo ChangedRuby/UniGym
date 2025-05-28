@@ -1,5 +1,6 @@
 package com.example.unigym2.Fragments.Home
 
+import android.icu.util.Calendar
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -13,6 +14,9 @@ import com.example.unigym2.Fragments.Calendar.MonitoringSchedules
 import com.example.unigym2.R
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.Query
+import java.text.SimpleDateFormat
+import java.util.Locale
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -113,60 +117,89 @@ class HomePersonalTrainer : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         communicator.showLoadingOverlay()
 
+        // --- MODIFICAÇÃO PRINCIPAL PARA PRÓXIMO TREINO DO DIA ---
+        // 3. Buscar o primeiro agendamento ACEITO do DIA ATUAL que ainda NÃO PASSOU
+
+        val nowCalendar = Calendar.getInstance() // Hora atual
+
+        val startOfTodayCalendar = Calendar.getInstance()
+        startOfTodayCalendar.set(Calendar.HOUR_OF_DAY, 0)
+        startOfTodayCalendar.set(Calendar.MINUTE, 0)
+        startOfTodayCalendar.set(Calendar.SECOND, 0)
+        startOfTodayCalendar.set(Calendar.MILLISECOND, 0)
+        val startOfTodayMillis = startOfTodayCalendar.timeInMillis
+
+        val endOfTodayCalendar = Calendar.getInstance()
+        endOfTodayCalendar.set(Calendar.HOUR_OF_DAY, 23)
+        endOfTodayCalendar.set(Calendar.MINUTE, 59)
+        endOfTodayCalendar.set(Calendar.SECOND, 59)
+        endOfTodayCalendar.set(Calendar.MILLISECOND, 999)
+        val endOfTodayMillis = endOfTodayCalendar.timeInMillis
+
         db.collection("Agendamentos")
-            .whereEqualTo("personalID", communicator.getAuthUser())
+            .whereEqualTo("personalID", communicator.getAuthUser()) // Filtrar pelo ID do personal
             .whereEqualTo("status", "aceito")
+            .whereGreaterThanOrEqualTo("timestamp", nowCalendar.timeInMillis) // Agendamentos futuros ou atuais no dia de hoje
+            .whereLessThanOrEqualTo("timestamp", endOfTodayMillis) // Agendamentos até o fim do dia de hoje
+            .orderBy("timestamp", Query.Direction.ASCENDING) // O mais próximo primeiro
+            .limit(1) // Apenas o primeiro
             .get()
-            .addOnSuccessListener { results ->
-                val currentDate = java.util.Calendar.getInstance()
+            .addOnSuccessListener { querySnapshot ->
+                if (!querySnapshot.isEmpty) {
+                    val firstSessionDocument = querySnapshot.documents[0]
+                    val sessionTimestamp = firstSessionDocument.getLong("timestamp")
 
-                var closestSession : Map<String, Any>? = null
-                var minTimeDifference = Long.MAX_VALUE
-
-                for (result in results) {
-                    val sessionData = result.data
-                    val dateString = sessionData["data"] as? String
-                    val timeString = sessionData["hora"] as? String
-
-                    val dateParts = dateString?.split("/")
-                    if (dateParts?.size != 3) continue
-
-                    val day = dateParts[0].toIntOrNull() ?: continue
-                    val month = dateParts[1].toIntOrNull() ?: continue
-                    val year = dateParts[2].toIntOrNull() ?: continue
-
-                    val timeParts = timeString?.split(":")
-                    if (timeParts?.size != 2) continue
-
-                    val hour = timeParts[0].toIntOrNull() ?: continue
-                    val minute = timeParts[1].toIntOrNull() ?: continue
-                    val sessionCalendar = java.util.Calendar.getInstance()
-                    sessionCalendar.set(year, month - 1, day, hour, minute, 0)
-                    if (sessionCalendar.timeInMillis <= currentDate.timeInMillis) continue
-
-                    val timeDifference = sessionCalendar.timeInMillis - currentDate.timeInMillis
-
-                    if (timeDifference < minTimeDifference) {
-                        minTimeDifference = timeDifference
-                        closestSession = sessionData
+                    if (sessionTimestamp != null) {
+                        val sessionCal = Calendar.getInstance()
+                        sessionCal.timeInMillis = sessionTimestamp
+                        val timeFormatter = SimpleDateFormat("HH:mm", Locale.getDefault())
+                        sessionTime.text = timeFormatter.format(sessionCal.time)
+                    } else {
+                        // Fallback se 'timestamp' não existir, mas houver 'hora'
+                        sessionTime.text = firstSessionDocument.getString("hora") ?: "N/A"
                     }
 
-                    val costumerID = closestSession?.get("clienteID") as? String ?: ""
-                    sessionTime.text = "${closestSession?.get("hora")}"
-
-                    db.collection("Usuarios").document(costumerID)
-                        .get()
-                        .addOnSuccessListener { costumerResult ->
-                            sessionCostumer.text = costumerResult.data?.get("name").toString()
-                        }.addOnFailureListener { exception ->
-                            Log.w("firestore", "Error getting document.", exception)
-                        }
+                    val costumerID = firstSessionDocument.getString("clienteID") // Obter ID do cliente
+                    if (!costumerID.isNullOrEmpty()) {
+                        db.collection("Usuarios").document(costumerID)
+                            .get()
+                            .addOnSuccessListener { costumerResult ->
+                                if (costumerResult.exists()) {
+                                    sessionCostumer.text = costumerResult.getString("name") ?: "Cliente"
+                                } else {
+                                    sessionCostumer.text = "Cliente não encontrado"
+                                }
+                                sessionTime.visibility = View.VISIBLE
+                                sessionCostumer.visibility = View.VISIBLE
+                                communicator.hideLoadingOverlay() // Esconder overlay após TODAS as buscas principais
+                            }.addOnFailureListener { exception ->
+                                Log.w("firestore", "Erro ao buscar nome do cliente.", exception)
+                                sessionCostumer.text = "Erro Cliente"
+                                sessionTime.visibility = View.VISIBLE
+                                sessionCostumer.visibility = View.VISIBLE
+                                communicator.hideLoadingOverlay() // Esconder overlay
+                            }
+                    } else {
+                        sessionCostumer.text = "Cliente não informado"
+                        sessionTime.visibility = View.VISIBLE
+                        sessionCostumer.visibility = View.VISIBLE
+                        communicator.hideLoadingOverlay() // Esconder overlay
+                    }
+                } else {
+                    // Nenhum agendamento encontrado para hoje
+                    sessionTime.text = "Nenhum treino hoje"
+                    sessionCostumer.text = ""
+                    sessionTime.visibility = View.VISIBLE // Ou GONE, dependendo da preferência
+                    sessionCostumer.visibility = View.VISIBLE // Ou GONE
+                    communicator.hideLoadingOverlay() // Esconder overlay
                 }
-
             }.addOnFailureListener { exception ->
-                Log.w("firestore", "Error getting document.", exception)
+                Log.w("firestore", "Erro ao buscar agendamentos do dia para o personal.", exception)
+                sessionTime.text = "Erro ao carregar treinos"
+                sessionCostumer.text = ""
+                communicator.hideLoadingOverlay() // Esconder overlay
             }
-        communicator.hideLoadingOverlay()
+        communicator.hideLoadingOverlay() // Esconder overlay APÓS a busca do agendamento
     }
 
     companion object {
