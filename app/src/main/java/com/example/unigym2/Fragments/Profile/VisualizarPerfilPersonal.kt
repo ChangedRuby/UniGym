@@ -134,10 +134,10 @@ class VisualizarPerfilPersonal() : Fragment() {
 
                     for (i in 0 until prices.size) {
                         when (i) {
-                            0 -> price1.text = prices[i].toString()
-                            1 -> price2.text = prices[i].toString()
-                            2 -> price3.text = prices[i].toString()
-                            3 -> price4.text = prices[i].toString()
+                            0 -> price1.text = "R$${prices[i].toString()}"
+                            1 -> price2.text = "R$${prices[i].toString()}"
+                            2 -> price3.text = "R$${prices[i].toString()}"
+                            3 -> price4.text = "R$${prices[i].toString()}"
                         }
                     }
 

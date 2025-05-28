@@ -129,7 +129,7 @@ class TreinoUsuarioPersonal : Fragment() {
             nameTextView.text = "Treino de $nameUser"
 
             Log.d("treino_usuario_personal", "$nameUser: $userId")
-            Toast.makeText(requireContext(), "Visualizando treino do usuário $nameUser .", Toast.LENGTH_SHORT).show()
+            // Toast.makeText(requireContext(), "Visualizando treino do usuário $nameUser .", Toast.LENGTH_SHORT).show()
 
             if(exercicioAdicionado){
                 Toast.makeText(requireContext(), "Exercicio foi adicionado .", Toast.LENGTH_SHORT).show()

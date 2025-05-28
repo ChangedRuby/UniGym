@@ -55,7 +55,7 @@ class ListaPersonaisAdapter(private val dataList : MutableList<ListaPersonaisIte
             holder.descriptionView.text = "Converse com um agente de IA."
         } else {
             holder.visualizarPerfilBtn.visibility = View.VISIBLE
-            holder.descriptionView.text = "Treino com personal"
+            holder.descriptionView.text = "Converse com um personal"
         }
 
         holder.visualizarPerfilBtn.setOnClickListener {

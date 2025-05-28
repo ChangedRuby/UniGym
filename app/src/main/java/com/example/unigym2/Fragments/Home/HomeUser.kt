@@ -108,10 +108,12 @@ class HomeUser : Fragment() {
             .whereEqualTo("status", "aceito")
             .whereEqualTo("notificado", false).get().addOnSuccessListener { documents ->
                 for (document in documents) {
+                    val dataTreino = document.getString("data")
+                    val horaTreino = document.getString("hora")
                     db.collection("Usuarios").document(document.get("personalID").toString()).get().addOnSuccessListener { personalDoc ->
                         document.reference.update("notificado", true)
                         val personalName = personalDoc.get("name").toString()
-                        Toast.makeText(requireContext(), "Treino $personalName aceito", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(requireContext(), "Treino com $personalName no dia $dataTreino as $horaTreino aceito.", Toast.LENGTH_SHORT).show()
                     }
                 }
             }

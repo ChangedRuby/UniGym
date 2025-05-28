@@ -165,6 +165,7 @@
                 android:paddingRight="30sp"
                 android:paddingBottom="10sp"
                 android:text="Treinei"
+                android:textColor="@color/black"
                 android:textStyle="bold" />
 
             <TextView
