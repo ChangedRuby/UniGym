@@ -152,7 +152,6 @@ class SolicitationsPersonal : Fragment() {
                                     adapter.notifyDataSetChanged()
                                 }
                             }
-
                         }
                     }
                     if(contador<=0){
