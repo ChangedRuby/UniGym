@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.EditText
+import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -22,7 +23,9 @@ class CreateAccountUser : AppCompatActivity() {
     lateinit var personalBtn: TextView
     lateinit var emailTextInput: EditText
     lateinit var nameTextInput: TextInputEditText
-    lateinit var passwordTextInput: EditText
+    lateinit var passwordTextInput: TextInputEditText
+    lateinit var confirmationPasswordTextInput : TextInputEditText
+    lateinit var exitButton : ImageView
     lateinit var db: FirebaseFirestore
     lateinit var auth: FirebaseAuth
 
@@ -49,13 +52,34 @@ class CreateAccountUser : AppCompatActivity() {
         emailTextInput = findViewById(R.id.emailUserEditText)
         nameTextInput = findViewById(R.id.nameUserEditText)
         passwordTextInput = findViewById(R.id.passwordUserEditText)
+        confirmationPasswordTextInput = findViewById(R.id.confirmPasswordUserEditText)
+        exitButton = findViewById(R.id.closeScreen2)
+
+        exitButton.setOnClickListener {
+            startActivity(Intent(this, LoginMenu::class.java))
+        }
 
         createBtn.setOnClickListener {
 
             val email = emailTextInput.text.toString()
             val password = passwordTextInput.text.toString()
+            if (email.isEmpty() || password.isEmpty() || nameTextInput.text.toString().isEmpty() || confirmationPasswordTextInput.text.toString().isEmpty()) {
+                Toast.makeText(
+                    baseContext,
+                    "Por favor, preencha todos os campos.",
+                    Toast.LENGTH_SHORT,
+                ).show()
+                return@setOnClickListener
+            } else if (password != confirmationPasswordTextInput.text.toString()) {
+                Toast.makeText(
+                    baseContext,
+                    "As senhas não coincidem.",
+                    Toast.LENGTH_SHORT,
+                ).show()
+                return@setOnClickListener
+            }
+
             Log.d("create_account", email)
-            Log.d("create_account", password)
 
             auth.createUserWithEmailAndPassword(email, password)
                 .addOnCompleteListener(this) { task ->

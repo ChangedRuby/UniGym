@@ -6,6 +6,7 @@ import android.util.Log
 import android.view.View
 import android.widget.Button
 import android.widget.EditText
+import android.widget.ImageView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.unigym2.R
@@ -22,7 +23,9 @@ class CreateAccountPersonalTrainer : AppCompatActivity() {
     lateinit var emailTextInput: EditText
     lateinit var crefTextInput: EditText
     lateinit var nameTextInput: EditText
-    lateinit var passwordTextInput: EditText
+    lateinit var passwordTextInput: TextInputEditText
+    lateinit var confirmPasswordTextInput : TextInputEditText
+    lateinit var exitButton: ImageView
     lateinit var db: FirebaseFirestore
     lateinit var auth: FirebaseAuth
 
@@ -44,6 +47,12 @@ class CreateAccountPersonalTrainer : AppCompatActivity() {
         nameTextInput = findViewById(R.id.namePersonalEditText)
         crefTextInput = findViewById(R.id.CrefEditText)
         passwordTextInput = findViewById(R.id.passwordPersonalEditText)
+        confirmPasswordTextInput = findViewById(R.id.confirmPasswordPersonalEditText)
+        exitButton = findViewById(R.id.closeScreen2)
+
+        exitButton.setOnClickListener {
+            startActivity(Intent(this, CreateAccountUser::class.java))
+        }
 
         concludeButton.setOnClickListener{
             val email = emailTextInput.text.toString()
