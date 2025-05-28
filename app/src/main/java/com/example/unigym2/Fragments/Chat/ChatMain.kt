@@ -54,8 +54,6 @@ class ChatMain : Fragment() {
     private var chatRoomId: String? = null
     private var receiverUid: String? = null
     private var senderUid: String? = null
-    var lockedSenderUid: String? = null
-    var lockedReceiverUid: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -64,7 +62,7 @@ class ChatMain : Fragment() {
             if (uri != null) {
                 val imageUri: Uri = uri
                 imageConverted = AvatarManager.uriToBase64(imageUri, 20, requireContext())
-                sendMessage(imageConverted, lockedSenderUid!!, lockedReceiverUid!!)
+                sendMessage(imageConverted)
             }
         }
     }
@@ -102,9 +100,7 @@ class ChatMain : Fragment() {
 
             loadReceiverImage()
             setupChat()
-            lockedSenderUid = senderUid
-            lockedReceiverUid = receiverUid
-            readUnreadMessages(lockedSenderUid!!, lockedReceiverUid!!)
+            readUnreadMessages()
         }
 
         sendImageButton.setOnClickListener {
@@ -113,7 +109,7 @@ class ChatMain : Fragment() {
 
         sendButton.setOnClickListener {
             val msg = messageBox.text.toString().trim()
-            sendMessage(msg, lockedSenderUid!!, lockedReceiverUid!!)
+            sendMessage(msg)
             if (receiverUid == "BROK_AI_AGENT") {
                 gerarRespostaIA(msg)
             }
@@ -178,7 +174,7 @@ class ChatMain : Fragment() {
         }
     }
 
-    private fun sendMessage(msgText: String, lockedSenderUid: String, lockedReceiverUid: String) {
+    private fun sendMessage(msgText: String) {
         if (msgText.isNotEmpty() && chatRoomId != null) {
             /*val msgMap = hashMapOf(
                 "message" to msgText,
@@ -221,10 +217,6 @@ class ChatMain : Fragment() {
 
             db.collection("Chats")
                 .document(chatRoomId!!).get().addOnSuccessListener { chatDoc ->
-                    val mensagensNaoLidasReceiver = chatDoc.getLong("mensagensNaoLidasReceiver") ?: 0
-                    val mensagensNaoLidasSender = chatDoc.getLong("mensagensNaoLidasSender") ?: 0
-                    val docReceiver = chatDoc.getString("receiverUid")
-                    val docSender = chatDoc.getString("senderUid")
                     // chatDoc.reference.update("mensagensNaoLidas", mensagensNaoLidas+1)
 
                     val msgMap = hashMapOf(
@@ -234,22 +226,10 @@ class ChatMain : Fragment() {
                         "timestamp" to System.currentTimeMillis()
                     )
 
-                    var chatRoomData: HashMap<String, *>
-                    if(docSender == lockedSenderUid){
-                        chatRoomData = hashMapOf(
-                            "senderUid" to senderUid,
-                            "receiverUid" to receiverUid,
-                            "mensagensNaoLidasReceiver" to mensagensNaoLidasReceiver,
-                            "mensagensNaoLidasSender" to mensagensNaoLidasSender,
+                    val chatRoomData = hashMapOf(
+                        "senderUid" to senderUid,
+                        "receiverUid" to receiverUid,
                         )
-                    } else{
-                        chatRoomData = hashMapOf(
-                            "senderUid" to senderUid,
-                            "receiverUid" to receiverUid,
-                            "mensagensNaoLidasSender" to mensagensNaoLidasSender,
-                            "mensagensNaoLidasReceiver" to mensagensNaoLidasReceiver,
-                        )
-                    }
 
 
                     db.collection("Chats")
@@ -290,7 +270,7 @@ class ChatMain : Fragment() {
         }
     }
 
-    fun readUnreadMessages(lockedSenderUid: String, lockedReceiverUid: String){
+    fun readUnreadMessages(){
         Log.d("chat", "sender Uid -> " + senderUid.toString())
         Log.d("chat", "receiverUid -> " + receiverUid.toString())
         Log.d("chat", "auth User -> " + communicator.getAuthUser())
