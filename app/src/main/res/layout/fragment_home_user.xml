@@ -249,7 +249,7 @@
                 android:layout_marginTop="45sp"
                 android:layout_marginLeft="170sp"
                 android:fontFamily="@font/roboto"
-                android:gravity="right"
+                android:gravity="left"
                 android:text="Dante Quintana"
                 android:textColor="@android:color/white"
                 android:textSize="24sp" />

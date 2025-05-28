@@ -74,6 +74,7 @@ class CalendarUser : Fragment() {
         communicator = activity as Communicator
         val calendarView = view.findViewById<CalendarView>(R.id.calendarView)
         val programacoesContainer = view.findViewById<LinearLayout>(R.id.programacoes_container)
+        programacoesContainer.visibility = View.GONE
         var dataBase = FirebaseFirestore.getInstance()
         var auth = FirebaseAuth.getInstance()
         var userId = communicator.getAuthUser()
