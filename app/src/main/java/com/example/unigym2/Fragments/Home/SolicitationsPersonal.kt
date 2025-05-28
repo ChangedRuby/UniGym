@@ -130,11 +130,13 @@ class SolicitationsPersonal : Fragment() {
                                         agendamentoID = document.id, image = bitmap)
                                     Log.d("schedules", "${agendamento.nomeCliente}")
                                     requestsArrayList.add(agendamento)
+                                    semSolitacoeView.visibility = View.GONE
                                     adapter.notifyDataSetChanged()
                                 }
                             }
                         }
                     }
+                    Log.d("SolicitationsPersonal", "Contador: $contador")
                     if(contador<=0){
                         semSolitacoeView.visibility = View.VISIBLE
                     }

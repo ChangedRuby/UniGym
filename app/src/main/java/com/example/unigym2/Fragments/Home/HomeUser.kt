@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ProgressBar
+import android.widget.RelativeLayout
 import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
@@ -40,7 +41,7 @@ class HomeUser : Fragment() {
     lateinit var completedSessions : TextView
     lateinit var dayStreak : TextView
     lateinit var streakBar : ProgressBar
-
+    lateinit var layoutButton : RelativeLayout
 
     val db = FirebaseFirestore.getInstance()
 
@@ -323,9 +324,25 @@ class HomeUser : Fragment() {
         dayStreak = v.findViewById(R.id.dayStreak)
         streakBar = v.findViewById(R.id.progressBar)
         button = v.findViewById(R.id.treinoFeitoButton)
+        layoutButton = v.findViewById(R.id.treinoFeitoLayout)
         communicator = activity as Communicator
 
+
         communicator.showLoadingOverlay()
+
+        var lastWorkoutTimestamp : Long
+        db.collection("Usuarios").document(communicator.getAuthUser())
+            .get()
+            .addOnSuccessListener { document ->
+                lastWorkoutTimestamp = document.getLong("lastWorkoutTimestamp") ?: 0L
+                if (lastWorkoutTimestamp == 0L || System.currentTimeMillis() - lastWorkoutTimestamp < 24 * 60 * 60 * 1000) {
+                    layoutButton.visibility = View.GONE
+                    Log.d("firestore", "Workout already completed today")
+                }
+            }
+            .addOnFailureListener { e ->
+                Log.w("firestore", "Error getting document.", e)
+            }
 
             button.setOnClickListener {
 //                db.collection("Usuarios").document(communicator.getAuthUser())
@@ -345,7 +362,6 @@ class HomeUser : Fragment() {
 //                    .addOnFailureListener {
 //                        Log.e("firestore", "Erro ao obter total de treinos", it)
 //                    }
-                var lastWorkoutTimestamp : Long
                 db.collection("Usuarios").document(communicator.getAuthUser())
                     .get()
                     .addOnSuccessListener { document ->
