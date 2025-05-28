@@ -78,5 +78,6 @@ class ListaPersonaisAdapter(private val dataList : MutableList<ListaPersonaisIte
         val nameView : TextView = itemView.findViewById(R.id.textViewUsername)
         val descriptionView: TextView = itemView.findViewById(R.id.userDescription)
         val personalImage: ShapeableImageView = itemView.findViewById(R.id.profileChatListaImage)
+        val mensagensNaoLidas: TextView = itemView.findViewById(R.id.mensagensNaoLidasTextView)
     }
 }

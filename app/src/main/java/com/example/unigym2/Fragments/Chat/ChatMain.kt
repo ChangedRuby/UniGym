@@ -27,9 +27,11 @@ import com.google.ai.client.generativeai.GenerativeModel
 import com.google.android.material.imageview.ShapeableImageView
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.DocumentChange
+import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ListenerRegistration
 import kotlinx.coroutines.launch
+import java.io.Serializable
 
 class ChatMain : Fragment() {
 
@@ -52,6 +54,8 @@ class ChatMain : Fragment() {
     private var chatRoomId: String? = null
     private var receiverUid: String? = null
     private var senderUid: String? = null
+    var lockedSenderUid: String? = null
+    var lockedReceiverUid: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -60,7 +64,7 @@ class ChatMain : Fragment() {
             if (uri != null) {
                 val imageUri: Uri = uri
                 imageConverted = AvatarManager.uriToBase64(imageUri, 20, requireContext())
-                sendMessage(imageConverted)
+                sendMessage(imageConverted, lockedSenderUid!!, lockedReceiverUid!!)
             }
         }
     }
@@ -95,8 +99,12 @@ class ChatMain : Fragment() {
             chatName.text = userName
             receiverUid = UID
             loadedProfileImage = AvatarManager.base64ToBitmap(userImage!!)
+
             loadReceiverImage()
             setupChat()
+            lockedSenderUid = senderUid
+            lockedReceiverUid = receiverUid
+            readUnreadMessages(lockedSenderUid!!, lockedReceiverUid!!)
         }
 
         sendImageButton.setOnClickListener {
@@ -105,7 +113,7 @@ class ChatMain : Fragment() {
 
         sendButton.setOnClickListener {
             val msg = messageBox.text.toString().trim()
-            sendMessage(msg)
+            sendMessage(msg, lockedSenderUid!!, lockedReceiverUid!!)
             if (receiverUid == "BROK_AI_AGENT") {
                 gerarRespostaIA(msg)
             }
@@ -170,9 +178,9 @@ class ChatMain : Fragment() {
         }
     }
 
-    private fun sendMessage(msgText: String) {
+    private fun sendMessage(msgText: String, lockedSenderUid: String, lockedReceiverUid: String) {
         if (msgText.isNotEmpty() && chatRoomId != null) {
-            val msgMap = hashMapOf(
+            /*val msgMap = hashMapOf(
                 "message" to msgText,
                 "senderId" to senderUid,
                 "receiverId" to receiverUid,
@@ -181,7 +189,8 @@ class ChatMain : Fragment() {
 
             val chatRoomData = hashMapOf(
                 "senderUid" to senderUid,
-                "receiverUid" to receiverUid
+                "receiverUid" to receiverUid,
+                "mensagensNaoLidas" to FieldValue.increment(0)
             )
 
             db.collection("Chats")
@@ -189,11 +198,71 @@ class ChatMain : Fragment() {
                 .set(chatRoomData)
 
             db.collection("Chats")
+                .document(chatRoomId!!).get().addOnSuccessListener { document ->
+                    val mensagensNaoLidas = document.getLong("mensagensNaoLidas") ?: 0
+                    document.reference.update("mensagensNaoLidas", mensagensNaoLidas+1)
+                }
+
+            db.collection("Chats")
                 .document(chatRoomId!!)
                 .collection("messages")
                 .add(msgMap)
                 .addOnSuccessListener {
                     messageBox.text.clear()
+                }*/
+
+
+
+
+
+
+
+
+
+            db.collection("Chats")
+                .document(chatRoomId!!).get().addOnSuccessListener { chatDoc ->
+                    val mensagensNaoLidasReceiver = chatDoc.getLong("mensagensNaoLidasReceiver") ?: 0
+                    val mensagensNaoLidasSender = chatDoc.getLong("mensagensNaoLidasSender") ?: 0
+                    val docReceiver = chatDoc.getString("receiverUid")
+                    val docSender = chatDoc.getString("senderUid")
+                    // chatDoc.reference.update("mensagensNaoLidas", mensagensNaoLidas+1)
+
+                    val msgMap = hashMapOf(
+                        "message" to msgText,
+                        "senderId" to senderUid,
+                        "receiverId" to receiverUid,
+                        "timestamp" to System.currentTimeMillis()
+                    )
+
+                    var chatRoomData: HashMap<String, *>
+                    if(docSender == lockedSenderUid){
+                        chatRoomData = hashMapOf(
+                            "senderUid" to senderUid,
+                            "receiverUid" to receiverUid,
+                            "mensagensNaoLidasReceiver" to mensagensNaoLidasReceiver,
+                            "mensagensNaoLidasSender" to mensagensNaoLidasSender,
+                        )
+                    } else{
+                        chatRoomData = hashMapOf(
+                            "senderUid" to senderUid,
+                            "receiverUid" to receiverUid,
+                            "mensagensNaoLidasSender" to mensagensNaoLidasSender,
+                            "mensagensNaoLidasReceiver" to mensagensNaoLidasReceiver,
+                        )
+                    }
+
+
+                    db.collection("Chats")
+                        .document(chatRoomId!!)
+                        .set(chatRoomData)
+
+                    db.collection("Chats")
+                        .document(chatRoomId!!)
+                        .collection("messages")
+                        .add(msgMap)
+                        .addOnSuccessListener {
+                            messageBox.text.clear()
+                        }
                 }
         }
     }
@@ -218,6 +287,42 @@ class ChatMain : Fragment() {
             } catch (e: Exception) {
                 Log.e("GeminiError", "Erro ao gerar resposta da Gemini: ${e.message}")
             }
+        }
+    }
+
+    fun readUnreadMessages(lockedSenderUid: String, lockedReceiverUid: String){
+        Log.d("chat", "sender Uid -> " + senderUid.toString())
+        Log.d("chat", "receiverUid -> " + receiverUid.toString())
+        Log.d("chat", "auth User -> " + communicator.getAuthUser())
+        if(senderUid == communicator.getAuthUser()){
+            db.collection("Chats").whereEqualTo("receiverUid", receiverUid).whereEqualTo("senderUid", senderUid)
+                .get().addOnSuccessListener { documents ->
+                    for(document in documents){
+                        val documentSenderUid = document.get("senderUid")
+                        val documentReceiverUid = document.get("receiverUid")
+                        Log.d("chat", "document sender Uid -> " + documentSenderUid.toString())
+                        Log.d("chat", "document receiverUid -> " + documentReceiverUid.toString())
+                        document.reference.update("mensagensNaoLidasSender", 0)
+                        if(communicator.getAuthUser() == document.get("senderUid")){
+
+
+                        }
+                    }
+                }
+            db.collection("Chats").whereEqualTo("receiverUid", senderUid).whereEqualTo("senderUid", receiverUid)
+                .get().addOnSuccessListener { documents ->
+                    for(document in documents){
+                        val documentSenderUid = document.get("senderUid")
+                        val documentReceiverUid = document.get("receiverUid")
+                        Log.d("chat", "document sender Uid -> " + documentSenderUid.toString())
+                        Log.d("chat", "document receiverUid -> " + documentReceiverUid.toString())
+                        document.reference.update("mensagensNaoLidasReceiver", 0)
+                        if(communicator.getAuthUser() == document.get("senderUid")){
+
+
+                        }
+                    }
+                }
         }
     }
 
