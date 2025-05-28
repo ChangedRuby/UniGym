@@ -130,7 +130,10 @@ class RequestsRecyclerAdapter(private val requestsList: ArrayList<RequestsData>,
                 "acceptance_channel",
                 "Request Acceptances",
                 NotificationManager.IMPORTANCE_HIGH
-            )
+            ).apply {
+                enableLights(true)
+                enableVibration(true)
+            }
             notificationManager.createNotificationChannel(channel)
         }
 
@@ -141,9 +144,13 @@ class RequestsRecyclerAdapter(private val requestsList: ArrayList<RequestsData>,
             .setContentText("Seu agendamento com ${request.nomeCliente} foi aceito!")
             .setPriority(NotificationCompat.PRIORITY_HIGH)
             .setAutoCancel(true)
+            .setDefaults(NotificationCompat.DEFAULT_ALL)
+
+        val notificationId = request.agendamentoID?.hashCode() ?: System.currentTimeMillis().toInt()
 
         // Show notification
-        notificationManager.notify(request.agendamentoID.hashCode(), builder.build())
+        notificationManager.notify(notificationId, builder.build())
+        Log.d("ActivityLogic", "Local notification sent for request: ${request.nomeCliente}")
     }
 }
 
