@@ -17,6 +17,19 @@
         <!-- Email Input -->
 
         <ImageView
+            android:id="@+id/closeScreen2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:clickable="true"
+            android:src="@drawable/go_back_button"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.041"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:ignore="TouchTargetSizeCheck,SpeakableTextPresentCheck" />
+
+        <ImageView
             android:id="@+id/logoImageView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -29,7 +42,7 @@
             app:srcCompat="@drawable/logo" />
 
         <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/emailInputLayout"
+            android:id="@+id/emailUserInputLayout"
             style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -51,7 +64,7 @@
             app:layout_constraintVertical_bias="0.35">
 
             <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/emailEditText"
+                android:id="@+id/emailUserEditText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="textEmailAddress"
@@ -61,7 +74,7 @@
 
         <!-- Full Name Input -->
         <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/nameInputLayout"
+            android:id="@+id/nameUserInputLayout"
             style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -79,11 +92,11 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.455">
+            app:layout_constraintTop_toBottomOf="@+id/emailUserInputLayout"
+            app:layout_constraintVertical_bias="0.04000002">
 
             <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/nameEditText"
+                android:id="@+id/nameUserEditText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="textPersonName|textCapWords"
@@ -93,7 +106,7 @@
 
         <!-- Password Input -->
         <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/passwordInputLayout"
+            android:id="@+id/passwordUserInputLayout"
             style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -113,10 +126,10 @@
             app:hintTextColor="@color/hint_grey"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/nameInputLayout">
+            app:layout_constraintTop_toBottomOf="@id/nameUserInputLayout">
 
             <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/passwordEditText"
+                android:id="@+id/passwordUserEditText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="textPassword"
@@ -126,7 +139,7 @@
 
         <!-- Confirm Password Input -->
         <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/confirmPasswordInputLayout"
+            android:id="@+id/confirmPasswordUserInputLayout"
             style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -146,10 +159,10 @@
             app:hintTextColor="@color/hint_grey"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/passwordInputLayout">
+            app:layout_constraintTop_toBottomOf="@id/passwordUserInputLayout">
 
             <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/confirmPasswordEditText"
+                android:id="@+id/confirmPasswordUserEditText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="textPassword"
@@ -160,7 +173,7 @@
 
         <!-- Conclude Button -->
         <com.google.android.material.button.MaterialButton
-            android:id="@+id/concludeButton"
+            android:id="@+id/concludePersonalAccountButton"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/standard_margin"
@@ -182,22 +195,25 @@
 
         <TextView
             android:id="@+id/createAccPersonal"
-            android:layout_width="269.33dp"
-            android:layout_height="41.33dp"
-            android:background="@drawable/rectangle_light_gradient"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:clickable="true"
             android:fontFamily="@font/plus_jakarta_sans_semibold"
             android:gravity="fill"
+            android:paddingLeft="10sp"
+            android:paddingTop="5sp"
+            android:paddingRight="10sp"
+            android:paddingBottom="5sp"
             android:text="Entrando como treinador?"
             android:textAlignment="center"
-            android:textColor="#000000"
-            android:textSize="18sp"
+            android:textColor="@android:color/white"
+            android:textSize="16sp"
             android:textStyle="bold"
-            app:layout_constraintBottom_toTopOf="@+id/concludeButton"
+            app:layout_constraintBottom_toTopOf="@+id/concludePersonalAccountButton"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.887"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/confirmPasswordInputLayout"
+            app:layout_constraintTop_toBottomOf="@+id/confirmPasswordUserInputLayout"
             app:layout_constraintVertical_bias="0.153"
             tools:ignore="TouchTargetSizeCheck" /> <!-- Push to bottom -->
 

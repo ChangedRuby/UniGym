@@ -1,0 +1,30 @@
+{
+  "project_info": {
+    "project_number": "822861334620",
+    "firebase_url": "https://unigym-ea5fa-default-rtdb.firebaseio.com",
+    "project_id": "unigym-ea5fa",
+    "storage_bucket": "unigym-ea5fa.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:822861334620:android:42c54b170ee840a04ebe99",
+        "android_client_info": {
+          "package_name": "com.example.unigym2"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAlwEoUf953F4b7KkZz5o1De1hRlDeOlVM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

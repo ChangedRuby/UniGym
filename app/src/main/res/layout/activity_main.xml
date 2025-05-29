@@ -27,4 +27,31 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"/>
 
+    <FrameLayout
+        android:id="@+id/loadingLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:foregroundGravity="center"
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <View
+            android:id="@+id/loadingOverlay"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@color/transparent_black" />
+
+        <ProgressBar
+            android:id="@+id/loadingMainProgressBar"
+            style="?android:attr/progressBarStyle"
+            android:layout_width="80sp"
+            android:layout_height="80sp"
+            android:layout_marginStart="160sp"
+            android:layout_marginTop="300sp"
+            android:indeterminateTint="@android:color/white"
+            android:progressTintMode="add" />
+    </FrameLayout>
+
 </androidx.constraintlayout.widget.ConstraintLayout>

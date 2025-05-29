@@ -92,12 +92,32 @@
             android:text="Email: treinador@gmail.com"
             android:textColor="#FBFBFB"
             android:textSize="12sp"
+            android:visibility="visible"
             app:layout_constraintBottom_toTopOf="@+id/lineView"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.205"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.964" />
+
+        <EditText
+            android:id="@+id/editTextTextEmailAddress"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:editable="true"
+            android:ems="10"
+            android:hint="Email"
+            android:inputType="textEmailAddress"
+            android:textColor="@color/input_field_bg"
+            android:visibility="invisible"
+            android:textColorHint="@color/hint_grey"
+            android:textSize="20sp"
+            app:layout_constraintBottom_toTopOf="@+id/lineView"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.297"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/profileSecondaryColor"
+            app:layout_constraintVertical_bias="1.0" />
 
         <View
             android:id="@+id/lineView"
@@ -110,9 +130,9 @@
             app:layout_constraintVertical_bias="0.45" />
 
         <com.google.android.material.imageview.ShapeableImageView
-            android:id="@+id/profileUserImage"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:id="@+id/profileUserEditImage"
+            android:layout_width="130sp"
+            android:layout_height="130sp"
             android:layout_marginTop="104dp"
             app:layout_constraintBottom_toTopOf="@+id/lineView"
             app:layout_constraintEnd_toEndOf="parent"
@@ -121,10 +141,12 @@
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.083"
             app:shapeAppearanceOverlay="@style/roundedImageView"
+            app:tint="@color/transparent_black"
+            app:tintMode="src_over"
             tools:src="@tools:sample/avatars" />
 
         <View
-            android:id="@+id/circleImageView"
+            android:id="@+id/userProfileEditImageView"
             android:layout_width="130sp"
             android:layout_height="130sp"
             android:layout_marginTop="104dp"
@@ -187,7 +209,7 @@
             android:id="@+id/editObjetivo2"
             android:layout_width="160dp"
             android:layout_height="35dp"
-            android:layout_marginBottom="312dp"
+            android:layout_marginBottom="212dp"
             android:backgroundTint="#FFFFFF"
             android:textColor="@color/white"
             android:textColorHint="@color/hint_grey"
@@ -200,18 +222,36 @@
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/editTextUsername"
-            android:layout_width="100dp"
+            android:layout_width="150dp"
             android:layout_height="50dp"
-            android:layout_marginStart="44dp"
+            android:layout_marginStart="52dp"
             android:backgroundTint="#FFFFFF"
             android:hint="Username"
             android:textColor="@color/white"
-            android:textColorHint="@color/white"
+            android:textColorHint="@color/hint_grey"
             android:textSize="20sp"
             app:layout_constraintBottom_toBottomOf="@+id/ConfirmarEditUser"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="@+id/profileSecondaryColor"
-            app:layout_constraintVertical_bias="0.355" />
+            app:layout_constraintVertical_bias="0.412" />
+
+
+        <Button
+            android:id="@+id/changeUserImageBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:background="@color/transparent"
+            android:paddingLeft="0dp"
+            android:paddingRight="0dp"
+            app:icon="@drawable/ic_edit"
+            app:iconGravity="textStart"
+            app:iconPadding="0dp"
+            app:iconSize="40dp"
+            app:layout_constraintEnd_toEndOf="@+id/profileUserEditImage"
+            app:layout_constraintHorizontal_bias="0.51"
+            app:layout_constraintStart_toStartOf="@+id/profileUserEditImage"
+            app:layout_constraintTop_toBottomOf="@+id/profileSecondaryColor" />
 
         <TextView
             android:id="@+id/AlterarSenhaEditUser"
@@ -228,10 +268,10 @@
             android:textStyle="bold"
             app:layout_constraintBottom_toTopOf="@+id/lineView"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.731"
+            app:layout_constraintHorizontal_bias="1.0"
             app:layout_constraintStart_toEndOf="@+id/editTextUsername"
             app:layout_constraintTop_toBottomOf="@+id/profileSecondaryColor"
-            app:layout_constraintVertical_bias="0.929" />
+            app:layout_constraintVertical_bias="0.487" />
 
         <TextView
             android:id="@+id/ConfirmarEditUser"

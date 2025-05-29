@@ -1,3 +1,5 @@
 package com.example.unigym2.Fragments.Treinos.Recyclerviews
 
-data class ListaTreinosItem(val name: String)
+import android.graphics.Bitmap
+
+data class ListaTreinosItem(var name: String ?= null, var userId: String ?= null, var image: Bitmap ?= null)

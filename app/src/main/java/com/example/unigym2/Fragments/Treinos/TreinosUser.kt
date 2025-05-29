@@ -10,9 +10,17 @@ import android.widget.RadioGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.unigym2.Activities.Communicator
 import com.example.unigym2.Fragments.Treinos.Recyclerviews.TreinoUserAdapter
 import com.example.unigym2.Fragments.Treinos.Recyclerviews.TreinoUserItem
+import com.example.unigym2.Fragments.Treinos.Recyclerviews.TreinoUserPersonalItem
 import com.example.unigym2.R
+import com.google.android.material.tabs.TabLayout
+import com.google.firebase.firestore.DocumentChange
+import com.google.firebase.firestore.EventListener
+import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.FirebaseFirestoreException
+import com.google.firebase.firestore.QuerySnapshot
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -29,11 +37,14 @@ class TreinosUser : Fragment() {
     private var param1: String? = null
     private var param2: String? = null
 
-    lateinit var radioGroupBtn: RadioGroup
+    lateinit var treinosTab: TabLayout
+    lateinit var userId: String
+    lateinit var communicator: Communicator
+    lateinit var db: FirebaseFirestore
 
     private lateinit var recyclerView: RecyclerView
-    private lateinit var repeticoesArrayA: ArrayList<TreinoUserItem>
-    private lateinit var repeticoesArrayB: ArrayList<TreinoUserItem>
+    private lateinit var itemsArrayA: ArrayList<TreinoUserItem>
+    private lateinit var itemsArrayB: ArrayList<TreinoUserItem>
 
     private lateinit var repeticoesA: Array<String>
     private lateinit var repeticoesB: Array<String>
@@ -55,38 +66,45 @@ class TreinosUser : Fragment() {
         // Inflate the layout for this fragment
         var v = inflater.inflate(R.layout.fragment_treinos_user, container, false)
 
-        radioGroupBtn = v.findViewById(R.id.treinoToggle)
+        treinosTab = v.findViewById(R.id.treinosUserTabLayout)
+        communicator = activity as Communicator
+        db = FirebaseFirestore.getInstance()
+        userId = communicator.getAuthUser()
 
-        radioGroupBtn.setOnCheckedChangeListener { radioGroup, checkedID ->
-            if(checkedID != -1){
-                val checkedRadioBtn = radioGroup.findViewById<RadioButton>(checkedID)
+        treinosTab.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
+            override fun onTabSelected(tab: TabLayout.Tab?) {
+                when(tab?.text) {
+                    "Treino A" -> {
+                        changeAdapter(itemsArrayA)
+                    }
 
-                if(checkedRadioBtn != null){
-                    when(checkedID){
-                        R.id.treinoButtonA -> {
-                            changeAdapter(repeticoesArrayA)
-                            Log.d("TreinoUser", "ButtonA click")
-                        }
-
-                        R.id.treinoButtonB -> {
-                            changeAdapter(repeticoesArrayB)
-                            Log.d("TreinoUser", "ButtonB click")
-                        }
-
-                        else -> {
-                            Log.d("TreinoUser", "Button not found")
-                        }
+                    "Treino B" -> {
+                        changeAdapter(itemsArrayB)
                     }
                 }
-            }
-        }
 
-        createItems()
+                Log.d("tab_selected", tab?.text.toString())
+            }
+
+            override fun onTabUnselected(tab: TabLayout.Tab?) {
+                Log.d("tab_selected", "Tab unselected: ${tab?.text.toString()}")
+            }
+
+            override fun onTabReselected(tab: TabLayout.Tab?) {
+                Log.d("tab_selected", "Tab reselected: ${tab?.text.toString()}")
+            }
+
+        })
+
+        itemsArrayA = arrayListOf()
+        itemsArrayB = arrayListOf()
+
         val layoutManager = LinearLayoutManager(context)
         recyclerView = v.findViewById(R.id.treinoUserRecyclerview)
         recyclerView.layoutManager = layoutManager
         recyclerView.setHasFixedSize(true)
-        changeAdapter(repeticoesArrayB)
+        changeAdapter(itemsArrayB)
+        createItems()
 
         return v
     }
@@ -118,10 +136,70 @@ class TreinosUser : Fragment() {
 
     private fun createItems(){
 
-        repeticoesArrayA = arrayListOf()
-        repeticoesArrayB = arrayListOf()
+        val userDoc = db.collection("Usuarios").document(userId)
+        val treinoDoc = userDoc.collection("Treinos")
 
-        repeticoesA = arrayOf(
+        treinoDoc.addSnapshotListener(object: EventListener<QuerySnapshot> {
+            override fun onEvent(
+                value: QuerySnapshot?,
+                error: FirebaseFirestoreException?
+            ) {
+
+                if (error != null) {
+                    Log.e("Firestore error", error.message.toString())
+                    return
+                }
+
+                itemsArrayA = arrayListOf()
+                itemsArrayB = arrayListOf()
+
+                for (dc: DocumentChange in value?.documentChanges!!) {
+                    val document = dc.document
+                    val docId = document.id
+
+                    if(document.get("exercicios") == null){
+                        Log.d("treino_usuario_personal", "Treino não presente")
+                        return
+                    }
+
+                    var exercicios = document.get("exercicios") as List<Map<String, Any>>
+                    Log.d("treino_usuario_personal", exercicios.toString())
+
+                    for (exercicio in exercicios) {
+                        if (document.get("name").toString() == "A") {
+                            itemsArrayA.add(
+                                TreinoUserItem(
+                                    series = exercicio.get("series").toString().toInt(),
+                                    repeticoes = exercicio.get("repeticoes").toString().toInt(),
+                                    maquina = exercicio.get("maquina").toString(),
+                                    exercicio = exercicio.get("exercicio").toString(),
+                                    userId = userId,
+                                    treinoId = docId,
+                                ))
+                        } else {
+                            itemsArrayB.add(
+                                TreinoUserItem(
+                                    series = exercicio.get("series").toString().toInt(),
+                                    repeticoes = exercicio.get("repeticoes").toString().toInt(),
+                                    maquina = exercicio.get("maquina").toString(),
+                                    exercicio = exercicio.get("exercicio").toString(),
+                                    userId = userId,
+                                    treinoId = docId,
+                                ))
+                        }
+                    }
+
+                    if (dc.type == DocumentChange.Type.ADDED) {
+                        Log.d("treino_usuario_personal", "Adicionado")
+
+                    }
+                }
+
+                changeAdapter(itemsArrayA)
+            }
+        })
+
+        /*repeticoesA = arrayOf(
             "1 x 5",
             "2 x 4",
             "3 x 3",
@@ -148,6 +226,6 @@ class TreinosUser : Fragment() {
 
             val exercicios = TreinoUserItem(repeticoesB[i])
             repeticoesArrayB.add(exercicios)
-        }
+        }*/
     }
 }

@@ -6,37 +6,35 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
+import androidx.appcompat.widget.SearchView
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.unigym2.Activities.Communicator
 import com.example.unigym2.Fragments.Treinos.Recyclerviews.ListaTreinosAdapter
 import com.example.unigym2.Fragments.Treinos.Recyclerviews.ListaTreinosItem
 import com.example.unigym2.Fragments.Treinos.Recyclerviews.ListaUsuariosClickListener
-import com.example.unigym2.Fragments.Treinos.Recyclerviews.TreinoUserItem
+import com.example.unigym2.Managers.AvatarManager
 import com.example.unigym2.R
+import com.google.firebase.firestore.FirebaseFirestore
+import java.util.Locale
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
 private const val ARG_PARAM1 = "param1"
 private const val ARG_PARAM2 = "param2"
 
-/**
- * A simple [Fragment] subclass.
- * Use the [ListaTreinosPersonal.newInstance] factory method to
- * create an instance of this fragment.
- */
 class ListaTreinosPersonal : Fragment(), ListaUsuariosClickListener {
-    // TODO: Rename and change types of parameters
     private var param1: String? = null
     private var param2: String? = null
-    lateinit var verTreinoBtn: Button
+    // lateinit var verTreinoBtn: Button
+    private lateinit var adapter: ListaTreinosAdapter
+    private lateinit var db: FirebaseFirestore
     private lateinit var communicator: Communicator
 
     private lateinit var recyclerView: RecyclerView
+    private lateinit var searchView: SearchView
 
-    private lateinit var namesArray: Array<String>
-    private lateinit var itemArray: ArrayList<ListaTreinosItem>
+    private lateinit var originalItemArray: ArrayList<ListaTreinosItem>
+    private lateinit var displayedItemArray: ArrayList<ListaTreinosItem>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -50,32 +48,61 @@ class ListaTreinosPersonal : Fragment(), ListaUsuariosClickListener {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
-        var v = inflater.inflate(R.layout.fragment_treinos_lista_personal, container, false)
+        val v = inflater.inflate(R.layout.fragment_treinos_lista_personal, container, false)
 
         recyclerView = v.findViewById(R.id.TreinosRecyclerview)
+        searchView = v.findViewById(R.id.conversasSearchView)
+        db = FirebaseFirestore.getInstance()
         communicator = activity as Communicator
 
+        originalItemArray = arrayListOf()
+        displayedItemArray = arrayListOf()
+
+        setupSearchView()
         createItems()
+
         val layoutManager = LinearLayoutManager(context)
-        val adapter = ListaTreinosAdapter(itemArray, this)
+        adapter = ListaTreinosAdapter(displayedItemArray, this)
         recyclerView.layoutManager = layoutManager
-        recyclerView.setHasFixedSize(true)
         recyclerView.adapter = adapter
 
         return v
     }
 
+    private fun setupSearchView() {
+        searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                searchView.clearFocus()
+                return true
+            }
+
+            override fun onQueryTextChange(newText: String?): Boolean {
+                filter(newText.orEmpty())
+                return true
+            }
+        })
+        searchView.queryHint = "Buscar alunos..."
+    }
+
+    private fun filter(query: String) {
+        displayedItemArray.clear()
+        val lowerCaseQuery = (query as java.lang.String).toLowerCase(Locale.ROOT)
+
+        if (lowerCaseQuery.isEmpty()) {
+            displayedItemArray.addAll(originalItemArray)
+        } else {
+            for (item in originalItemArray) {
+                val itemNameLowerCase = (item.name as java.lang.String?)?.toLowerCase(Locale.ROOT) ?: ""
+                if (itemNameLowerCase.contains(lowerCaseQuery)) {
+                    displayedItemArray.add(item)
+                }
+            }
+        }
+        displayedItemArray.sortBy { (it.name as java.lang.String?)?.toLowerCase(Locale.ROOT) }
+        adapter.notifyDataSetChanged()
+    }
+
     companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment FazerTreino.
-         */
-        // TODO: Rename and change types and number of parameters
         @JvmStatic
         fun newInstance(param1: String, param2: String) =
             ListaTreinosPersonal().apply {
@@ -86,28 +113,76 @@ class ListaTreinosPersonal : Fragment(), ListaUsuariosClickListener {
             }
     }
 
-    private fun createItems(){
+    private fun createItems() {
+        val userCollection = db.collection("Usuarios")
+        communicator.showLoadingOverlay()
 
-        itemArray = arrayListOf()
-        
-        namesArray = arrayOf(
-            "Name A",
-            "Name B",
-            "Name C",
-            "Name D",
-            "Name E",
-        )
+        userCollection.whereEqualTo("isPersonal", false).get()
+            .addOnSuccessListener { documents ->
+                if (documents.isEmpty) {
+                    Log.d("ListaTreinosPersonal", "No users found with isPersonal == false.")
+                    originalItemArray.clear()
+                    filter(searchView.query.toString())
+                    communicator.hideLoadingOverlay()
+                    return@addOnSuccessListener
+                }
 
-        for(i in namesArray.indices){
-            val nameItem = ListaTreinosItem(namesArray[i])
-            itemArray.add(nameItem)
-        }
+                val tempItemsList = ArrayList<ListaTreinosItem>()
+                var itemsToProcess = documents.size()
+                var itemsProcessedCount = 0
+
+                if (itemsToProcess == 0) {
+                    originalItemArray.clear()
+                    filter(searchView.query.toString())
+                    communicator.hideLoadingOverlay()
+                    return@addOnSuccessListener
+                }
+
+                for (document in documents) {
+                    val userName = document.getString("name")
+                    val userDocId = document.id
+                    val userEmail = document.getString("email")
+
+                    if (userName.isNullOrEmpty() || userEmail.isNullOrEmpty()) {
+                        Log.w("ListaTreinosPersonal", "User document ${document.id} has null or empty name/email. Skipping.")
+                        itemsProcessedCount++
+                        if (itemsProcessedCount == itemsToProcess) {
+                            originalItemArray.clear()
+                            originalItemArray.addAll(tempItemsList)
+                            originalItemArray.sortBy { (it.name as java.lang.String?)?.toLowerCase(Locale.ROOT) }
+                            filter(searchView.query.toString())
+                            communicator.hideLoadingOverlay()
+                        }
+                        continue
+                    }
+
+                    AvatarManager.getUserAvatar(userDocId, userEmail, userName, 40, lifecycleScope) { bitmap ->
+                        val newItem = ListaTreinosItem(name = userName, userId = userDocId, image = bitmap)
+                        tempItemsList.add(newItem)
+                        itemsProcessedCount++
+
+                        if (itemsProcessedCount == itemsToProcess) {
+                            originalItemArray.clear()
+                            originalItemArray.addAll(tempItemsList)
+                            originalItemArray.sortBy { (it.name as java.lang.String?)?.toLowerCase(Locale.ROOT) }
+                            Log.d("ListaTreinosPersonal", "All users processed. OriginalItemArray size: ${originalItemArray.size}")
+                            filter(searchView.query.toString())
+                            communicator.hideLoadingOverlay()
+                        }
+                    }
+                }
+            }
+            .addOnFailureListener { e ->
+                Log.e("ListaTreinosPersonal", "Error fetching users: ", e)
+                communicator.hideLoadingOverlay()
+            }
     }
 
     override fun onItemClick(listaTreinosItem: ListaTreinosItem) {
         Log.d("listaTreinosPersonal", "Recyclerview ${listaTreinosItem.name} clicked")
         parentFragmentManager.setFragmentResult("user_info_key", Bundle().apply {
             putString("name_user", listaTreinosItem.name)
+            putString("id_user", listaTreinosItem.userId)
         })
         communicator.replaceFragment(TreinoUsuarioPersonal())
     }

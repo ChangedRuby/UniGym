@@ -20,5 +20,6 @@
         <item>Panturrilha</item>
 
     </string-array>
+    <string name="title_activity_test_compose">TestComposeActivity</string>
 
 </resources>

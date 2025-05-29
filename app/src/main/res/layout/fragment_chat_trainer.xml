@@ -15,7 +15,20 @@
             android:layout_height="match_parent"
             android:background="@color/dark_blue_bg">
 
-            <SearchView
+            <TextView
+                android:id="@+id/txt_sent_message"
+                android:layout_width="290dp"
+                android:layout_height="40dp"
+                android:layout_weight="1"
+                android:clickable="false"
+                android:gravity="center_vertical"
+                android:text="Pesquisar"
+                app:layout_constraintBottom_toBottomOf="@+id/conversasSearchView"
+                app:layout_constraintEnd_toEndOf="@+id/conversasSearchView"
+                app:layout_constraintStart_toStartOf="@+id/conversasSearchView"
+                app:layout_constraintTop_toTopOf="@+id/conversasSearchView" />
+
+            <androidx.appcompat.widget.SearchView
                 android:id="@+id/conversasSearchView"
                 android:layout_width="393sp"
                 android:layout_height="52sp"
@@ -27,13 +40,13 @@
                 android:visibility="visible"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/tabLayout"
+                app:layout_constraintTop_toBottomOf="@+id/chatsPersonalTabLayout"
                 tools:visibility="visible">
 
-            </SearchView>
+            </androidx.appcompat.widget.SearchView>
 
             <com.google.android.material.tabs.TabLayout
-                android:id="@+id/tabLayout"
+                android:id="@+id/chatsPersonalTabLayout"
                 android:layout_width="306dp"
                 android:layout_height="40dp"
                 android:layout_marginTop="40dp"
@@ -59,7 +72,7 @@
 
 
                 <com.google.android.material.tabs.TabItem
-                    android:id="@+id/aba_"
+                    android:id="@+id/aba_meusclientes"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Meus Clientes" />
@@ -81,10 +94,10 @@
                 android:id="@+id/listaUsuariosRecyclerview"
                 android:layout_width="409dp"
                 android:layout_height="550dp"
-                android:layout_marginTop="44dp"
+                android:layout_marginTop="0dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/conversasSearchView"
+                app:layout_constraintTop_toBottomOf="@+id/imageView8"
                 tools:itemCount="5"
                 tools:listitem="@layout/usuarios_chat_recycler_layout" />
 

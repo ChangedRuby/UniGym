@@ -1,5 +1,6 @@
 package com.example.unigym2.Fragments.Treinos.Recyclerviews
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -7,6 +8,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.unigym2.R
+import com.google.firebase.firestore.FirebaseFirestore
 
 class TreinoUserPersonalAdapter(private val dataList: ArrayList<TreinoUserPersonalItem>) : RecyclerView.Adapter<TreinoUserPersonalAdapter.MyViewHolder>(){
 
@@ -25,11 +27,24 @@ class TreinoUserPersonalAdapter(private val dataList: ArrayList<TreinoUserPerson
 
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
         val currentItem = dataList[position]
-        holder.repeticoesView.text = currentItem.repeticoes
+        val db = FirebaseFirestore.getInstance()
+        holder.repeticoesView.text = "${currentItem.series} x ${currentItem.repeticoes}"
+        holder.maquinaView.text = currentItem.maquina
+        holder.exercicioView.text = currentItem.exercicio
         holder.deleteView.setOnClickListener {
-            dataList.removeAt(position)
+            /*dataList.removeAt(position)
             notifyItemRemoved(position)
-            notifyItemRangeChanged(position, dataList.size)
+            notifyItemRangeChanged(position, dataList.size)*/
+
+            val userDoc = db.collection("Usuarios").document(currentItem.userId.toString())
+            val treinoDoc = userDoc.collection("Treinos").document(currentItem.treinoId.toString())
+            treinoDoc.get().addOnSuccessListener { document ->
+                val exerciciosArray = document.data?.get("exercicios") as MutableList<*>
+                exerciciosArray.removeAt(position)
+                document.reference.update("exercicios", exerciciosArray)
+                Log.d("exerciciosArray", exerciciosArray.toString())
+
+            }
 
         }
 
@@ -38,5 +53,7 @@ class TreinoUserPersonalAdapter(private val dataList: ArrayList<TreinoUserPerson
     class MyViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView){
         val deleteView: ImageView = itemView.findViewById(R.id.removeExercicioButton)
         val repeticoesView : TextView = itemView.findViewById(R.id.repeticoesText)
+        val maquinaView : TextView = itemView.findViewById(R.id.maquinaNameText)
+        val exercicioView : TextView = itemView.findViewById(R.id.exercicioNameText)
     }
 }

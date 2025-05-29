@@ -24,12 +24,16 @@ class TreinoUserAdapter(private val dataList: ArrayList<TreinoUserItem>) : Recyc
 
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
         val currentItem = dataList[position]
-        holder.repeticoesView.text = currentItem.repeticoes
+        holder.repeticoesView.text = "${currentItem.series} x ${currentItem.repeticoes}"
+        holder.maquinaView.text = currentItem.maquina
+        holder.exercicioView.text = currentItem.exercicio
 
     }
 
     class MyViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView){
 
-        val repeticoesView : TextView = itemView.findViewById(R.id.repeticoesText)
+        val repeticoesView : TextView = itemView.findViewById(R.id.repeticoesUserText)
+        val maquinaView : TextView = itemView.findViewById(R.id.maquinaNameUserText)
+        val exercicioView : TextView = itemView.findViewById(R.id.exercicioNameUserText)
     }
 }

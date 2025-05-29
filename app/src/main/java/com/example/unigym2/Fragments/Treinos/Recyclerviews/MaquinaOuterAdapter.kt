@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.unigym2.Activities.Communicator
 import com.example.unigym2.Fragments.Treinos.AdicionarExercicioAMaquina
 import com.example.unigym2.R
+import com.google.firebase.firestore.FirebaseFirestore
 
 class MaquinaOuterAdapter(private val outerItems: MutableList<MaquinaOuterItem>, private val viewPool: RecyclerView.RecycledViewPool, private val communicator: Communicator, private val fragmentManager: FragmentManager) :
     RecyclerView.Adapter<MaquinaOuterAdapter.OuterViewHolder>() {
@@ -30,26 +31,35 @@ class MaquinaOuterAdapter(private val outerItems: MutableList<MaquinaOuterItem>,
     }
 
     override fun onBindViewHolder(holder: OuterViewHolder, position: Int) {
-        val outerItem = outerItems[position]
+        var outerItem = outerItems[position]
+        val db = FirebaseFirestore.getInstance()
 
         // Setup inner RecyclerView
         holder.innerRecyclerView.layoutManager = LinearLayoutManager(
             holder.itemView.context, LinearLayoutManager.VERTICAL, false)
-        holder.innerRecyclerView.adapter = MaquinaInnerAdapter(outerItem.innerItems)
+        holder.innerRecyclerView.adapter = MaquinaInnerAdapter(outerItem.innerItems ?: mutableListOf()) // retorna mutableList vazia se null
         holder.maquinaTitle.text = outerItem.title
 
         holder.addExercicioAMaquinaBtn.setOnClickListener{
             fragmentManager.setFragmentResult("maquina_info_key", Bundle().apply {
                 putString("maquina_name", holder.maquinaTitle.text.toString())
+                putString("maquina_id", outerItem.id)
             })
 
             communicator.replaceFragment(AdicionarExercicioAMaquina())
         }
 
         holder.deleteMaquinaButton.setOnClickListener {
+            val id = outerItem.id.toString()
+
             outerItems.removeAt(position)
             notifyItemRemoved(position)
             notifyItemRangeChanged(position, outerItems.size)
+
+            db.collection("Maquinas").document(id).delete().addOnCompleteListener {
+
+                Log.d("deleteMaquinaButton", "DocumentSnapshot $id successfully deleted")
+            }
 
         }
 

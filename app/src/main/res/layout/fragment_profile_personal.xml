@@ -143,7 +143,7 @@
 
 
         <TextView
-            android:id="@+id/UserProfileEmail"
+            android:id="@+id/userCREF"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
@@ -159,13 +159,12 @@
             android:id="@+id/userProfileEmail"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginEnd="32dp"
             android:text="Email: treinador@gmail.com"
             android:textColor="#FBFBFB"
             android:textSize="12sp"
             app:layout_constraintBottom_toTopOf="@+id/lineView"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.728"
-            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.945" />
 
@@ -173,17 +172,17 @@
             android:id="@+id/lineView"
             android:layout_width="wrap_content"
             android:layout_height="2sp"
-            android:layout_marginTop="328dp"
             android:background="@color/hint_grey"
+            android:layout_marginTop="328dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
         <com.google.android.material.imageview.ShapeableImageView
-            android:id="@+id/profileUserImage"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:id="@+id/profilePersonalImage"
+            android:layout_width="130sp"
+            android:layout_height="130sp"
             android:layout_marginTop="104dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.12"
@@ -193,7 +192,7 @@
             tools:src="@tools:sample/avatars" />
 
         <View
-            android:id="@+id/circleImageView"
+            android:id="@+id/userProfileImageView"
             android:layout_width="130sp"
             android:layout_height="130sp"
             android:layout_marginTop="104dp"
@@ -204,104 +203,104 @@
             app:layout_constraintTop_toTopOf="@+id/profileSecondaryColor" />
 
         <TextView
-            android:id="@+id/textView3"
+            android:id="@+id/servico1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="140dp"
+            android:layout_marginTop="8dp"
             android:text="aaaaaaaaaaa:"
             android:textColor="@color/light_grey"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.146"
-            app:layout_constraintStart_toStartOf="parent" />
-
-        <TextView
-            android:id="@+id/textView11"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="100dp"
-            android:text="aaaaaaaaaaa:"
-            android:textColor="@color/light_grey"
-            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.145"
-            app:layout_constraintStart_toStartOf="parent" />
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/objectivesTextView2" />
 
         <TextView
-            android:id="@+id/textView12"
+            android:id="@+id/servico2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="60dp"
+            android:layout_marginTop="8dp"
             android:text="aaaaaaaaaaa:"
             android:textColor="@color/light_grey"
-            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.145"
-            app:layout_constraintStart_toStartOf="parent" />
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/servico1" />
 
         <TextView
-            android:id="@+id/textView17"
+            android:id="@+id/servico3"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="20dp"
+            android:layout_marginTop="8dp"
             android:text="aaaaaaaaaaa:"
             android:textColor="@color/light_grey"
-            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.145"
-            app:layout_constraintStart_toStartOf="parent" />
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/servico2" />
 
         <TextView
-            android:id="@+id/textView8"
+            android:id="@+id/servico4"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="140dp"
+            android:layout_marginTop="8dp"
+            android:text="aaaaaaaaaaa:"
+            android:textColor="@color/light_grey"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.145"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/servico3" />
+
+        <TextView
+            android:id="@+id/precoServico1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
             android:text="R$ XX,XX por treino"
             android:textColor="@color/white"
             android:textColorLink="@color/white"
-            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.542"
-            app:layout_constraintStart_toStartOf="parent" />
+            app:layout_constraintHorizontal_bias="0.541"
+            app:layout_constraintStart_toEndOf="@+id/servico1"
+            app:layout_constraintTop_toBottomOf="@+id/objectivesTextView2" />
 
         <TextView
-            android:id="@+id/textView10"
+            android:id="@+id/precoServico2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="100dp"
+            android:layout_marginTop="8dp"
             android:text="R$ XX,XX por treino"
             android:textColor="@color/white"
             android:textColorLink="@color/white"
-            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.542"
-            app:layout_constraintStart_toStartOf="parent" />
+            app:layout_constraintHorizontal_bias="0.541"
+            app:layout_constraintStart_toEndOf="@+id/servico2"
+            app:layout_constraintTop_toBottomOf="@+id/precoServico1" />
 
         <TextView
-            android:id="@+id/textView14"
+            android:id="@+id/precoServico3"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="60dp"
+            android:layout_marginTop="8dp"
             android:text="R$ XX,XX por treino"
             android:textColor="@color/white"
             android:textColorLink="@color/white"
-            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.542"
-            app:layout_constraintStart_toStartOf="parent" />
+            app:layout_constraintHorizontal_bias="0.541"
+            app:layout_constraintStart_toEndOf="@+id/servico3"
+            app:layout_constraintTop_toBottomOf="@+id/precoServico2" />
 
         <TextView
-            android:id="@+id/textView18"
+            android:id="@+id/precoServico4"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="20dp"
+            android:layout_marginTop="8dp"
             android:text="R$ XX,XX por treino"
             android:textColor="@color/white"
             android:textColorLink="@color/white"
-            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.542"
-            app:layout_constraintStart_toStartOf="parent" />
+            app:layout_constraintHorizontal_bias="0.541"
+            app:layout_constraintStart_toEndOf="@+id/servico4"
+            app:layout_constraintTop_toBottomOf="@+id/precoServico3" />
 
         <TextView
             android:id="@+id/AcessibilidadePersonal"
@@ -320,7 +319,6 @@
             app:layout_constraintBottom_toTopOf="@+id/lineView"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.512"
-            app:layout_constraintStart_toEndOf="@+id/editTextUsername"
             app:layout_constraintTop_toBottomOf="@+id/profileSecondaryColor"
             app:layout_constraintVertical_bias="0.215" />
 
@@ -328,25 +326,36 @@
             android:id="@+id/EditProfilePersonal"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginEnd="16dp"
             android:src="@drawable/ic_edit"
             app:layout_constraintBottom_toTopOf="@+id/AcessibilidadePersonal"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.857"
-            app:layout_constraintStart_toEndOf="@+id/profileUserImage"
             app:layout_constraintTop_toBottomOf="@+id/profileSecondaryColor"
-            app:layout_constraintVertical_bias="0.391" />
+            app:layout_constraintVertical_bias="0.4" />
 
         <ImageView
             android:id="@+id/SairPersonal"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginEnd="68dp"
             android:src="@drawable/ic_logout"
             app:layout_constraintBottom_toTopOf="@+id/AcessibilidadePersonal"
             app:layout_constraintEnd_toStartOf="@+id/EditProfilePersonal"
             app:layout_constraintHorizontal_bias="0.891"
-            app:layout_constraintStart_toEndOf="@+id/profileUserImage"
             app:layout_constraintTop_toBottomOf="@+id/profileSecondaryColor"
-            app:layout_constraintVertical_bias="0.363" />
+            app:layout_constraintVertical_bias="0.4" />
+
+        <ImageView
+            android:id="@+id/deletePersonalUserBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:src="@drawable/baseline_delete_forever_icon"
+            app:layout_constraintEnd_toStartOf="@+id/EditProfilePersonal"
+            app:layout_constraintHorizontal_bias="0.477"
+            app:layout_constraintStart_toEndOf="@+id/SairPersonal"
+            app:layout_constraintTop_toBottomOf="@+id/profileSecondaryColor" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

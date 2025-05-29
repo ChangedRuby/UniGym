@@ -1,5 +1,6 @@
 package com.example.unigym2.Fragments.Treinos.Recyclerviews
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -7,6 +8,7 @@ import android.widget.Button
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.unigym2.R
+import com.google.firebase.firestore.FirebaseFirestore
 
 class MaquinaInnerAdapter(private val innerItems: MutableList<MaquinaInnerItem>) :
     RecyclerView.Adapter<MaquinaInnerAdapter.InnerViewHolder>() {
@@ -23,12 +25,32 @@ class MaquinaInnerAdapter(private val innerItems: MutableList<MaquinaInnerItem>)
     }
 
     override fun onBindViewHolder(holder: InnerViewHolder, position: Int) {
-        holder.textView.text = innerItems[position].text
+        val innerItem = innerItems[position]
+        holder.textView.text = innerItem.text
+
+        val db = FirebaseFirestore.getInstance()
+        val document = db.collection("Maquinas").document(innerItem.maquinaId.toString())
+
+        var exercisesArray: ArrayList<*>
 
         holder.deleteExercicioButton.setOnClickListener {
             innerItems.removeAt(position)
             notifyItemRemoved(position)
             notifyItemRangeChanged(position, innerItems.size)
+
+            document.get().addOnSuccessListener { result ->
+                exercisesArray = result.data?.get("exercises") as ArrayList<*>
+                exercisesArray.removeAt(position)
+
+                document.update(
+                    hashMapOf<String, Any>(
+                        "exercises" to exercisesArray
+                    ),
+                ).addOnSuccessListener { result ->
+                    Log.d("maquinas_data", "Exercise in position $position successfully removed.")
+                }
+
+            }
 
         }
     }

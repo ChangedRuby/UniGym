@@ -14,21 +14,22 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
+
         <ImageButton
             android:id="@+id/btnVoltar"
             android:layout_width="40dp"
             android:layout_height="40dp"
             android:layout_margin="16dp"
+            android:layout_marginTop="16dp"
             android:background="@android:color/transparent"
-            android:src="@drawable/ic_arrow_back"
-            android:scaleType="center"
+            android:backgroundTint="#FFFFFF"
             android:contentDescription="Voltar"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
             android:elevation="6dp"
             android:padding="8dp"
-            android:backgroundTint="#FFFFFF" />
-
+            android:scaleType="center"
+            android:src="@drawable/ic_arrow_back"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <CalendarView
             android:id="@+id/calendarView3"
@@ -73,7 +74,7 @@
             android:elevation="8dp"
             android:orientation="vertical"
             android:padding="24dp"
-            android:visibility="invisible"
+            android:visibility="visible"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/calendarView3">
@@ -112,6 +113,7 @@
                     android:gravity="center"
                     android:hint="12"
                     android:inputType="number"
+                    android:maxLength="2"
                     android:textColor="@android:color/white"
                     android:textSize="24sp"
                     android:textStyle="bold" />
@@ -137,6 +139,7 @@
                     android:gravity="center"
                     android:hint="00"
                     android:inputType="number"
+                    android:maxLength="2"
                     android:textColor="@android:color/white"
                     android:textSize="24sp"
                     android:textStyle="bold" />
@@ -156,7 +159,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
-                android:gravity="center_vertical"
                 android:orientation="horizontal">
 
                 <TextView
@@ -168,28 +170,15 @@
                     android:textSize="16sp" />
 
 
-                <RelativeLayout
-                    android:layout_width="240dp"
+                <Spinner
+                    android:id="@+id/spinner"
+                    android:layout_width="match_parent"
                     android:layout_height="48dp"
-                    android:background="@drawable/spinner_background"
-                    android:gravity="center_vertical"
-                    android:paddingStart="12dp"
-                    android:paddingEnd="12dp">
+                    android:layout_marginStart="18dp"
+                    android:background="@drawable/rectangle_objetivos_teste"
+                    android:backgroundTint="@color/light_grey"
+                    android:popupBackground="@color/light_grey" />
 
-                    <AutoCompleteTextView
-                        android:id="@+id/autoCompleteServico"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:background="@null"
-                        android:drawableEnd="@drawable/baseline_keyboard_arrow_down_24"
-                        android:drawablePadding="12dp"
-                        android:focusable="false"
-                        android:hint="Pesquisar"
-                        android:inputType="none"
-                        android:paddingEnd="36dp"
-                        android:textColor="@android:color/white"
-                        android:textColorHint="#88FFFFFF" />
-                </RelativeLayout>
             </LinearLayout>
 
             <Button

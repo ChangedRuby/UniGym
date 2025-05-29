@@ -21,6 +21,19 @@
 
         <!-- Email Input -->
 
+        <ImageView
+            android:id="@+id/closeScreen3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:clickable="true"
+            android:src="@drawable/go_back_button"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.041"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:ignore="TouchTargetSizeCheck,SpeakableTextPresentCheck" />
+
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/CrefInputLayout"
             style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"
@@ -28,6 +41,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/standard_margin"
             android:layout_marginEnd="@dimen/standard_margin"
+            android:layout_marginTop="8dp"
             android:hint="CREF"
             app:boxBackgroundColor="@color/input_field_bg"
             app:boxCornerRadiusBottomEnd="@dimen/input_corner_radius"
@@ -37,11 +51,9 @@
             app:boxStrokeWidth="0dp"
             app:boxStrokeWidthFocused="0dp"
             app:hintTextColor="@color/hint_grey"
-            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.553">
+            app:layout_constraintTop_toBottomOf="@+id/namePersonalInputLayout">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/CrefEditText"
@@ -55,7 +67,7 @@
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/nameInputLayout"
+            android:id="@+id/namePersonalInputLayout"
             style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -71,14 +83,13 @@
             app:boxStrokeWidth="0dp"
             app:boxStrokeWidthFocused="0dp"
             app:hintTextColor="@color/hint_grey"
-            app:layout_constraintBottom_toTopOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="parent"
-            app:layout_constraintVertical_bias="0.543">
+            app:layout_constraintTop_toBottomOf="@id/emailPersonalInputLayout"
+            app:layout_constraintVertical_bias="0.0">
 
             <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/nameEditText"
+                android:id="@+id/namePersonalEditText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="textPersonName|textCapWords"
@@ -99,12 +110,12 @@
             app:srcCompat="@drawable/logo" />
 
         <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/emailInputLayout"
+            android:id="@+id/emailPersonalInputLayout"
             style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/standard_margin"
-            android:layout_marginTop="50dp"
+            android:layout_marginTop="40dp"
             android:layout_marginEnd="@dimen/standard_margin"
             android:hint="Email"
             app:boxBackgroundColor="@color/input_field_bg"
@@ -120,7 +131,7 @@
             app:layout_constraintTop_toBottomOf="@+id/logoImageView">
 
             <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/emailEditText"
+                android:id="@+id/emailPersonalEditText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="textEmailAddress"
@@ -132,12 +143,12 @@
 
         <!-- Password Input -->
         <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/passwordInputLayout"
+            android:id="@+id/passwordPersonalInputLayout"
             style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/standard_margin"
-            android:layout_marginTop="12dp"
+            android:layout_marginTop="8dp"
             android:layout_marginEnd="@dimen/standard_margin"
             android:hint="Senha"
             app:boxBackgroundColor="@color/input_field_bg"
@@ -155,7 +166,7 @@
             app:layout_constraintTop_toBottomOf="@+id/CrefInputLayout">
 
             <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/passwordEditText"
+                android:id="@+id/passwordPersonalEditText"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:inputType="textPassword"
@@ -165,11 +176,12 @@
 
         <!-- Confirm Password Input -->
         <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/confirmPasswordInputLayout"
+            android:id="@+id/confirmPasswordPersonalInputLayout"
             style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/standard_margin"
+            android:layout_marginTop="8dp"
             android:layout_marginEnd="@dimen/standard_margin"
             android:hint="Confirme sua senha"
             app:boxBackgroundColor="@color/input_field_bg"
@@ -182,14 +194,12 @@
             app:endIconMode="password_toggle"
             app:endIconTint="@color/hint_grey"
             app:hintTextColor="@color/hint_grey"
-            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/passwordInputLayout"
-            app:layout_constraintVertical_bias="0.06">
+            app:layout_constraintTop_toBottomOf="@+id/passwordPersonalInputLayout">
 
             <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/confirmPasswordEditText"
+                android:id="@+id/confirmPasswordPersonalEditText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="textPassword"
@@ -199,9 +209,10 @@
 
         <!-- Conclude Button -->
         <com.google.android.material.button.MaterialButton
-            android:id="@+id/concludeButton"
+            android:id="@+id/concludePersonalAccountButton"
             android:layout_width="369dp"
             android:layout_height="58dp"
+            android:layout_marginTop="100dp"
             android:background="@drawable/rounded_corners"
             android:backgroundTint="@android:color/white"
             android:paddingTop="12dp"
@@ -211,11 +222,9 @@
             android:textColor="@color/black"
             android:textSize="16sp"
             app:backgroundTintMode="add"
-            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.454"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/confirmPasswordInputLayout" />
+            app:layout_constraintTop_toBottomOf="@+id/confirmPasswordPersonalInputLayout" />
 
         <!-- Push to bottom -->
 
