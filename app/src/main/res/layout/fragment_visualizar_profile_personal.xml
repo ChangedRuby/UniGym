@@ -307,7 +307,6 @@
             android:id="@+id/agendarTreino"
             android:layout_width="200dp"
             android:layout_height="48dp"
-            android:layout_marginEnd="16dp"
             android:background="@drawable/rectangle_light_gradient"
             android:gravity="center"
             android:minHeight="48dp"
@@ -320,7 +319,7 @@
             app:layout_constraintBottom_toTopOf="@+id/lineView"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.512"
-            app:layout_constraintStart_toEndOf="@+id/editTextUsername"
+            app:layout_constraintStart_toEndOf="@+id/profileVisualizarPersonalImage"
             app:layout_constraintTop_toBottomOf="@+id/profileSecondaryColor"
             app:layout_constraintVertical_bias="0.255" />
 
@@ -328,12 +327,11 @@
             android:id="@+id/SairPersonal"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="16dp"
             android:src="@drawable/go_back_button"
             app:layout_constraintBottom_toTopOf="@+id/lineView"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.928"
-            app:layout_constraintStart_toEndOf="@+id/profileListaImage"
+            app:layout_constraintStart_toEndOf="@+id/profileVisualizarPersonalImage"
             app:layout_constraintTop_toBottomOf="@+id/profileSecondaryColor"
             app:layout_constraintVertical_bias="0.0" />
 
