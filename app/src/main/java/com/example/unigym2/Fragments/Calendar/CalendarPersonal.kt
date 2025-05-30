@@ -19,6 +19,9 @@ import com.example.unigym2.Fragments.Calendar.Recyclerviews.CalendarUserItem
 import com.example.unigym2.R
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
+import java.time.LocalDate
+import java.time.LocalTime
+import java.time.format.DateTimeFormatter
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -68,6 +71,19 @@ class CalendarPersonal : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        data class Tempo(val hora:String){
+            fun compare(arrayList: ArrayList<Tempo>){
+                arrayList.sortWith( compareBy { tempo ->
+                    val horaPartes = hora.split(":")
+
+                    val h = horaPartes[0].toInt()
+                    val min = horaPartes[1].toInt()
+                    h*60+min
+                })
+            }
+
+        }
+
         val calendarView = view.findViewById<CalendarView>(R.id.calendarView4)
         val programacoesContainer = view.findViewById<LinearLayout>(R.id.programacoes_container)
         programacoesContainer.visibility = View.GONE
@@ -106,12 +122,25 @@ class CalendarPersonal : Fragment() {
 
                     } else {
                         schedulesArrayList.clear()
+                        val hoje = LocalDate.now()
+                        val dataSelecionadaLocalDate = LocalDate.parse(dataSelecionada, DateTimeFormatter.ofPattern("dd/mm/yyyy"))
+
+                        val isToday = dataSelecionadaLocalDate == hoje
+
+                        val horaAgora = LocalTime.now()
 
                         for (document in documents) {
                             val clienteID = document.getString("clienteID")
                             val horario = document.getString("hora")
                             val timestamp = document.getLong("timestamp")
                             val servico = document.getString("servico")
+
+                            val podeAdicionar = if (isToday){
+                                val horaAgendamento = LocalTime.parse(horario, DateTimeFormatter.ofPattern("hh:mm"))
+                                horaAgendamento >= horaAgora
+                            } else{
+                                true
+                            }
 
                             dataBase.collection("Usuarios")
                                 .document(clienteID!!)
@@ -140,15 +169,6 @@ class CalendarPersonal : Fragment() {
                 }
 
 
-        /*programacoesConteudo.text = "Carregando Programação..."
-            dataBase.collection("Agendamentos")
-                .whereEqualTo("personalID", personalID)
-                .whereEqualTo("data", dataSelecionada)
-                .whereEqualTo("status", "aceito")
-                .get()
-                .addOnSuccessListener { documents ->
-                    //val agendamento
-                }*/
         }
     }
 
