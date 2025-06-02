@@ -218,7 +218,7 @@ class EditProfileUser : Fragment() {
                 }
 
         }
-        updates["objetivos"] = objectives
+        updates["objectives"] = objectives
         updates["email"] = if (newEmail.isNotEmpty()) newEmail else currentEmail
 
         if (updates.isNotEmpty()) {
