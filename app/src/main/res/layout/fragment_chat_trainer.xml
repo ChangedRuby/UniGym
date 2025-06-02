@@ -38,6 +38,7 @@
                 android:layoutMode="clipBounds"
                 android:tag="Pesquisa"
                 android:visibility="visible"
+                app:iconifiedByDefault="false"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/chatsPersonalTabLayout"

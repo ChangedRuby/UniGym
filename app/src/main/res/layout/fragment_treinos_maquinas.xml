@@ -36,6 +36,7 @@
             android:layout_marginBottom="565dp"
             android:background="@drawable/rectangle_light_gradient"
             android:backgroundTint="#8731343C"
+            app:iconifiedByDefault="false"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
