@@ -48,7 +48,7 @@ class CreateAccountPersonalTrainer : AppCompatActivity() {
         crefTextInput = findViewById(R.id.CrefEditText)
         passwordTextInput = findViewById(R.id.passwordPersonalEditText)
         confirmPasswordTextInput = findViewById(R.id.confirmPasswordPersonalEditText)
-        exitButton = findViewById(R.id.closeScreen2)
+        exitButton = findViewById(R.id.closeScreen3)
 
         exitButton.setOnClickListener {
             startActivity(Intent(this, CreateAccountUser::class.java))
