@@ -250,33 +250,29 @@ class HomeUser : Fragment() {
             val lastWorkoutTimestamp = document.getLong("lastWorkoutTimestamp") ?: 0
             val currentStreak = document.getLong("treinosConsecutivos")?.toInt() ?: 0
             val currentTime = System.currentTimeMillis()
-
-            // Get calendar instances for current time and last workout
             val currentCalendar = Calendar.getInstance()
             currentCalendar.timeInMillis = currentTime
 
             val lastWorkoutCalendar = Calendar.getInstance()
             lastWorkoutCalendar.timeInMillis = lastWorkoutTimestamp
 
-            // Calculate the difference in days
+            // calcula a diferença em dias
             val daysSinceLastWorkout = getDaysBetween(lastWorkoutCalendar, currentCalendar)
 
-            // Check if streak should be reset
+            // checa se deve ser resetado
             var newStreak = currentStreak
             var shouldReset = false
 
             if (daysSinceLastWorkout > 3) {
-                // If more than 3 days have passed, definitely reset (longest weekend is 3 days)
                 shouldReset = true
             } else if (daysSinceLastWorkout > 0) {
-                // Check if we missed a weekday workout
                 val missedWeekday = checkIfMissedWeekday(lastWorkoutCalendar, currentCalendar)
                 if (missedWeekday) {
                     shouldReset = true
                 }
             }
 
-            // Update streak in Firebase if needed
+            // atualiza streak
             if (shouldReset) {
                 userRef.update(
                     mapOf(
@@ -290,7 +286,6 @@ class HomeUser : Fragment() {
         }
     }
 
-    // Helper function to check if a weekday workout was missed
     private fun checkIfMissedWeekday(lastWorkout: Calendar, current: Calendar): Boolean {
         val tempCalendar = Calendar.getInstance()
         tempCalendar.timeInMillis = lastWorkout.timeInMillis
@@ -308,7 +303,6 @@ class HomeUser : Fragment() {
         return false
     }
 
-    // Helper function to calculate days between two dates
     private fun getDaysBetween(startDate: Calendar, endDate: Calendar): Int {
         val startDay = startDate.get(Calendar.DAY_OF_YEAR)
         val startYear = startDate.get(Calendar.YEAR)
@@ -339,7 +333,6 @@ class HomeUser : Fragment() {
         }
     }
 
-    // Helper function to check if two dates are the same day
     private fun isSameDay(date1: Calendar, date2: Calendar): Boolean {
         return date1.get(Calendar.YEAR) == date2.get(Calendar.YEAR) &&
                 date1.get(Calendar.DAY_OF_YEAR) == date2.get(Calendar.DAY_OF_YEAR)
@@ -363,7 +356,7 @@ class HomeUser : Fragment() {
                 document.reference.update("treinosSemana", weeklyWorkouts)
             }
 
-            // Increment streak and weekly workout count
+            // incrementa streak e contagem de treinos
             val newStreak = currentStreak + 1
             val newWeeklyWorkouts = if (weeklyWorkouts < 6) weeklyWorkouts + 1 else 0
 

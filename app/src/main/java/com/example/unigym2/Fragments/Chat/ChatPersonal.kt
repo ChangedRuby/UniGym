@@ -334,7 +334,7 @@ class ChatPersonal : Fragment() {
 
             if (userId.isNotEmpty() && userName.isNotEmpty()) {
                 if (originalItemArray.none { it.userId == userId }) { // Avoid duplicates if already added (e.g. Brok)
-                    AvatarManager.getUserAvatar(userId, userEmail, userName, 40, lifecycleScope) { bitmap ->
+                    AvatarManager.getUserAvatar(userId, userEmail, userName, 80, lifecycleScope) { bitmap ->
                         val newItem = ListaUsuariosItem(name = userName, userId = userId, image = bitmap)
                         fetchedFirestoreUserItems.add(newItem)
                         itemsProcessed++

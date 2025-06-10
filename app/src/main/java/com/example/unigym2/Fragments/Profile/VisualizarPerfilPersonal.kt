@@ -141,7 +141,7 @@ class VisualizarPerfilPersonal() : Fragment() {
                         }
                     }
 
-                    AvatarManager.getUserAvatar(personalID, result.data?.get("email").toString(), result.data?.get("name").toString(), 40, lifecycleScope) { bitmap ->
+                    AvatarManager.getUserAvatar(personalID, result.data?.get("email").toString(), result.data?.get("name").toString(), 100, lifecycleScope) { bitmap ->
                         personalImage.setImageBitmap(bitmap)
                     }
                 }.addOnFailureListener { exception ->

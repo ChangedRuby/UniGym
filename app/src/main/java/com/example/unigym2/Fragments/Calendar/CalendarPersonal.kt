@@ -110,7 +110,7 @@ class CalendarPersonal : Fragment() {
                     for (doc in documents){
                         cont = cont+1
                     }
-                    if(cont<=1){
+                    if(cont<=0){
                         val programacao = CalendarPersonalItem(
                             nomeCliente = "Sem agendamentos",
                             horario = "",

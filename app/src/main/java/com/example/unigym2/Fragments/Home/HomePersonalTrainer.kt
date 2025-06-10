@@ -117,10 +117,7 @@ class HomePersonalTrainer : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         communicator.showLoadingOverlay()
 
-        // --- MODIFICAÇÃO PRINCIPAL PARA PRÓXIMO TREINO DO DIA ---
-        // 3. Buscar o primeiro agendamento ACEITO do DIA ATUAL que ainda NÃO PASSOU
-
-        val nowCalendar = Calendar.getInstance() // Hora atual
+        val nowCalendar = Calendar.getInstance()
 
         val startOfTodayCalendar = Calendar.getInstance()
         startOfTodayCalendar.set(Calendar.HOUR_OF_DAY, 0)
@@ -137,12 +134,12 @@ class HomePersonalTrainer : Fragment() {
         val endOfTodayMillis = endOfTodayCalendar.timeInMillis
 
         db.collection("Agendamentos")
-            .whereEqualTo("personalID", communicator.getAuthUser()) // Filtrar pelo ID do personal
+            .whereEqualTo("personalID", communicator.getAuthUser()) // o agendamento é do personal logado
             .whereEqualTo("status", "aceito")
-            .whereGreaterThanOrEqualTo("timestamp", nowCalendar.timeInMillis) // Agendamentos futuros ou atuais no dia de hoje
-            .whereLessThanOrEqualTo("timestamp", endOfTodayMillis) // Agendamentos até o fim do dia de hoje
-            .orderBy("timestamp", Query.Direction.ASCENDING) // O mais próximo primeiro
-            .limit(1) // Apenas o primeiro
+            .whereGreaterThanOrEqualTo("timestamp", nowCalendar.timeInMillis)
+            .whereLessThanOrEqualTo("timestamp", endOfTodayMillis)
+            .orderBy("timestamp", Query.Direction.ASCENDING)
+            .limit(1) // o primeiro treino
             .get()
             .addOnSuccessListener { querySnapshot ->
                 if (!querySnapshot.isEmpty) {
@@ -155,11 +152,10 @@ class HomePersonalTrainer : Fragment() {
                         val timeFormatter = SimpleDateFormat("HH:mm", Locale.getDefault())
                         sessionTime.text = timeFormatter.format(sessionCal.time)
                     } else {
-                        // Fallback se 'timestamp' não existir, mas houver 'hora'
                         sessionTime.text = firstSessionDocument.getString("hora") ?: "N/A"
                     }
 
-                    val costumerID = firstSessionDocument.getString("clienteID") // Obter ID do cliente
+                    val costumerID = firstSessionDocument.getString("clienteID")
                     if (!costumerID.isNullOrEmpty()) {
                         db.collection("Usuarios").document(costumerID)
                             .get()
@@ -171,35 +167,35 @@ class HomePersonalTrainer : Fragment() {
                                 }
                                 sessionTime.visibility = View.VISIBLE
                                 sessionCostumer.visibility = View.VISIBLE
-                                communicator.hideLoadingOverlay() // Esconder overlay após TODAS as buscas principais
+                                communicator.hideLoadingOverlay()
                             }.addOnFailureListener { exception ->
                                 Log.w("firestore", "Erro ao buscar nome do cliente.", exception)
                                 sessionCostumer.text = "Erro Cliente"
                                 sessionTime.visibility = View.VISIBLE
                                 sessionCostumer.visibility = View.VISIBLE
-                                communicator.hideLoadingOverlay() // Esconder overlay
+                                communicator.hideLoadingOverlay()
                             }
                     } else {
                         sessionCostumer.text = "Cliente não informado"
                         sessionTime.visibility = View.VISIBLE
                         sessionCostumer.visibility = View.VISIBLE
-                        communicator.hideLoadingOverlay() // Esconder overlay
+                        communicator.hideLoadingOverlay()
                     }
                 } else {
-                    // Nenhum agendamento encontrado para hoje
+                    // nenhum agendamento hoje
                     sessionTime.text = "Nenhum treino hoje"
                     sessionCostumer.text = ""
-                    sessionTime.visibility = View.VISIBLE // Ou GONE, dependendo da preferência
-                    sessionCostumer.visibility = View.VISIBLE // Ou GONE
-                    communicator.hideLoadingOverlay() // Esconder overlay
+                    sessionTime.visibility = View.VISIBLE
+                    sessionCostumer.visibility = View.VISIBLE
+                    communicator.hideLoadingOverlay()
                 }
             }.addOnFailureListener { exception ->
                 Log.w("firestore", "Erro ao buscar agendamentos do dia para o personal.", exception)
                 sessionTime.text = "Erro ao carregar treinos"
                 sessionCostumer.text = ""
-                communicator.hideLoadingOverlay() // Esconder overlay
+                communicator.hideLoadingOverlay()
             }
-        communicator.hideLoadingOverlay() // Esconder overlay APÓS a busca do agendamento
+        communicator.hideLoadingOverlay()
     }
 
     companion object {

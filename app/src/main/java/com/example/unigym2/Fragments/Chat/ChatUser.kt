@@ -422,7 +422,7 @@ class ChatUser : Fragment() {
 
             if (userId.isNotEmpty() && userName.isNotEmpty()) {
                 if (originalItemArray.none { it.userId == userId }) {
-                    AvatarManager.getUserAvatar(userId, userEmail, userName, 40, lifecycleScope) { bitmap ->
+                    AvatarManager.getUserAvatar(userId, userEmail, userName, 80, lifecycleScope) { bitmap ->
                         val newItem = ListaPersonaisItem(name = userName, userId = userId, image = bitmap)
                         fetchedFirestoreUserItems.add(newItem)
                         itemsProcessed++

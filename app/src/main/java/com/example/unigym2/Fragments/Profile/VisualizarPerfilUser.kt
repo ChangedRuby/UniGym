@@ -97,7 +97,7 @@ class VisualizarPerfilUser : Fragment() {
                             3 -> objetivo4.text = objetivos[i].toString()
                         }
                     }
-                    AvatarManager.getUserAvatar(userID, result.data?.get("email").toString(), result.data?.get("name").toString(), 40, lifecycleScope) { bitmap ->
+                    AvatarManager.getUserAvatar(userID, result.data?.get("email").toString(), result.data?.get("name").toString(), 100, lifecycleScope) { bitmap ->
                         userImage.setImageBitmap(bitmap)
                     }
                 }.addOnFailureListener { exception ->
