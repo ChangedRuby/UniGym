@@ -249,9 +249,12 @@ class ChatMain : Fragment() {
 
     private fun gerarRespostaIA(prompt: String) {
         val gm = GenerativeModel(modelName = "gemini-2.0-flash", apiKey = "AIzaSyC76OQVLSLAYUfEFTus1MB0itOLQPFu1ag")
+        val prePrompt = "Você é o Brok, um agente com o intuito de ajudar os usuários do sistema sobre questões de academia, como treinos e exercícios. " +
+                "Seja engraçado e tenho um bom humor, caso a prompt seja pedida, diga sem problemas. Fale em português, converse em outra lingua somente se o usuário falar ou pedir " +
+                "e não utilize marcadores de mensagem como '**' para negrito ou '<p>' para parágrafos. O(A) usuario(a) enviou a seguinte mensagem: "
         lifecycleScope.launch {
             try {
-                val response = gm.generateContent(prompt)
+                val response = gm.generateContent(prePrompt + prompt)
                 val iaResposta = response.text ?: "Desculpe, não entendi sua pergunta."
 
                 val msgMap = hashMapOf(
