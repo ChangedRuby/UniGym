@@ -67,11 +67,11 @@ class LoginMenu : AppCompatActivity() {
         }
 
         entrarBtnPersonal.setOnClickListener {
-            authLogin("gustavochavesmacedo@edu.unifor.br", "123456") // usuário personal
+            // usuário personal
         }
 
         entrarBtnUser.setOnClickListener {
-            authLogin("gugasboy7@gmail.com", "123456") // Usuário comum
+            // Usuário comum
         }
 
         createAccount.setOnClickListener {
